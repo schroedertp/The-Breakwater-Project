@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Breakwater — Guest App | T3D Properties, Avalon NJ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #2aab9e;
+      --teal-dark: #1d8278;
+      --teal-deep: #155e56;
+      --teal-light: #5bc9bf;
+      --coral: #e8735a;
+      --coral-light: #f0937d;
+      --sand: #f5ede0;
+      --sand-dark: #e8d8c0;
+      --sand-mid: #d4ba96;
+      --sun: #f5c842;
+      --white: #fdfaf6;
+      --text: #1e2d2b;
+      --text-light: #5a7270;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Jost', sans-serif; background: var(--sand); color: var(--text); overflow-x: hidden; }
+
+    /* ---- NAVIGATION ---- */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(21, 94, 86, 0.97);
+      backdrop-filter: blur(12px);
+      padding: 0 28px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+    .nav-logo span { color: var(--sun); }
+    .nav-tabs { display: flex; gap: 2px; list-style: none; }
+    .nav-tabs button {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.7);
+      font-family: 'Jost', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-tabs button:hover { color: white; background: rgba(255,255,255,0.1); }
+    .nav-tabs button.active { color: var(--sun); background: rgba(245,200,66,0.15); }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: white;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    /* ---- PAGES ---- */
+    .page { display: none; min-height: 100vh; }
+    .page.active { display: block; }
+
+    /* ---- HOME PAGE ---- */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      background: linear-gradient(160deg, var(--teal-deep) 0%, var(--teal) 45%, var(--teal-light) 75%, #8dd8d2 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .sun-orb {
+      position: absolute;
+      top: 12%; right: 12%;
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffe066, var(--sun));
+      box-shadow: 0 0 70px 30px rgba(245,200,66,.35);
+      animation: sunPulse 4s ease-in-out infinite;
+    }
+    @keyframes sunPulse {
+      0%, 100% { box-shadow: 0 0 60px 25px rgba(245,200,66,.3); }
+      50% { box-shadow: 0 0 90px 40px rgba(245,200,66,.5); }
+    }
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,.12);
+      animation: rise linear infinite;
+    }
+    @keyframes rise {
+      0% { transform: translateY(110vh) scale(.5); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: .6; }
+      100% { transform: translateY(-120px) scale(1.1); opacity: 0; }
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: white;
+      padding: 0 24px;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--sun);
+      margin-bottom: 16px;
+      font-weight: 300;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 8vw, 96px);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .hero-subtitle {
+      font-size: 15px;
+      font-weight: 200;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-bottom: 48px;
+    }
+    .hero-cards {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .hero-card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      padding: 16px 22px;
+      min-width: 140px;
+      text-align: center;
+    }
+    .hero-card-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.65;
+      margin-bottom: 6px;
+    }
+    .hero-card-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+    }
+    .hero-card-sub { font-size: 11px; opacity: 0.6; margin-top: 3px; }
+    .hero-cta { display: inline-flex; gap: 12px; }
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.55);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(7px); }
+    }
+    .hero-scroll svg { width: 18px; height: 18px; stroke: rgba(255,255,255,0.55); }
+
+    /* ---- BUTTONS ---- */
+    .btn {
+      display: inline-block;
+      padding: 12px 26px;
+      border-radius: 8px;
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--coral); color: white; }
+    .btn-primary:hover { background: var(--coral-light); transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.45); }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; }
+    .btn-teal { background: var(--teal); color: white; }
+    .btn-teal:hover { background: var(--teal-dark); transform: translateY(-1px); }
+    .btn-ghost { background: none; color: var(--text-light); border: 1px solid var(--sand-dark); }
+    .btn-ghost:hover { background: var(--sand); border-color: var(--sand-mid); }
+    .btn-sm { padding: 8px 16px; font-size: 10px; }
+
+    /* ---- SECTION LAYOUT ---- */
+    .section {
+      padding: 80px 24px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-header { margin-bottom: 40px; }
+    .section-eyebrow {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(30px, 5vw, 50px);
+      font-weight: 300;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .section-desc {
+      margin-top: 10px;
+      color: var(--text-light);
+      font-weight: 300;
+      font-size: 15px;
+      max-width: 460px;
+    }
+
+    /* ---- CARDS ---- */
+    .card {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 2px 20px rgba(30,45,43,0.06);
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--text);
+    }
+
+    /* ---- MY STAY PAGE ---- */
+    #page-stay { background: var(--sand); padding-top: 64px; }
+    .stay-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+    .stay-booking-card {
+      background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 32px;
+      grid-column: 1 / -1;
+    }
+    .booking-confirmation-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      margin-bottom: 18px;
+    }
+    .booking-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .booking-detail-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.65;
+      margin-bottom: 5px;
+    }
+    .booking-detail-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 400;
+    }
+    .booking-detail-sub { font-size: 12px; opacity: 0.65; margin-top: 2px; }
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .amenity-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      padding: 14px 6px;
+      background: var(--sand);
+      border-radius: 12px;
+      text-align: center;
+    }
+    .amenity-icon { font-size: 22px; }
+    .amenity-label { font-size: 10px; color: var(--text-light); font-weight: 300; }
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--sand-dark);
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-icon {
+      width: 38px; height: 38px;
+      background: var(--sand);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .info-label {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 4px;
+    }
+    .info-value { font-size: 15px; color: var(--text); font-weight: 400; }
+    .info-sub { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+    .code-display {
+      display: inline-block;
+      background: var(--teal-deep);
+      color: white;
+      font-size: 20px;
+      letter-spacing: 6px;
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-family: monospace;
+      margin-top: 8px;
+    }
+    .rule-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 0;
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 300;
+      border-bottom: 1px solid var(--sand);
+    }
+    .rule-item:last-child { border-bottom: none; }
+    .rule-dot {
+      width: 5px; height: 5px;
+      background: var(--coral);
+      border-radius: 50%;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    /* ---- BOOKING PAGE ---- */
+    #page-book { background: var(--sand); padding-top: 64px; }
+    .booking-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 28px;
+      align-items: start;
+    }
+    .calendar-container {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 2px 20px rgba(30,45,43,0.06);
+    }
+    .calendar-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+    .calendar-nav button {
+      width: 34px; height: 34px;
+      border: 1px solid var(--sand-dark);
+      background: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--text-light);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .calendar-nav button:hover { background: var(--sand); border-color: var(--teal); color: var(--teal); }
+    .calendar-month {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+    }
+    .cal-day-name {
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      padding: 7px 0;
+    }
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .cal-day:hover:not(.booked):not(.empty) { background: var(--sand); }
+    .cal-day.empty { cursor: default; }
+    .cal-day.today { font-weight: 500; color: var(--teal); }
+    .cal-day.booked { background: var(--sand-dark); color: var(--sand-mid); cursor: not-allowed; text-decoration: line-through; }
+    .cal-day.selected { background: var(--teal); color: white; font-weight: 500; }
+    .cal-day.in-range { background: rgba(42,171,158,0.14); color: var(--teal-dark); border-radius: 0; }
+    .cal-day.range-start { background: var(--teal); color: white; border-radius: 8px 0 0 8px; }
+    .cal-day.range-end { background: var(--teal); color: white; border-radius: 0 8px 8px 0; }
+    .cal-legend { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-light); }
+    .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+    .booking-sidebar { position: sticky; top: 80px; }
+    .form-group { margin-bottom: 18px; }
+    .form-label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 7px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--sand-dark);
+      border-radius: 10px;
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--white);
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { outline: none; border-color: var(--teal); }
+    .form-select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--sand-dark);
+      border-radius: 10px;
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--white);
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath stroke='%235a7270' stroke-width='1.5' d='m1 1 5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+    }
+    .form-select:focus { outline: none; border-color: var(--teal); }
+    .price-summary {
+      background: var(--sand);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 18px;
+    }
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .price-row.total {
+      border-top: 1px solid var(--sand-dark);
+      margin-top: 8px;
+      padding-top: 10px;
+      font-weight: 500;
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    /* ---- RESTAURANTS PAGE ---- */
+    #page-restaurants { background: var(--sand); padding-top: 64px; }
+    .restaurants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 22px;
+    }
+    .restaurant-card {
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 2px 20px rgba(30,45,43,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .restaurant-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(30,45,43,0.12);
+    }
+    .restaurant-img {
+      height: 170px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 52px;
+      position: relative;
+      overflow: hidden;
+    }
+    .restaurant-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.18));
+    }
+    .restaurant-cuisine-tag {
+      position: absolute;
+      bottom: 12px; left: 14px;
+      background: rgba(255,255,255,0.92);
+      color: var(--teal-dark);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+      z-index: 1;
+    }
+    .restaurant-price-tag {
+      position: absolute;
+      bottom: 12px; right: 14px;
+      background: var(--teal-deep);
+      color: var(--sun);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      z-index: 1;
+    }
+    .restaurant-body { padding: 18px; }
+    .restaurant-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+    .restaurant-desc {
+      font-size: 12px;
+      color: var(--text-light);
+      font-weight: 300;
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+    .restaurant-meta { display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; }
+    .restaurant-meta-item { font-size: 12px; color: var(--text-light); }
+    .restaurant-actions { display: flex; gap: 8px; }
+
+    /* ---- MAINTENANCE PAGE ---- */
+    #page-maintenance { background: var(--sand); padding-top: 64px; }
+    .maintenance-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .status-open { background: rgba(232,115,90,0.14); color: var(--coral); }
+    .status-progress { background: rgba(42,171,158,0.14); color: var(--teal-dark); }
+    .status-resolved { background: rgba(90,114,112,0.12); color: var(--text-light); }
+    .request-item {
+      padding: 15px;
+      border-bottom: 1px solid var(--sand-dark);
+    }
+    .request-item:last-child { border-bottom: none; }
+    .request-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      gap: 8px;
+    }
+    .request-title { font-size: 14px; font-weight: 400; color: var(--text); }
+    .request-date { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
+    .request-desc { font-size: 12px; color: var(--text-light); font-weight: 300; }
+    .category-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .category-btn {
+      padding: 12px 8px;
+      border: 2px solid var(--sand-dark);
+      background: white;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      font-family: 'Jost', sans-serif;
+    }
+    .category-btn:hover { border-color: var(--teal); background: rgba(42,171,158,0.04); }
+    .category-btn.selected { border-color: var(--teal); background: rgba(42,171,158,0.09); color: var(--teal-dark); }
+    .cat-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+    .cat-label { font-size: 10px; letter-spacing: 0.5px; }
+    .textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--sand-dark);
+      border-radius: 10px;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      resize: vertical;
+      min-height: 96px;
+      background: var(--white);
+    }
+    .textarea:focus { outline: none; border-color: var(--teal); }
+
+    /* ---- MODAL ---- */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(21,94,86,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 36px;
+      max-width: 460px;
+      width: 100%;
+      position: relative;
+      animation: modalIn 0.25s ease;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 30px; height: 30px;
+      border: none;
+      background: var(--sand);
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .modal-close:hover { background: var(--sand-dark); }
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .modal-subtitle { font-size: 12px; color: var(--text-light); margin-bottom: 22px; }
+
+    /* ---- TOAST ---- */
+    .toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: var(--teal-deep);
+      color: white;
+      padding: 13px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      z-index: 300;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s;
+      max-width: 320px;
+      box-shadow: 0 4px 20px rgba(21,94,86,0.3);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 820px) {
+      .nav-tabs { display: none; }
+      .nav-hamburger { display: flex; }
+      .nav-tabs.open {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 64px; left: 0; right: 0;
+        background: var(--teal-deep);
+        padding: 12px;
+        gap: 2px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+      .stay-grid { grid-template-columns: 1fr; }
+      .booking-layout { grid-template-columns: 1fr; }
+      .maintenance-layout { grid-template-columns: 1fr; }
+      .restaurants-grid { grid-template-columns: 1fr; }
+      .stay-booking-card { grid-column: auto; }
+      .hero-cards { gap: 8px; }
+      .hero-card { min-width: 120px; padding: 12px 16px; }
+    }
+    @media (max-width: 480px) {
+      .hero-cards { flex-direction: column; align-items: center; }
+      .hero-card { width: 240px; }
+      .hero-cta { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===================== NAVIGATION ===================== -->
+<nav class="nav">
+  <div class="nav-logo" onclick="showPage('home', document.querySelector('.nav-tabs button'))">
+    The <span>Breakwater</span>
+  </div>
+  <ul class="nav-tabs" id="navTabs">
+    <li><button class="active" onclick="showPage('home', this)">Home</button></li>
+    <li><button onclick="showPage('stay', this)">My Stay</button></li>
+    <li><button onclick="showPage('book', this)">Book</button></li>
+    <li><button onclick="showPage('restaurants', this)">Restaurants</button></li>
+    <li><button onclick="showPage('maintenance', this)">Maintenance</button></li>
+  </ul>
+  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ===================== HOME PAGE ===================== -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="sun-orb"></div>
+    <div class="bubble" style="left:7%;width:14px;height:14px;animation-duration:7s;animation-delay:0s"></div>
+    <div class="bubble" style="left:17%;width:8px;height:8px;animation-duration:9s;animation-delay:1.2s"></div>
+    <div class="bubble" style="left:34%;width:20px;height:20px;animation-duration:11s;animation-delay:2.5s"></div>
+    <div class="bubble" style="left:54%;width:10px;height:10px;animation-duration:8s;animation-delay:3s"></div>
+    <div class="bubble" style="left:69%;width:16px;height:16px;animation-duration:10s;animation-delay:1.5s"></div>
+    <div class="bubble" style="left:84%;width:7px;height:7px;animation-duration:6s;animation-delay:4s"></div>
+    <div class="bubble" style="left:27%;width:12px;height:12px;animation-duration:12s;animation-delay:0.8s"></div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">T3D Properties &middot; Avalon, New Jersey</div>
+      <h1 class="hero-title">The Breakwater</h1>
+      <p class="hero-subtitle">Your oceanside retreat</p>
+
+      <div class="hero-cards">
+        <div class="hero-card">
+          <div class="hero-card-label">Check In</div>
+          <div class="hero-card-value">Jul 12</div>
+          <div class="hero-card-sub">Saturday &middot; 3:00 PM</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-label">Check Out</div>
+          <div class="hero-card-value">Jul 19</div>
+          <div class="hero-card-sub">Saturday &middot; 10:00 AM</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-label">Guests</div>
+          <div class="hero-card-value">6</div>
+          <div class="hero-card-sub">4 adults &middot; 2 children</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-label">Address</div>
+          <div class="hero-card-value" style="font-size:17px">103 E 19th St</div>
+          <div class="hero-card-sub">Avalon, NJ 08202</div>
+        </div>
+      </div>
+
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="showPage('stay', document.querySelectorAll('.nav-tabs button')[1])">View My Stay</button>
+        <button class="btn btn-outline" onclick="showPage('restaurants', document.querySelectorAll('.nav-tabs button')[3])">Browse Restaurants</button>
+      </div>
+    </div>
+
+    <div class="hero-scroll" onclick="showPage('stay', document.querySelectorAll('.nav-tabs button')[1])">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
+      </svg>
+      <span>Explore</span>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== MY STAY PAGE ===================== -->
+<div id="page-stay" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Your reservation</div>
+      <h2 class="section-title">My Stay</h2>
+      <p class="section-desc">Everything you need for a seamless stay at The Breakwater.</p>
+    </div>
+
+    <div class="stay-grid">
+
+      <!-- Booking Confirmation -->
+      <div class="stay-booking-card">
+        <div class="booking-confirmation-tag">Confirmation #BW-2025-0712</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:4px">The Breakwater</h3>
+        <p style="opacity:0.65;font-size:13px">103 E 19th St, Avalon, NJ 08202</p>
+        <div class="booking-details">
+          <div>
+            <div class="booking-detail-label">Check In</div>
+            <div class="booking-detail-value">Jul 12, 2025</div>
+            <div class="booking-detail-sub">Saturday &middot; 3:00 PM</div>
+          </div>
+          <div>
+            <div class="booking-detail-label">Check Out</div>
+            <div class="booking-detail-value">Jul 19, 2025</div>
+            <div class="booking-detail-sub">Saturday &middot; 10:00 AM</div>
+          </div>
+          <div>
+            <div class="booking-detail-label">Duration</div>
+            <div class="booking-detail-value">7 Nights</div>
+            <div class="booking-detail-sub">Weekly rental</div>
+          </div>
+          <div>
+            <div class="booking-detail-label">Guests</div>
+            <div class="booking-detail-value">6</div>
+            <div class="booking-detail-sub">4 adults &middot; 2 children</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Access & Check-In -->
+      <div class="card">
+        <h4 class="card-title">&#128273; Access &amp; Check-In</h4>
+        <div class="info-row">
+          <div class="info-icon">&#128663;</div>
+          <div>
+            <div class="info-label">Parking</div>
+            <div class="info-value">2 spots in driveway</div>
+            <div class="info-sub">Additional street parking on E 19th St</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">&#128272;</div>
+          <div>
+            <div class="info-label">Door Code</div>
+            <div class="code-display">4 2 8 1</div>
+            <div class="info-sub" style="margin-top:8px">Keypad on front door</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">&#128246;</div>
+          <div>
+            <div class="info-label">WiFi Network</div>
+            <div class="info-value">Breakwater_Guest</div>
+            <div class="code-display" style="font-size:15px;letter-spacing:3px;margin-top:8px">OceanView2025!</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">&#128222;</div>
+          <div>
+            <div class="info-label">Property Manager</div>
+            <div class="info-value">T3D Properties</div>
+            <div class="info-sub">(609) 555-0184 &middot; 8am&ndash;9pm daily</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amenities -->
+      <div class="card">
+        <h4 class="card-title">&#10024; Amenities</h4>
+        <div class="amenities-grid">
+          <div class="amenity-item"><span class="amenity-icon">&#127754;</span><span class="amenity-label">Beach Access</span></div>
+          <div class="amenity-item"><span class="amenity-icon">&#127944;</span><span class="amenity-label">Private Pool</span></div>
+          <div class="amenity-item"><span class="amenity-icon">&#9832;&#65039;</span><span class="amenity-label">Hot Tub</span></div>
+          <div class="amenity-item"><span class="amenity-icon">&#128250;</span><span class="amenity-label">Smart TV</span></div>
+          <div class="amenity-item"><span class="amenity-icon">&#128246;</span><span class="amenity-label">High-Speed WiFi</span></div>
+          <div class="amenity-item"><span class="amenity-icon">&#128703;</span><span class="amenity-label">Outdoor Shower</span></div>
+          <div class="amenity-item"><span class="amenity-icon">&#127859;</span><span class="amenity-label">Full Kitchen</span></div>
+          <div class="amenity-item"><span class="amenity-icon">&#127978;</span><span class="amenity-label">Deck &amp; Grill</span></div>
+          <div class="amenity-item"><span class="amenity-icon">&#128663;</span><span class="amenity-label">2 Parking Spots</span></div>
+          <div class="amenity-item"><span class="amenity-icon">&#127918;</span><span class="amenity-label">Game Room</span></div>
+          <div class="amenity-item"><span class="amenity-icon">&#128085;</span><span class="amenity-label">Washer/Dryer</span></div>
+          <div class="amenity-item"><span class="amenity-icon">&#10052;&#65039;</span><span class="amenity-label">A/C &amp; Heat</span></div>
+        </div>
+      </div>
+
+      <!-- House Rules -->
+      <div class="card" style="grid-column:1/-1">
+        <h4 class="card-title">&#128203; House Rules</h4>
+        <div style="columns:2;column-gap:32px">
+          <div class="rule-item"><div class="rule-dot"></div><span>Check-in after 3:00 PM, check-out by 10:00 AM</span></div>
+          <div class="rule-item"><div class="rule-dot"></div><span>No smoking indoors or on covered decks</span></div>
+          <div class="rule-item"><div class="rule-dot"></div><span>No pets allowed on the property</span></div>
+          <div class="rule-item"><div class="rule-dot"></div><span>Quiet hours 10:00 PM &ndash; 8:00 AM</span></div>
+          <div class="rule-item"><div class="rule-dot"></div><span>Pool use restricted to registered guests only</span></div>
+          <div class="rule-item"><div class="rule-dot"></div><span>No parties or gatherings over 12 guests</span></div>
+          <div class="rule-item"><div class="rule-dot"></div><span>No open flame fires on the property</span></div>
+          <div class="rule-item"><div class="rule-dot"></div><span>Rinse off at outdoor shower after beach</span></div>
+          <div class="rule-item"><div class="rule-dot"></div><span>Place trash in bins on designated pickup days</span></div>
+          <div class="rule-item"><div class="rule-dot"></div><span>Lock all doors and windows when leaving</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===================== BOOKING PAGE ===================== -->
+<div id="page-book" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Plan your visit</div>
+      <h2 class="section-title">Check Availability</h2>
+      <p class="section-desc">Browse open dates and request your stay at The Breakwater.</p>
+    </div>
+
+    <div class="booking-layout">
+      <!-- Calendar -->
+      <div class="calendar-container">
+        <div class="calendar-nav">
+          <button onclick="prevMonth()" aria-label="Previous month">&#8249;</button>
+          <span class="calendar-month" id="calMonth"></span>
+          <button onclick="nextMonth()" aria-label="Next month">&#8250;</button>
+        </div>
+        <div class="calendar-grid" id="calGrid"></div>
+        <div class="cal-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--teal)"></div>Selected
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:rgba(42,171,158,.14)"></div>In Range
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--sand-dark)"></div>Unavailable
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Sidebar -->
+      <div class="booking-sidebar">
+        <div class="card">
+          <h4 class="card-title">Reserve Your Stay</h4>
+
+          <div class="form-group">
+            <label class="form-label">Check-In Date</label>
+            <input type="text" id="checkinInput" class="form-input" placeholder="Select on calendar" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Check-Out Date</label>
+            <input type="text" id="checkoutInput" class="form-input" placeholder="Select on calendar" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Adults</label>
+            <select class="form-select" id="adultsSelect">
+              <option>2 Adults</option>
+              <option>3 Adults</option>
+              <option selected>4 Adults</option>
+              <option>5 Adults</option>
+              <option>6 Adults</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Children</label>
+            <select class="form-select">
+              <option selected>0 Children</option>
+              <option>1 Child</option>
+              <option>2 Children</option>
+              <option>3 Children</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-input" id="bookingName" placeholder="Jane Smith">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" id="bookingEmail" placeholder="jane@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="tel" class="form-input" id="bookingPhone" placeholder="(555) 000-0000">
+          </div>
+
+          <div class="price-summary" id="priceSummary" style="display:none">
+            <div class="price-row">
+              <span id="priceNights">— nights &times; $895</span>
+              <span id="priceBase">—</span>
+            </div>
+            <div class="price-row">
+              <span>Cleaning fee</span>
+              <span>$250</span>
+            </div>
+            <div class="price-row">
+              <span>Service fee</span>
+              <span id="priceService">—</span>
+            </div>
+            <div class="price-row total">
+              <span>Total</span>
+              <span id="priceTotal">—</span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" style="width:100%;text-align:center;display:block" onclick="submitBooking()">
+            Request Booking
+          </button>
+          <p style="font-size:11px;color:var(--text-light);text-align:center;margin-top:10px">You won&rsquo;t be charged yet</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== RESTAURANTS PAGE ===================== -->
+<div id="page-restaurants" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Avalon &amp; Stone Harbor</div>
+      <h2 class="section-title">Local Dining</h2>
+      <p class="section-desc">The best restaurants near The Breakwater, curated by T3D Properties.</p>
+    </div>
+
+    <div class="restaurants-grid">
+
+      <div class="restaurant-card">
+        <div class="restaurant-img" style="background:linear-gradient(135deg,#1d4e4a,#2aab9e)">
+          &#129362;
+          <span class="restaurant-cuisine-tag">Seafood &middot; BYOB</span>
+          <span class="restaurant-price-tag">$$$</span>
+        </div>
+        <div class="restaurant-body">
+          <div class="restaurant-name">The Diving Horse</div>
+          <div class="restaurant-desc">Upscale farm-to-table dining with locally sourced seafood and seasonal menus. One of Avalon's most celebrated restaurants.</div>
+          <div class="restaurant-meta">
+            <span class="restaurant-meta-item">&#128205; 2109 Dune Dr, Avalon</span>
+            <span class="restaurant-meta-item">&#128336; 5:00 PM &ndash; 9:30 PM</span>
+            <span class="restaurant-meta-item">&#128222; (609) 368-5000</span>
+          </div>
+          <div class="restaurant-actions">
+            <button class="btn btn-teal btn-sm" onclick="openReservation('The Diving Horse')">Reserve a Table</button>
+            <button class="btn btn-ghost btn-sm" onclick="callRestaurant('6093685000')">Call</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="restaurant-card">
+        <div class="restaurant-img" style="background:linear-gradient(135deg,#4a3010,#c87020)">
+          &#127866;
+          <span class="restaurant-cuisine-tag">American &middot; Bar</span>
+          <span class="restaurant-price-tag">$$</span>
+        </div>
+        <div class="restaurant-body">
+          <div class="restaurant-name">Whitebrier Restaurant &amp; Bar</div>
+          <div class="restaurant-desc">A beloved Avalon institution. Classic American fare, cold drinks, and a lively atmosphere that captures the spirit of the Jersey Shore.</div>
+          <div class="restaurant-meta">
+            <span class="restaurant-meta-item">&#128205; 7400 Dune Dr, Avalon</span>
+            <span class="restaurant-meta-item">&#128336; 11:00 AM &ndash; 12:00 AM</span>
+            <span class="restaurant-meta-item">&#128222; (609) 368-2000</span>
+          </div>
+          <div class="restaurant-actions">
+            <button class="btn btn-teal btn-sm" onclick="openReservation('Whitebrier Restaurant &amp; Bar')">Reserve a Table</button>
+            <button class="btn btn-ghost btn-sm" onclick="callRestaurant('6093682000')">Call</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="restaurant-card">
+        <div class="restaurant-img" style="background:linear-gradient(135deg,#1a3050,#2060a0)">
+          &#127828;
+          <span class="restaurant-cuisine-tag">Bar &amp; Grill</span>
+          <span class="restaurant-price-tag">$$</span>
+        </div>
+        <div class="restaurant-body">
+          <div class="restaurant-name">Fred's Tavern</div>
+          <div class="restaurant-desc">A Shore institution since 1947. Known for legendary burgers, the famous "Fredburger," ice cold drafts, and no-frills charm. A must-visit.</div>
+          <div class="restaurant-meta">
+            <span class="restaurant-meta-item">&#128205; 501 96th St, Stone Harbor</span>
+            <span class="restaurant-meta-item">&#128336; 11:30 AM &ndash; 11:00 PM</span>
+            <span class="restaurant-meta-item">&#128222; (609) 368-5591</span>
+          </div>
+          <div class="restaurant-actions">
+            <button class="btn btn-teal btn-sm" onclick="openReservation(&quot;Fred's Tavern&quot;)">Reserve a Table</button>
+            <button class="btn btn-ghost btn-sm" onclick="callRestaurant('6093685591')">Call</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="restaurant-card">
+        <div class="restaurant-img" style="background:linear-gradient(135deg,#2a1a40,#6030a0)">
+          &#127754;
+          <span class="restaurant-cuisine-tag">Seafood &middot; Waterfront</span>
+          <span class="restaurant-price-tag">$$$</span>
+        </div>
+        <div class="restaurant-body">
+          <div class="restaurant-name">Princeton Bar &amp; Grill</div>
+          <div class="restaurant-desc">Casual waterfront dining with stunning bay views, fresh seafood, and an extensive cocktail menu. Perfect for sunset dinners.</div>
+          <div class="restaurant-meta">
+            <span class="restaurant-meta-item">&#128205; 9601 3rd Ave, Stone Harbor</span>
+            <span class="restaurant-meta-item">&#128336; 12:00 PM &ndash; 10:00 PM</span>
+            <span class="restaurant-meta-item">&#128222; (609) 368-1300</span>
+          </div>
+          <div class="restaurant-actions">
+            <button class="btn btn-teal btn-sm" onclick="openReservation('Princeton Bar &amp; Grill')">Reserve a Table</button>
+            <button class="btn btn-ghost btn-sm" onclick="callRestaurant('6093681300')">Call</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="restaurant-card">
+        <div class="restaurant-img" style="background:linear-gradient(135deg,#1a3a18,#388a30)">
+          &#9749;
+          <span class="restaurant-cuisine-tag">Caf&eacute; &middot; Breakfast</span>
+          <span class="restaurant-price-tag">$</span>
+        </div>
+        <div class="restaurant-body">
+          <div class="restaurant-name">Avalon Coffee</div>
+          <div class="restaurant-desc">Start your morning with artisan coffee, fresh pastries, and hearty breakfast bowls. A favorite for early risers before hitting the beach.</div>
+          <div class="restaurant-meta">
+            <span class="restaurant-meta-item">&#128205; 3104 Dune Dr, Avalon</span>
+            <span class="restaurant-meta-item">&#128336; 7:00 AM &ndash; 2:00 PM</span>
+            <span class="restaurant-meta-item">&#128222; (609) 967-7700</span>
+          </div>
+          <div class="restaurant-actions">
+            <button class="btn btn-teal btn-sm" onclick="openReservation('Avalon Coffee')">Reserve a Table</button>
+            <button class="btn btn-ghost btn-sm" onclick="callRestaurant('6099677700')">Call</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="restaurant-card">
+        <div class="restaurant-img" style="background:linear-gradient(135deg,#3a1010,#a82020)">
+          &#127829;
+          <span class="restaurant-cuisine-tag">Italian &middot; Deli</span>
+          <span class="restaurant-price-tag">$$</span>
+        </div>
+        <div class="restaurant-body">
+          <div class="restaurant-name">Casel's Market &amp; Caf&eacute;</div>
+          <div class="restaurant-desc">A shore staple since 1942. Gourmet deli, handmade pasta, wood-fired pizzas, and a wine shop. Perfect for a relaxed casual dinner.</div>
+          <div class="restaurant-meta">
+            <span class="restaurant-meta-item">&#128205; 2888 Ocean Dr, Avalon</span>
+            <span class="restaurant-meta-item">&#128336; 8:00 AM &ndash; 9:00 PM</span>
+            <span class="restaurant-meta-item">&#128222; (609) 967-7007</span>
+          </div>
+          <div class="restaurant-actions">
+            <button class="btn btn-teal btn-sm" onclick="openReservation('Casel\'s Market &amp; Café')">Reserve a Table</button>
+            <button class="btn btn-ghost btn-sm" onclick="callRestaurant('6099677007')">Call</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MAINTENANCE PAGE ===================== -->
+<div id="page-maintenance" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Property support</div>
+      <h2 class="section-title">Maintenance Requests</h2>
+      <p class="section-desc">Submit an issue and our team will respond promptly, typically within a few hours.</p>
+    </div>
+
+    <div class="maintenance-layout">
+
+      <!-- Submit Form -->
+      <div class="card">
+        <h4 class="card-title">Submit a Request</h4>
+
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <div class="category-grid">
+            <button class="category-btn" onclick="selectCategory(this, 'Plumbing')">
+              <span class="cat-icon">&#128703;</span>
+              <span class="cat-label">Plumbing</span>
+            </button>
+            <button class="category-btn" onclick="selectCategory(this, 'Electrical')">
+              <span class="cat-icon">&#9889;</span>
+              <span class="cat-label">Electrical</span>
+            </button>
+            <button class="category-btn" onclick="selectCategory(this, 'HVAC')">
+              <span class="cat-icon">&#10052;&#65039;</span>
+              <span class="cat-label">HVAC / A/C</span>
+            </button>
+            <button class="category-btn" onclick="selectCategory(this, 'Appliance')">
+              <span class="cat-icon">&#127859;</span>
+              <span class="cat-label">Appliance</span>
+            </button>
+            <button class="category-btn" onclick="selectCategory(this, 'Pool / Hot Tub')">
+              <span class="cat-icon">&#127944;</span>
+              <span class="cat-label">Pool / Hot Tub</span>
+            </button>
+            <button class="category-btn" onclick="selectCategory(this, 'Exterior')">
+              <span class="cat-icon">&#127968;</span>
+              <span class="cat-label">Exterior</span>
+            </button>
+            <button class="category-btn" onclick="selectCategory(this, 'Cleaning')">
+              <span class="cat-icon">&#129529;</span>
+              <span class="cat-label">Cleaning</span>
+            </button>
+            <button class="category-btn" onclick="selectCategory(this, 'Other')">
+              <span class="cat-icon">&#128203;</span>
+              <span class="cat-label">Other</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Urgency</label>
+          <select class="form-select" id="urgencySelect">
+            <option value="low">Low &mdash; Not urgent, when convenient</option>
+            <option value="medium" selected>Medium &mdash; Needs attention today</option>
+            <option value="high">High &mdash; Urgent, affecting our stay</option>
+            <option value="emergency">Emergency &mdash; Safety concern</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="textarea" id="maintenanceDesc" placeholder="Please describe the issue in detail..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input type="text" class="form-input" id="maintenanceName" placeholder="Jane Smith">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Best Contact Number</label>
+          <input type="tel" class="form-input" id="maintenancePhone" placeholder="(555) 000-0000">
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;text-align:center;display:block" onclick="submitMaintenanceRequest()">
+          Submit Request
+        </button>
+      </div>
+
+      <!-- Request List + Emergency Contacts -->
+      <div>
+        <div class="card">
+          <h4 class="card-title">Your Requests</h4>
+          <div id="requestsList">
+            <div class="request-item">
+              <div class="request-header">
+                <span class="request-title">Kitchen faucet dripping</span>
+                <span class="status-badge status-resolved">Resolved</span>
+              </div>
+              <div class="request-date">Jun 28, 2025 &middot; Plumbing &middot; Low</div>
+              <div class="request-desc">Cold water handle leaking at base. Fixed by maintenance same day.</div>
+            </div>
+            <div class="request-item">
+              <div class="request-header">
+                <span class="request-title">Pool pump making noise</span>
+                <span class="status-badge status-progress">In Progress</span>
+              </div>
+              <div class="request-date">Jul 11, 2025 &middot; Pool / Hot Tub &middot; Medium</div>
+              <div class="request-desc">Unusual grinding sound from pool pump. Technician scheduled for tomorrow morning.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:22px">
+          <h4 class="card-title">Emergency Contacts</h4>
+          <div class="info-row">
+            <div class="info-icon">&#128680;</div>
+            <div>
+              <div class="info-label">Emergency Services</div>
+              <div class="info-value" style="font-size:22px;color:var(--coral)">911</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon">&#127968;</div>
+            <div>
+              <div class="info-label">T3D Properties &mdash; 24/7 Line</div>
+              <div class="info-value">(609) 555-0184</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon">&#128295;</div>
+            <div>
+              <div class="info-label">Avalon Emergency Maintenance</div>
+              <div class="info-value">(609) 555-0199</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===================== RESTAURANT RESERVATION MODAL ===================== -->
+<div class="modal-overlay" id="reservationModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('reservationModal')" aria-label="Close">&#x2715;</button>
+    <div class="modal-title" id="modalRestaurantName">Reserve a Table</div>
+    <div class="modal-subtitle">Fill in your details and we&rsquo;ll send the request to the restaurant</div>
+
+    <div class="form-group">
+      <label class="form-label">Date</label>
+      <input type="date" class="form-input" id="resDate">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Time</label>
+      <select class="form-select" id="resTime">
+        <option>12:00 PM</option>
+        <option>12:30 PM</option>
+        <option>1:00 PM</option>
+        <option>5:00 PM</option>
+        <option>5:30 PM</option>
+        <option>6:00 PM</option>
+        <option selected>6:30 PM</option>
+        <option>7:00 PM</option>
+        <option>7:30 PM</option>
+        <option>8:00 PM</option>
+        <option>8:30 PM</option>
+        <option>9:00 PM</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Party Size</label>
+      <select class="form-select" id="resParty">
+        <option>1 Guest</option>
+        <option>2 Guests</option>
+        <option>3 Guests</option>
+        <option selected>4 Guests</option>
+        <option>5 Guests</option>
+        <option>6 Guests</option>
+        <option>7 Guests</option>
+        <option>8+ Guests</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Name for Reservation</label>
+      <input type="text" class="form-input" id="resName" placeholder="Jane Smith">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Phone</label>
+      <input type="tel" class="form-input" id="resPhone" placeholder="(555) 000-0000">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Special Requests <span style="font-size:10px;text-transform:none;letter-spacing:0">(optional)</span></label>
+      <textarea class="textarea" id="resNotes" placeholder="Dietary restrictions, special occasions, seating preference..." style="min-height:72px"></textarea>
+    </div>
+
+    <button class="btn btn-primary" style="width:100%;text-align:center;display:block" onclick="submitReservation()">
+      Request Reservation
+    </button>
+    <p style="font-size:11px;color:var(--text-light);text-align:center;margin-top:10px">The restaurant will confirm your reservation within 24 hours</p>
+  </div>
+</div>
+
+<!-- ===================== TOAST ===================== -->
+<div class="toast" id="toast">
+  <span id="toastMsg">Success</span>
+</div>
+
+<script>
+  // ===================== NAVIGATION =====================
+  function showPage(pageId, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + pageId).classList.add('active');
+    if (btn) btn.classList.add('active');
+    document.getElementById('navTabs').classList.remove('open');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleMenu() {
+    document.getElementById('navTabs').classList.toggle('open');
+  }
+
+  // ===================== CALENDAR =====================
+  let currentMonth = new Date().getMonth();
+  let currentYear = new Date().getFullYear();
+  let selectedStart = null;
+  let selectedEnd = null;
+
+  // Sample booked ranges (month is 0-indexed)
+  const bookedRanges = [
+    { start: new Date(2025, 5, 28), end: new Date(2025, 6, 4) },
+    { start: new Date(2025, 6, 12), end: new Date(2025, 6, 19) },
+    { start: new Date(2025, 6, 26), end: new Date(2025, 7, 2) },
+    { start: new Date(2025, 7, 9),  end: new Date(2025, 7, 16) },
+    { start: new Date(2026, 1, 21), end: new Date(2026, 1, 28) },
+  ];
+
+  function isBooked(date) {
+    return bookedRanges.some(r => date >= r.start && date <= r.end);
+  }
+
+  function isPast(date) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date < today;
+  }
+
+  function renderCalendar() {
+    const monthNames = ['January','February','March','April','May','June',
+                        'July','August','September','October','November','December'];
+    document.getElementById('calMonth').textContent = monthNames[currentMonth] + ' ' + currentYear;
+
+    const grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+
+    ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
+      const el = document.createElement('div');
+      el.className = 'cal-day-name';
+      el.textContent = d;
+      grid.appendChild(el);
+    });
+
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day empty';
+      grid.appendChild(el);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(currentYear, currentMonth, day);
+      const el = document.createElement('div');
+      let classes = 'cal-day';
+
+      if (date.getTime() === today.getTime()) classes += ' today';
+
+      if (isBooked(date) || isPast(date)) {
+        classes += ' booked';
+      } else {
+        if (selectedStart && selectedEnd) {
+          if (date.getTime() === selectedStart.getTime()) classes += ' range-start';
+          else if (date.getTime() === selectedEnd.getTime()) classes += ' range-end';
+          else if (date > selectedStart && date < selectedEnd) classes += ' in-range';
+        } else if (selectedStart && date.getTime() === selectedStart.getTime()) {
+          classes += ' selected';
+        }
+        el.onclick = () => selectDate(date);
+      }
+
+      el.className = classes;
+      el.textContent = day;
+      grid.appendChild(el);
+    }
+
+    updatePriceSummary();
+  }
+
+  function selectDate(date) {
+    if (!selectedStart || (selectedStart && selectedEnd)) {
+      selectedStart = date;
+      selectedEnd = null;
+    } else {
+      if (date < selectedStart) {
+        selectedEnd = selectedStart;
+        selectedStart = date;
+      } else if (date.getTime() === selectedStart.getTime()) {
+        selectedStart = null;
+      } else {
+        // Make sure no booked date is in between
+        let conflict = false;
+        const d = new Date(selectedStart);
+        d.setDate(d.getDate() + 1);
+        while (d < date) {
+          if (isBooked(d)) { conflict = true; break; }
+          d.setDate(d.getDate() + 1);
+        }
+        if (conflict) {
+          showToast('Selected range includes unavailable dates. Please choose another range.');
+          selectedStart = date;
+          selectedEnd = null;
+        } else {
+          selectedEnd = date;
+        }
+      }
+    }
+    updateInputs();
+    renderCalendar();
+  }
+
+  function updateInputs() {
+    const fmt = d => d ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+    document.getElementById('checkinInput').value = fmt(selectedStart);
+    document.getElementById('checkoutInput').value = fmt(selectedEnd);
+  }
+
+  function updatePriceSummary() {
+    const summary = document.getElementById('priceSummary');
+    if (selectedStart && selectedEnd) {
+      const nights = Math.round((selectedEnd - selectedStart) / (1000 * 60 * 60 * 24));
+      const ratePerNight = 895;
+      const base = nights * ratePerNight;
+      const cleaning = 250;
+      const service = Math.round(base * 0.12);
+      const total = base + cleaning + service;
+      document.getElementById('priceNights').textContent = nights + ' night' + (nights !== 1 ? 's' : '') + ' \u00d7 $895';
+      document.getElementById('priceBase').textContent = '$' + base.toLocaleString();
+      document.getElementById('priceService').textContent = '$' + service.toLocaleString();
+      document.getElementById('priceTotal').textContent = '$' + total.toLocaleString();
+      summary.style.display = 'block';
+    } else {
+      summary.style.display = 'none';
+    }
+  }
+
+  function prevMonth() {
+    currentMonth--;
+    if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+    renderCalendar();
+  }
+
+  function nextMonth() {
+    currentMonth++;
+    if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+    renderCalendar();
+  }
+
+  renderCalendar();
+
+  // ===================== BOOKING SUBMISSION =====================
+  function submitBooking() {
+    if (!selectedStart || !selectedEnd) {
+      return showToast('Please select check-in and check-out dates on the calendar.');
+    }
+    const name = document.getElementById('bookingName').value.trim();
+    const email = document.getElementById('bookingEmail').value.trim();
+    if (!name) return showToast('Please enter your full name.');
+    if (!email || !email.includes('@')) return showToast('Please enter a valid email address.');
+
+    const nights = Math.round((selectedEnd - selectedStart) / (1000 * 60 * 60 * 24));
+    showToast('Booking request sent for ' + nights + ' night' + (nights !== 1 ? 's' : '') + '. We\'ll confirm within 24 hours!');
+    selectedStart = null;
+    selectedEnd = null;
+    updateInputs();
+    renderCalendar();
+    document.getElementById('bookingName').value = '';
+    document.getElementById('bookingEmail').value = '';
+    document.getElementById('bookingPhone').value = '';
+  }
+
+  // ===================== MAINTENANCE =====================
+  let selectedCategory = '';
+
+  function selectCategory(btn, category) {
+    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedCategory = category;
+  }
+
+  function submitMaintenanceRequest() {
+    if (!selectedCategory) return showToast('Please select a category for your request.');
+    const desc = document.getElementById('maintenanceDesc').value.trim();
+    if (!desc) return showToast('Please describe the issue.');
+    const name = document.getElementById('maintenanceName').value.trim();
+    if (!name) return showToast('Please enter your name.');
+
+    const urgency = document.getElementById('urgencySelect').value;
+    const urgencyLabels = { low: 'Low', medium: 'Medium', high: 'High', emergency: 'Emergency' };
+    const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+    const list = document.getElementById('requestsList');
+    const item = document.createElement('div');
+    item.className = 'request-item';
+    const shortDesc = desc.length > 50 ? desc.substring(0, 50) + '...' : desc;
+    item.innerHTML =
+      '<div class="request-header">' +
+        '<span class="request-title">' + selectedCategory + ': ' + shortDesc + '</span>' +
+        '<span class="status-badge status-open">Open</span>' +
+      '</div>' +
+      '<div class="request-date">' + today + ' &middot; ' + selectedCategory + ' &middot; ' + urgencyLabels[urgency] + '</div>' +
+      '<div class="request-desc">' + desc + '</div>';
+    list.prepend(item);
+
+    showToast('Request submitted. Our team will be in touch shortly.');
+    document.getElementById('maintenanceDesc').value = '';
+    document.getElementById('maintenanceName').value = '';
+    document.getElementById('maintenancePhone').value = '';
+    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('selected'));
+    selectedCategory = '';
+  }
+
+  // ===================== RESTAURANTS =====================
+  function openReservation(restaurantName) {
+    document.getElementById('modalRestaurantName').textContent = restaurantName;
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('resDate').value = today;
+    document.getElementById('resDate').min = today;
+    document.getElementById('reservationModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function callRestaurant(digits) {
+    window.location.href = 'tel:+1' + digits;
+  }
+
+  function submitReservation() {
+    const name = document.getElementById('resName').value.trim();
+    const date = document.getElementById('resDate').value;
+    if (!name) return showToast('Please enter a name for the reservation.');
+    if (!date) return showToast('Please select a date.');
+
+    const restaurant = document.getElementById('modalRestaurantName').textContent;
+    const time = document.getElementById('resTime').value;
+    const party = document.getElementById('resParty').value;
+    const dateFormatted = new Date(date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    closeModal('reservationModal');
+    showToast('Reservation requested at ' + restaurant + ' \u2014 ' + party + ', ' + dateFormatted + ' at ' + time);
+
+    document.getElementById('resName').value = '';
+    document.getElementById('resPhone').value = '';
+    document.getElementById('resNotes').value = '';
+  }
+
+  // ===================== TOAST =====================
+  let toastTimer = null;
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    toast.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3800);
+  }
+
+  // Close modal on overlay click
+  document.getElementById('reservationModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal('reservationModal');
+  });
+</script>
+</body>
+</html>
