@@ -763,6 +763,360 @@
       .hero-card { width: 240px; }
       .hero-cta { flex-direction: column; align-items: center; }
     }
+
+    /* ---- COUNTDOWN ---- */
+    .countdown-heading {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .countdown-widget {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+    .countdown-unit {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 12px 16px;
+      text-align: center;
+      min-width: 72px;
+    }
+    .countdown-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--sun);
+    }
+    .countdown-label {
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.65;
+      margin-top: 5px;
+      color: white;
+    }
+
+    /* ---- BEACH CONDITIONS STRIP ---- */
+    .conditions-section {
+      background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal-dark) 100%);
+    }
+    .conditions-header {
+      text-align: center;
+      color: rgba(255,255,255,0.55);
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 28px 24px 0;
+    }
+    .conditions-strip {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 24px 32px;
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr 1px 1fr;
+      gap: 0;
+      align-items: center;
+    }
+    .conditions-divider {
+      height: 48px;
+      background: rgba(255,255,255,0.12);
+    }
+    .conditions-item {
+      text-align: center;
+      color: white;
+      padding: 8px 16px;
+    }
+    .conditions-icon { font-size: 28px; margin-bottom: 8px; }
+    .conditions-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 300;
+      line-height: 1;
+    }
+    .conditions-label {
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-top: 5px;
+    }
+    .conditions-badge {
+      display: inline-block;
+      background: rgba(245,200,66,0.25);
+      color: var(--sun);
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-top: 3px;
+    }
+
+    /* ---- GALLERY LIGHTBOX ---- */
+    .gallery-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.94);
+      z-index: 400;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .gallery-modal-overlay.active { display: flex; }
+    .gallery-close-btn {
+      position: fixed;
+      top: 18px; right: 18px;
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.12);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: all 0.2s;
+    }
+    .gallery-close-btn:hover { background: rgba(255,255,255,0.25); }
+    .gallery-wrapper {
+      position: relative;
+      max-width: 800px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .gallery-main-img {
+      width: 100%;
+      aspect-ratio: 16/10;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .gallery-nav-btn {
+      position: absolute;
+      top: calc(50% - 30px);
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.12);
+      border: none;
+      color: white;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      z-index: 5;
+    }
+    .gallery-nav-btn:hover { background: rgba(255,255,255,0.28); }
+    .gallery-nav-btn.prev { left: -58px; }
+    .gallery-nav-btn.next { right: -58px; }
+    .gallery-caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 300;
+      color: white;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .gallery-caption-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 1.5px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .gallery-thumbs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      max-width: 100%;
+      padding: 4px 0 8px;
+    }
+    .gallery-thumb {
+      width: 68px;
+      height: 46px;
+      border-radius: 9px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+      opacity: 0.55;
+    }
+    .gallery-thumb.active, .gallery-thumb:hover { border-color: white; opacity: 1; }
+    .gallery-counter {
+      color: rgba(255,255,255,0.35);
+      font-size: 11px;
+      letter-spacing: 2px;
+      margin-top: 10px;
+    }
+    .gallery-trigger-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.85);
+      border-radius: 8px;
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 18px;
+    }
+    .gallery-trigger-btn:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.5); }
+
+    /* ---- EXPLORE PAGE ---- */
+    #page-explore { background: var(--sand); padding-top: 64px; }
+    .explore-filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .filter-pill {
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1.5px solid var(--sand-dark);
+      background: var(--white);
+      color: var(--text-light);
+      transition: all 0.2s;
+      font-family: 'Jost', sans-serif;
+    }
+    .filter-pill:hover { border-color: var(--teal); color: var(--teal-dark); }
+    .filter-pill.active { background: var(--teal); border-color: var(--teal); color: white; }
+    .explore-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .explore-card {
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 2px 20px rgba(30,45,43,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .explore-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(30,45,43,0.12);
+    }
+    .explore-card-img {
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 46px;
+      position: relative;
+    }
+    .explore-card-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.15));
+    }
+    .explore-dist-badge {
+      position: absolute;
+      bottom: 10px; right: 12px;
+      background: rgba(255,255,255,0.92);
+      color: var(--teal-dark);
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-weight: 500;
+      z-index: 1;
+    }
+    .explore-card-body { padding: 16px 18px 18px; }
+    .explore-card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 5px;
+    }
+    .explore-card-desc {
+      font-size: 12px;
+      color: var(--text-light);
+      font-weight: 300;
+      line-height: 1.65;
+      margin-bottom: 11px;
+    }
+    .explore-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .explore-tag {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+    }
+    .tag-beach { background: rgba(42,171,158,0.12); color: var(--teal-dark); }
+    .tag-water { background: rgba(30,100,200,0.1); color: #1a60a0; }
+    .tag-family { background: rgba(232,115,90,0.12); color: var(--coral); }
+    .tag-shopping { background: rgba(140,90,200,0.1); color: #7040aa; }
+    .tag-sightseeing { background: rgba(245,200,66,0.18); color: #8a6000; }
+    .tag-free { background: rgba(60,160,70,0.12); color: #287a2a; }
+    .explore-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    .star-rating { color: var(--sun); letter-spacing: 1px; }
+
+    @media (max-width: 820px) {
+      .conditions-strip { grid-template-columns: repeat(3, 1fr); gap: 0; }
+      .conditions-divider { display: none; }
+      .explore-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-nav-btn.prev { left: -46px; }
+      .gallery-nav-btn.next { right: -46px; }
+    }
+    @media (max-width: 600px) {
+      .explore-grid { grid-template-columns: 1fr; }
+      .gallery-nav-btn { display: none; }
+      .gallery-wrapper { padding: 0; }
+      .countdown-unit { min-width: 60px; padding: 10px 12px; }
+      .countdown-number { font-size: 28px; }
+    }
   </style>
 </head>
 <body>
@@ -777,6 +1131,7 @@
     <li><button onclick="showPage('stay', this)">My Stay</button></li>
     <li><button onclick="showPage('book', this)">Book</button></li>
     <li><button onclick="showPage('restaurants', this)">Restaurants</button></li>
+    <li><button onclick="showPage('explore', this)">Explore</button></li>
     <li><button onclick="showPage('maintenance', this)">Maintenance</button></li>
   </ul>
   <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -804,12 +1159,12 @@
       <div class="hero-cards">
         <div class="hero-card">
           <div class="hero-card-label">Check In</div>
-          <div class="hero-card-value">Jul 12</div>
+          <div class="hero-card-value">Aug 8</div>
           <div class="hero-card-sub">Saturday &middot; 3:00 PM</div>
         </div>
         <div class="hero-card">
           <div class="hero-card-label">Check Out</div>
-          <div class="hero-card-value">Jul 19</div>
+          <div class="hero-card-value">Aug 15</div>
           <div class="hero-card-sub">Saturday &middot; 10:00 AM</div>
         </div>
         <div class="hero-card">
@@ -824,17 +1179,78 @@
         </div>
       </div>
 
+      <div class="countdown-heading" id="countdownHeading">Until your check-in</div>
+      <div class="countdown-widget" id="countdownWidget">
+        <div class="countdown-unit">
+          <div class="countdown-number" id="cdDays">--</div>
+          <div class="countdown-label">Days</div>
+        </div>
+        <div class="countdown-unit">
+          <div class="countdown-number" id="cdHours">--</div>
+          <div class="countdown-label">Hours</div>
+        </div>
+        <div class="countdown-unit">
+          <div class="countdown-number" id="cdMins">--</div>
+          <div class="countdown-label">Minutes</div>
+        </div>
+        <div class="countdown-unit">
+          <div class="countdown-number" id="cdSecs">--</div>
+          <div class="countdown-label">Seconds</div>
+        </div>
+      </div>
+
       <div class="hero-cta">
         <button class="btn btn-primary" onclick="showPage('stay', document.querySelectorAll('.nav-tabs button')[1])">View My Stay</button>
-        <button class="btn btn-outline" onclick="showPage('restaurants', document.querySelectorAll('.nav-tabs button')[3])">Browse Restaurants</button>
+        <button class="btn btn-outline" onclick="showPage('explore', document.querySelectorAll('.nav-tabs button')[4])">Explore Avalon</button>
       </div>
     </div>
 
-    <div class="hero-scroll" onclick="showPage('stay', document.querySelectorAll('.nav-tabs button')[1])">
+    <div class="hero-scroll" onclick="document.querySelector('.conditions-section').scrollIntoView({behavior:'smooth'})">
       <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
         <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
       </svg>
-      <span>Explore</span>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- Beach Conditions Strip -->
+  <section class="conditions-section">
+    <div class="conditions-header">Forecast for your stay &mdash; Avalon, NJ &middot; Aug 8&ndash;15, 2026</div>
+    <div class="conditions-strip">
+      <div class="conditions-item">
+        <div class="conditions-icon">&#9925;</div>
+        <div class="conditions-value">83&deg;</div>
+        <div class="conditions-label">Air Temp (F)</div>
+        <div class="conditions-badge">Warm &amp; Sunny</div>
+      </div>
+      <div class="conditions-divider"></div>
+      <div class="conditions-item">
+        <div class="conditions-icon">&#127754;</div>
+        <div class="conditions-value">72&deg;</div>
+        <div class="conditions-label">Water Temp (F)</div>
+        <div class="conditions-badge">Perfect for swimming</div>
+      </div>
+      <div class="conditions-divider"></div>
+      <div class="conditions-item">
+        <div class="conditions-icon">&#127940;</div>
+        <div class="conditions-value">2&ndash;3 ft</div>
+        <div class="conditions-label">Wave Height</div>
+        <div class="conditions-badge">Ideal surf</div>
+      </div>
+      <div class="conditions-divider"></div>
+      <div class="conditions-item">
+        <div class="conditions-icon">&#127788;</div>
+        <div class="conditions-value">SW 10</div>
+        <div class="conditions-label">Wind (mph)</div>
+        <div class="conditions-badge">Light &amp; Pleasant</div>
+      </div>
+      <div class="conditions-divider"></div>
+      <div class="conditions-item">
+        <div class="conditions-icon">&#9728;&#65039;</div>
+        <div class="conditions-value">8</div>
+        <div class="conditions-label">UV Index</div>
+        <div class="conditions-badge">Sunscreen required</div>
+      </div>
     </div>
   </section>
 </div>
@@ -852,18 +1268,18 @@
 
       <!-- Booking Confirmation -->
       <div class="stay-booking-card">
-        <div class="booking-confirmation-tag">Confirmation #BW-2025-0712</div>
+        <div class="booking-confirmation-tag">Confirmation #BW-2026-0808</div>
         <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:4px">The Breakwater</h3>
         <p style="opacity:0.65;font-size:13px">103 E 19th St, Avalon, NJ 08202</p>
         <div class="booking-details">
           <div>
             <div class="booking-detail-label">Check In</div>
-            <div class="booking-detail-value">Jul 12, 2025</div>
+            <div class="booking-detail-value">Aug 8, 2026</div>
             <div class="booking-detail-sub">Saturday &middot; 3:00 PM</div>
           </div>
           <div>
             <div class="booking-detail-label">Check Out</div>
-            <div class="booking-detail-value">Jul 19, 2025</div>
+            <div class="booking-detail-value">Aug 15, 2026</div>
             <div class="booking-detail-sub">Saturday &middot; 10:00 AM</div>
           </div>
           <div>
@@ -877,6 +1293,7 @@
             <div class="booking-detail-sub">4 adults &middot; 2 children</div>
           </div>
         </div>
+        <button class="gallery-trigger-btn" onclick="openGallery()">&#128247; View Property Photos</button>
       </div>
 
       <!-- Access & Check-In -->
@@ -1202,6 +1619,302 @@
   </div>
 </div>
 
+<!-- ===================== EXPLORE PAGE ===================== -->
+<div id="page-explore" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Things to do</div>
+      <h2 class="section-title">Explore Avalon</h2>
+      <p class="section-desc">The best beaches, activities, and hidden gems near The Breakwater, curated for your stay.</p>
+    </div>
+
+    <div class="explore-filters">
+      <button class="filter-pill active" onclick="filterExplore('all', this)">All</button>
+      <button class="filter-pill" onclick="filterExplore('beach', this)">&#127754; Beaches</button>
+      <button class="filter-pill" onclick="filterExplore('water', this)">&#127940; Water Sports</button>
+      <button class="filter-pill" onclick="filterExplore('family', this)">&#128106; Family</button>
+      <button class="filter-pill" onclick="filterExplore('shopping', this)">&#128717; Shopping</button>
+      <button class="filter-pill" onclick="filterExplore('sightseeing', this)">&#127966; Sightseeing</button>
+    </div>
+
+    <div class="explore-grid">
+
+      <!-- BEACHES -->
+      <div class="explore-card" data-category="beach">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#0a3050,#1a80c0)">
+          &#127754;
+          <span class="explore-dist-badge">0.1 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">19th Street Beach</div>
+          <div class="explore-card-desc">Your closest beach — just a one-minute walk from the front door. A quieter stretch of Avalon's pristine coastline, perfect for morning walks and sunsets.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-beach">Beach</span>
+            <span class="explore-tag tag-free">Free</span>
+          </div>
+          <div class="explore-meta">
+            <span>Lifeguards in season</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-card" data-category="beach">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#083a5a,#1a70a8)">
+          &#127958;
+          <span class="explore-dist-badge">0.9 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">8th Street Beach</div>
+          <div class="explore-card-desc">One of Avalon's widest, most family-friendly beaches. Ample space, volleyball courts, and a dedicated lifeguard stand make it a summer staple.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-beach">Beach</span>
+            <span class="explore-tag tag-family">Family</span>
+            <span class="explore-tag tag-free">Free</span>
+          </div>
+          <div class="explore-meta">
+            <span>Volleyball &amp; full facilities</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-card" data-category="beach">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#0a2840,#1a5890)">
+          &#127787;
+          <span class="explore-dist-badge">2.2 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Townsend's Inlet</div>
+          <div class="explore-card-desc">A scenic inlet waterfront with stunning views across to Sea Isle City. Ideal for kite flying, paddle boarding, and watching the boats drift by. Far less crowded.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-beach">Beach</span>
+            <span class="explore-tag tag-water">Kayaking</span>
+            <span class="explore-tag tag-free">Free</span>
+          </div>
+          <div class="explore-meta">
+            <span>Scenic &amp; uncrowded</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- WATER SPORTS -->
+      <div class="explore-card" data-category="water">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#155e56,#2aab9e)">
+          &#127940;
+          <span class="explore-dist-badge">0.5 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Barrier Island Surf School</div>
+          <div class="explore-card-desc">Learn to surf from certified instructors on Avalon's best breaks. Board and wetsuit rentals available. Group lessons for all ages, private sessions available.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-water">Surf Lessons</span>
+            <span class="explore-tag tag-family">Family</span>
+          </div>
+          <div class="explore-meta">
+            <span>From $65/lesson &middot; (609) 967-3990</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-card" data-category="water">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#0a3a50,#1a7080)">
+          &#128675;
+          <span class="explore-dist-badge">1.1 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Avalon Kayak &amp; Paddle</div>
+          <div class="explore-card-desc">Rent kayaks and paddleboards to explore Avalon's calm back bay waters. Guided eco-tours through the wetlands available daily. No experience necessary.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-water">Kayaking</span>
+            <span class="explore-tag tag-water">Paddleboard</span>
+          </div>
+          <div class="explore-meta">
+            <span>From $30/hr &middot; Rentals &amp; tours</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-card" data-category="water">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#1a2040,#3050a0)">
+          &#128011;
+          <span class="explore-dist-badge">15 mi south</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Cape May Whale Watch</div>
+          <div class="explore-card-desc">Spot dolphins and humpback whales on a 3-hour offshore cruise departing from Cape May Harbor. Morning and afternoon departures. Reserve in advance — these sell out fast.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-water">Whale Watch</span>
+            <span class="explore-tag tag-family">Family</span>
+          </div>
+          <div class="explore-meta">
+            <span>$48/adult &middot; (609) 884-5445</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAMILY -->
+      <div class="explore-card" data-category="family">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#2a3a10,#5a8020)">
+          &#129426;
+          <span class="explore-dist-badge">12 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Cape May County Zoo</div>
+          <div class="explore-card-desc">One of New Jersey's best kept secrets — a world-class zoo with over 550 animals and completely free admission. Spend a morning with the giraffes, zebras, and big cats.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-family">Family</span>
+            <span class="explore-tag tag-free">Free Admission</span>
+          </div>
+          <div class="explore-meta">
+            <span>Open daily 10am&ndash;4:45pm</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-card" data-category="family">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#1a3a30,#2a7060)">
+          &#128034;
+          <span class="explore-dist-badge">3 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">The Wetlands Institute</div>
+          <div class="explore-card-desc">Hands-on nature center with live crabs, fish, and coastal wildlife. Walk the salt marsh trails, visit the observation tower, and watch wild herons from the boardwalk.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-family">Family</span>
+            <span class="explore-tag tag-sightseeing">Nature</span>
+          </div>
+          <div class="explore-meta">
+            <span>$10/adult &middot; Kids under 5 free</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-card" data-category="family">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#3a1a40,#8030a0)">
+          &#9971;
+          <span class="explore-dist-badge">0.8 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Avalon Mini Golf</div>
+          <div class="explore-card-desc">Classic 18-hole mini golf with a coastal theme. Great for all ages — a beloved Shore tradition after a day at the beach. Open until 10pm on summer evenings.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-family">Family</span>
+          </div>
+          <div class="explore-meta">
+            <span>$12/person &middot; No reservation needed</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHOPPING -->
+      <div class="explore-card" data-category="shopping">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#3a2a10,#8a6020)">
+          &#127873;
+          <span class="explore-dist-badge">0.3 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Dune Drive Boutiques</div>
+          <div class="explore-card-desc">Stroll Avalon's main shopping strip lined with independent boutiques, surf shops, art galleries, and ice cream stands. The best place to pick up a souvenir or a new beach read.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-shopping">Shopping</span>
+            <span class="explore-tag tag-family">Family</span>
+          </div>
+          <div class="explore-meta">
+            <span>Open daily 9am&ndash;9pm</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-card" data-category="shopping">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#1a3a20,#3a8040)">
+          &#127807;
+          <span class="explore-dist-badge">1.2 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Avalon Farmers Market</div>
+          <div class="explore-card-desc">Every Saturday morning, local farmers and artisans set up along the beachfront. Fresh produce, baked goods, local honey, handmade crafts, and fresh-squeezed juice.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-shopping">Market</span>
+            <span class="explore-tag tag-family">Family</span>
+          </div>
+          <div class="explore-meta">
+            <span>Saturdays 8am&ndash;12pm</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIGHTSEEING -->
+      <div class="explore-card" data-category="sightseeing">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#3a2a10,#c88020)">
+          &#127956;
+          <span class="explore-dist-badge">22 mi south</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Cape May Lighthouse</div>
+          <div class="explore-card-desc">Climb 199 steps to the top of this iconic 1859 lighthouse for sweeping 360° views of Cape May Point, the Delaware Bay, and the Atlantic Ocean. A must-do day trip.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-sightseeing">Historic</span>
+            <span class="explore-tag tag-family">Family</span>
+          </div>
+          <div class="explore-meta">
+            <span>$10 to climb &middot; Open daily</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-card" data-category="sightseeing">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#1a2a40,#3a5080)">
+          &#9875;
+          <span class="explore-dist-badge">7 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Hereford Inlet Lighthouse</div>
+          <div class="explore-card-desc">A gorgeous Victorian lighthouse in North Wildwood surrounded by beautifully maintained gardens. Free to visit the grounds; small fee to tour the interior. Spectacular at golden hour.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-sightseeing">Historic</span>
+            <span class="explore-tag tag-free">Free Grounds</span>
+          </div>
+          <div class="explore-meta">
+            <span>Open daily 9am&ndash;5pm</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-card" data-category="sightseeing">
+        <div class="explore-card-img" style="background:linear-gradient(135deg,#0a3020,#1a6040)">
+          &#129413;
+          <span class="explore-dist-badge">4 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Stone Harbor Bird Sanctuary</div>
+          <div class="explore-card-desc">One of only two municipally owned heronry sanctuaries in the world. Walk beneath towering trees filled with nesting herons and egrets — a uniquely magical experience, completely free.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-sightseeing">Nature</span>
+            <span class="explore-tag tag-free">Free Admission</span>
+          </div>
+          <div class="explore-meta">
+            <span>Open daily &middot; Dawn to dusk</span>
+            <span class="star-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- ===================== MAINTENANCE PAGE ===================== -->
 <div id="page-maintenance" class="page">
   <div class="section">
@@ -1295,7 +2008,7 @@
                 <span class="request-title">Kitchen faucet dripping</span>
                 <span class="status-badge status-resolved">Resolved</span>
               </div>
-              <div class="request-date">Jun 28, 2025 &middot; Plumbing &middot; Low</div>
+              <div class="request-date">Jun 28, 2026 &middot; Plumbing &middot; Low</div>
               <div class="request-desc">Cold water handle leaking at base. Fixed by maintenance same day.</div>
             </div>
             <div class="request-item">
@@ -1303,7 +2016,7 @@
                 <span class="request-title">Pool pump making noise</span>
                 <span class="status-badge status-progress">In Progress</span>
               </div>
-              <div class="request-date">Jul 11, 2025 &middot; Pool / Hot Tub &middot; Medium</div>
+              <div class="request-date">Aug 6, 2026 &middot; Pool / Hot Tub &middot; Medium</div>
               <div class="request-desc">Unusual grinding sound from pool pump. Technician scheduled for tomorrow morning.</div>
             </div>
           </div>
@@ -1336,6 +2049,20 @@
       </div>
 
     </div>
+  </div>
+</div>
+
+<!-- ===================== PHOTO GALLERY MODAL ===================== -->
+<div class="gallery-modal-overlay" id="galleryModal">
+  <button class="gallery-close-btn" onclick="closeGallery()" aria-label="Close gallery">&#x2715;</button>
+  <div class="gallery-wrapper">
+    <button class="gallery-nav-btn prev" onclick="galleryPrev()" aria-label="Previous photo">&#8249;</button>
+    <button class="gallery-nav-btn next" onclick="galleryNext()" aria-label="Next photo">&#8250;</button>
+    <div class="gallery-main-img" id="galleryMainImg"></div>
+    <div class="gallery-caption" id="galleryCaption"></div>
+    <div class="gallery-caption-sub" id="galleryCaptionSub"></div>
+    <div class="gallery-thumbs" id="galleryThumbs"></div>
+    <div class="gallery-counter" id="galleryCounter"></div>
   </div>
 </div>
 
@@ -1428,11 +2155,12 @@
 
   // Sample booked ranges (month is 0-indexed)
   const bookedRanges = [
-    { start: new Date(2025, 5, 28), end: new Date(2025, 6, 4) },
-    { start: new Date(2025, 6, 12), end: new Date(2025, 6, 19) },
-    { start: new Date(2025, 6, 26), end: new Date(2025, 7, 2) },
-    { start: new Date(2025, 7, 9),  end: new Date(2025, 7, 16) },
-    { start: new Date(2026, 1, 21), end: new Date(2026, 1, 28) },
+    { start: new Date(2026, 4, 23), end: new Date(2026, 4, 30) },  // May 23–30
+    { start: new Date(2026, 5, 13), end: new Date(2026, 5, 20) },  // Jun 13–20
+    { start: new Date(2026, 5, 27), end: new Date(2026, 6, 4) },   // Jun 27–Jul 4
+    { start: new Date(2026, 6, 11), end: new Date(2026, 6, 18) },  // Jul 11–18
+    { start: new Date(2026, 7, 8),  end: new Date(2026, 7, 15) },  // Aug 8–15 (current booking)
+    { start: new Date(2026, 7, 22), end: new Date(2026, 7, 29) },  // Aug 22–29
   ];
 
   function isBooked(date) {
@@ -1684,6 +2412,115 @@
   document.getElementById('reservationModal').addEventListener('click', function(e) {
     if (e.target === this) closeModal('reservationModal');
   });
+
+  // ===================== COUNTDOWN TIMER =====================
+  const CHECK_IN  = new Date('2026-08-08T15:00:00');
+  const CHECK_OUT = new Date('2026-08-15T10:00:00');
+
+  function updateCountdown() {
+    const now = new Date();
+    const heading = document.getElementById('countdownHeading');
+    const widget  = document.getElementById('countdownWidget');
+    let target, label;
+
+    if (now < CHECK_IN) {
+      target = CHECK_IN;
+      label  = 'Until your check-in';
+    } else if (now < CHECK_OUT) {
+      target = CHECK_OUT;
+      label  = 'Until check-out';
+    } else {
+      heading.textContent = 'Hope to see you again soon';
+      widget.innerHTML    = '<div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-style:italic;color:rgba(255,255,255,0.75)">Thank you for staying with us</div>';
+      return;
+    }
+
+    heading.textContent = label;
+    const diff = target - now;
+    const days  = Math.floor(diff / 864e5);
+    const hours = Math.floor((diff % 864e5) / 36e5);
+    const mins  = Math.floor((diff % 36e5) / 6e4);
+    const secs  = Math.floor((diff % 6e4) / 1e3);
+
+    document.getElementById('cdDays').textContent  = String(days).padStart(2, '0');
+    document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('cdMins').textContent  = String(mins).padStart(2, '0');
+    document.getElementById('cdSecs').textContent  = String(secs).padStart(2, '0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ===================== PHOTO GALLERY =====================
+  const galleryItems = [
+    { emoji: '&#127968;', bg: 'linear-gradient(135deg,#1d4e4a,#2aab9e)',      name: 'The Breakwater',        sub: 'Exterior &middot; 103 E 19th St, Avalon NJ' },
+    { emoji: '&#128636;', bg: 'linear-gradient(135deg,#2a3a50,#3a6080)',      name: 'Living Room',           sub: 'Open concept &middot; Ocean breezes &middot; Smart TV' },
+    { emoji: '&#127859;', bg: 'linear-gradient(135deg,#3a2a1a,#8a5020)',      name: 'Gourmet Kitchen',       sub: 'Fully equipped &middot; Breakfast bar &middot; Farmhouse sink' },
+    { emoji: '&#128716;', bg: 'linear-gradient(135deg,#1a2a3a,#2a5070)',      name: 'Master Suite',          sub: 'King bed &middot; En suite bath &middot; Balcony access' },
+    { emoji: '&#128703;', bg: 'linear-gradient(135deg,#2a1a3a,#6030a0)',      name: 'Spa Bath',              sub: 'Soaking tub &middot; Walk-in shower &middot; Double vanity' },
+    { emoji: '&#127944;', bg: 'linear-gradient(135deg,#155e56,#2aab9e)',      name: 'Private Pool &amp; Hot Tub', sub: 'Heated pool &middot; Outdoor shower &middot; Lounge deck' },
+    { emoji: '&#127978;', bg: 'linear-gradient(135deg,#c85020,#f5a030)',      name: 'Rooftop Deck',          sub: 'Panoramic views &middot; Gas grill &middot; Dining for 8' },
+    { emoji: '&#127754;', bg: 'linear-gradient(135deg,#0a2040,#1560a0)',      name: 'Beach Walkover',        sub: 'Direct beach access &middot; 1 block to the surf' },
+  ];
+
+  let galleryIdx = 0;
+
+  function openGallery(idx) {
+    galleryIdx = idx || 0;
+    renderGallery();
+    document.getElementById('galleryModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGallery() {
+    document.getElementById('galleryModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function renderGallery() {
+    const item    = galleryItems[galleryIdx];
+    const mainImg = document.getElementById('galleryMainImg');
+    mainImg.style.background = item.bg;
+    mainImg.innerHTML         = item.emoji;
+    document.getElementById('galleryCaption').innerHTML    = item.name;
+    document.getElementById('galleryCaptionSub').innerHTML = item.sub;
+    document.getElementById('galleryCounter').textContent  = (galleryIdx + 1) + ' of ' + galleryItems.length;
+
+    const thumbsEl = document.getElementById('galleryThumbs');
+    thumbsEl.innerHTML = '';
+    galleryItems.forEach(function(g, i) {
+      const thumb        = document.createElement('div');
+      thumb.className    = 'gallery-thumb' + (i === galleryIdx ? ' active' : '');
+      thumb.style.background = g.bg;
+      thumb.innerHTML    = g.emoji;
+      thumb.onclick      = function() { galleryIdx = i; renderGallery(); };
+      thumbsEl.appendChild(thumb);
+    });
+    thumbsEl.children[galleryIdx] && thumbsEl.children[galleryIdx].scrollIntoView({ block: 'nearest', inline: 'center' });
+  }
+
+  function galleryPrev() { galleryIdx = (galleryIdx - 1 + galleryItems.length) % galleryItems.length; renderGallery(); }
+  function galleryNext() { galleryIdx = (galleryIdx + 1) % galleryItems.length; renderGallery(); }
+
+  document.getElementById('galleryModal').addEventListener('click', function(e) {
+    if (e.target === this) closeGallery();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (!document.getElementById('galleryModal').classList.contains('active')) return;
+    if (e.key === 'ArrowLeft')  galleryPrev();
+    if (e.key === 'ArrowRight') galleryNext();
+    if (e.key === 'Escape')     closeGallery();
+  });
+
+  // ===================== EXPLORE FILTER =====================
+  function filterExplore(category, btn) {
+    document.querySelectorAll('.filter-pill').forEach(function(p) { p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.explore-card').forEach(function(card) {
+      card.style.display = (category === 'all' || card.dataset.category === category) ? 'block' : 'none';
+    });
+  }
 </script>
 </body>
 </html>
