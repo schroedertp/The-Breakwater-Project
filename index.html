@@ -1209,6 +1209,29 @@
     color: var(--coral-light);
     min-height: 18px;
   }
+
+  /* ---- GUEST BANNER ---- */
+  .guest-banner {
+    position: fixed;
+    top: 64px;
+    left: 0; right: 0;
+    z-index: 99;
+    background: var(--teal-deep);
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 9px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  body.banner-visible #page-stay,
+  body.banner-visible #page-book,
+  body.banner-visible #page-restaurants,
+  body.banner-visible #page-explore,
+  body.banner-visible #page-maintenance { padding-top: 100px; }
   </style>
 </head>
 <body>
@@ -1243,6 +1266,9 @@
   </div>
 </nav>
 
+<!-- ===================== GUEST BANNER ===================== -->
+<div class="guest-banner" id="guestBanner" style="display:none"></div>
+
 <!-- ===================== HOME PAGE ===================== -->
 <div id="page-home" class="page active">
   <section class="hero">
@@ -1258,17 +1284,17 @@
     <div class="hero-content">
       <div class="hero-eyebrow">T3D Properties &middot; Avalon, New Jersey</div>
       <h1 class="hero-title">The Breakwater</h1>
-      <p class="hero-subtitle">Your oceanside retreat</p>
+      <p class="hero-subtitle" id="heroSubtitle">Your oceanside retreat</p>
 
       <div class="hero-cards">
         <div class="hero-card">
           <div class="hero-card-label">Check In</div>
-          <div class="hero-card-value">Aug 8</div>
+          <div class="hero-card-value" id="heroCheckin">Aug 8</div>
           <div class="hero-card-sub">Saturday &middot; 3:00 PM</div>
         </div>
         <div class="hero-card">
           <div class="hero-card-label">Check Out</div>
-          <div class="hero-card-value">Aug 15</div>
+          <div class="hero-card-value" id="heroCheckout">Aug 15</div>
           <div class="hero-card-sub">Saturday &middot; 10:00 AM</div>
         </div>
         <div class="hero-card">
@@ -1319,7 +1345,7 @@
 
   <!-- Beach Conditions Strip -->
   <section class="conditions-section">
-    <div class="conditions-header">Forecast for your stay &mdash; Avalon, NJ &middot; Aug 8&ndash;15, 2026</div>
+    <div class="conditions-header" id="conditionsHeader">Forecast for your stay &mdash; Avalon, NJ &middot; Aug 8&ndash;15, 2026</div>
     <div class="conditions-strip">
       <div class="conditions-item">
         <div class="conditions-icon">&#9925;</div>
@@ -1378,12 +1404,12 @@
         <div class="booking-details">
           <div>
             <div class="booking-detail-label">Check In</div>
-            <div class="booking-detail-value">Aug 8, 2026</div>
+            <div class="booking-detail-value" id="stayCheckin">Aug 8, 2026</div>
             <div class="booking-detail-sub">Saturday &middot; 3:00 PM</div>
           </div>
           <div>
             <div class="booking-detail-label">Check Out</div>
-            <div class="booking-detail-value">Aug 15, 2026</div>
+            <div class="booking-detail-value" id="stayCheckout">Aug 15, 2026</div>
             <div class="booking-detail-sub">Saturday &middot; 10:00 AM</div>
           </div>
           <div>
@@ -2240,11 +2266,79 @@
   // ===================== PASSWORD LOCK =====================
   const SITE_PASSWORD = 'avalon'; // <-- change this to your guest password
 
-  (function() {
-    if (localStorage.getItem('bw_auth') === SITE_PASSWORD) {
-      document.getElementById('lockScreen').style.display = 'none';
+  // ===================== GUEST PERSONALIZATION =====================
+  const _params = new URLSearchParams(window.location.search);
+  const GUEST_KEY = 'bw_guest';
+
+  // Read guest info from URL params, falling back to localStorage
+  let guestInfo = null;
+  if (_params.get('guest') || _params.get('checkin') || _params.get('checkout')) {
+    guestInfo = {
+      name:     _params.get('guest')    || '',
+      checkin:  _params.get('checkin')  || '',
+      checkout: _params.get('checkout') || ''
+    };
+    localStorage.setItem(GUEST_KEY, JSON.stringify(guestInfo));
+  } else {
+    try { guestInfo = JSON.parse(localStorage.getItem(GUEST_KEY)); } catch(e) {}
+  }
+
+  // Auto-unlock when pw is included in the URL
+  if (_params.get('pw') === SITE_PASSWORD) {
+    localStorage.setItem('bw_auth', SITE_PASSWORD);
+    document.getElementById('lockScreen').style.display = 'none';
+  } else if (localStorage.getItem('bw_auth') === SITE_PASSWORD) {
+    document.getElementById('lockScreen').style.display = 'none';
+  }
+
+  function _fmtShort(iso) {
+    const d = new Date(iso + 'T12:00:00');
+    if (isNaN(d.getTime())) return iso;
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+  function _fmtLong(iso) {
+    const d = new Date(iso + 'T12:00:00');
+    if (isNaN(d.getTime())) return iso;
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function applyPersonalization() {
+    if (!guestInfo) return;
+    const { name, checkin, checkout } = guestInfo;
+    const ciShort = checkin  ? _fmtShort(checkin)  : '';
+    const coShort = checkout ? _fmtShort(checkout) : '';
+    const ciLong  = checkin  ? _fmtLong(checkin)   : '';
+    const coLong  = checkout ? _fmtLong(checkout)  : '';
+    const ciYear  = checkin  ? new Date(checkin + 'T12:00:00').getFullYear() : '';
+
+    // Hero subtitle
+    if (name) {
+      const el = document.getElementById('heroSubtitle');
+      if (el) el.textContent = 'Welcome, ' + name + '!';
     }
-  })();
+    // Hero date cards
+    if (ciShort) { const el = document.getElementById('heroCheckin');  if (el) el.textContent = ciShort; }
+    if (coShort) { const el = document.getElementById('heroCheckout'); if (el) el.textContent = coShort; }
+
+    // Conditions header
+    if (ciShort && coShort) {
+      const el = document.getElementById('conditionsHeader');
+      if (el) el.innerHTML = 'Forecast for your stay &mdash; Avalon, NJ &middot; ' + ciShort + '&ndash;' + coShort + (ciYear ? ', ' + ciYear : '');
+    }
+    // My Stay tab booking details
+    if (ciLong)  { const el = document.getElementById('stayCheckin');  if (el) el.textContent = ciLong; }
+    if (coLong)  { const el = document.getElementById('stayCheckout'); if (el) el.textContent = coLong; }
+
+    // Guest banner text
+    const banner = document.getElementById('guestBanner');
+    if (banner && name) {
+      let txt = name;
+      if (ciShort && coShort) txt += ' \u00b7 ' + ciShort + '\u2013' + coShort;
+      banner.textContent = txt;
+    }
+  }
+
+  applyPersonalization();
 
   function checkPassword() {
     const val = document.getElementById('lockPwd').value;
@@ -2274,6 +2368,13 @@
     if (btn) btn.classList.add('active');
     document.getElementById('navTabs').classList.remove('open');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Show guest banner on all tabs except home
+    const banner = document.getElementById('guestBanner');
+    if (banner && guestInfo && guestInfo.name) {
+      const show = pageId !== 'home';
+      banner.style.display = show ? 'block' : 'none';
+      document.body.classList.toggle('banner-visible', show);
+    }
   }
 
   function toggleMenu() {
@@ -2581,8 +2682,16 @@
   });
 
   // ===================== COUNTDOWN TIMER =====================
-  const CHECK_IN  = new Date('2026-08-08T15:00:00');
-  const CHECK_OUT = new Date('2026-08-15T10:00:00');
+  let CHECK_IN  = new Date('2026-08-08T15:00:00');
+  let CHECK_OUT = new Date('2026-08-15T10:00:00');
+  if (guestInfo && guestInfo.checkin) {
+    const ci = new Date(guestInfo.checkin + 'T15:00:00');
+    if (!isNaN(ci.getTime())) CHECK_IN = ci;
+  }
+  if (guestInfo && guestInfo.checkout) {
+    const co = new Date(guestInfo.checkout + 'T10:00:00');
+    if (!isNaN(co.getTime())) CHECK_OUT = co;
+  }
 
   function updateCountdown() {
     const now = new Date();
