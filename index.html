@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Breakwater — Guest App | T3D Properties, Avalon NJ</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <!-- EmailJS SDK — https://www.emailjs.com -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     :root {
       --teal: #2aab9e;
@@ -2319,6 +2321,20 @@
     document.getElementById('bookingPhone').value = '';
   }
 
+  // ===================== EMAILJS CONFIG =====================
+  // 1. Sign up free at https://www.emailjs.com
+  // 2. Add an Email Service (Gmail or SMTP for info@t3dproperties.com) → copy the Service ID
+  // 3. Create an Email Template with these variables:
+  //      {{category}}, {{urgency}}, {{description}}, {{guest_name}}, {{guest_phone}}, {{submitted_at}}
+  //    Set "To Email" in the template to: info@t3dproperties.com
+  // 4. Copy your Public Key from Account → API Keys
+  // 5. Replace the three placeholder values below
+  const EMAILJS_PUBLIC_KEY   = 'YOUR_PUBLIC_KEY';   // e.g. 'abc123XYZ'
+  const EMAILJS_SERVICE_ID   = 'YOUR_SERVICE_ID';   // e.g. 'service_xxxxxxx'
+  const EMAILJS_TEMPLATE_ID  = 'YOUR_TEMPLATE_ID';  // e.g. 'template_xxxxxxx'
+
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+
   // ===================== MAINTENANCE =====================
   let selectedCategory = '';
 
@@ -2338,26 +2354,46 @@
     const urgency = document.getElementById('urgencySelect').value;
     const urgencyLabels = { low: 'Low', medium: 'Medium', high: 'High', emergency: 'Emergency' };
     const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const phone = document.getElementById('maintenancePhone').value.trim();
 
-    const list = document.getElementById('requestsList');
-    const item = document.createElement('div');
-    item.className = 'request-item';
-    const shortDesc = desc.length > 50 ? desc.substring(0, 50) + '...' : desc;
-    item.innerHTML =
-      '<div class="request-header">' +
-        '<span class="request-title">' + selectedCategory + ': ' + shortDesc + '</span>' +
-        '<span class="status-badge status-open">Open</span>' +
-      '</div>' +
-      '<div class="request-date">' + today + ' &middot; ' + selectedCategory + ' &middot; ' + urgencyLabels[urgency] + '</div>' +
-      '<div class="request-desc">' + desc + '</div>';
-    list.prepend(item);
+    const submitBtn = document.querySelector('#page-maintenance .btn-primary');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
 
-    showToast('Request submitted. Our team will be in touch shortly.');
-    document.getElementById('maintenanceDesc').value = '';
-    document.getElementById('maintenanceName').value = '';
-    document.getElementById('maintenancePhone').value = '';
-    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('selected'));
-    selectedCategory = '';
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      category:     selectedCategory,
+      urgency:      urgencyLabels[urgency],
+      description:  desc,
+      guest_name:   name,
+      guest_phone:  phone || 'Not provided',
+      submitted_at: today
+    }).then(function() {
+      // Add to local request history
+      const list = document.getElementById('requestsList');
+      const item = document.createElement('div');
+      item.className = 'request-item';
+      const shortDesc = desc.length > 50 ? desc.substring(0, 50) + '...' : desc;
+      item.innerHTML =
+        '<div class="request-header">' +
+          '<span class="request-title">' + selectedCategory + ': ' + shortDesc + '</span>' +
+          '<span class="status-badge status-open">Open</span>' +
+        '</div>' +
+        '<div class="request-date">' + today + ' &middot; ' + selectedCategory + ' &middot; ' + urgencyLabels[urgency] + '</div>' +
+        '<div class="request-desc">' + desc + '</div>';
+      list.prepend(item);
+
+      showToast('Request submitted. Our team will be in touch shortly.');
+      document.getElementById('maintenanceDesc').value = '';
+      document.getElementById('maintenanceName').value = '';
+      document.getElementById('maintenancePhone').value = '';
+      document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('selected'));
+      selectedCategory = '';
+    }, function() {
+      showToast('Could not send request. Please call us at (609) 555-0184.');
+    }).finally(function() {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Request';
+    });
   }
 
   // ===================== RESTAURANTS =====================
