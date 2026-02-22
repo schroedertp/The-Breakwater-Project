@@ -1119,9 +1119,111 @@
       .countdown-unit { min-width: 60px; padding: 10px 12px; }
       .countdown-number { font-size: 28px; }
     }
+  /* ---- PASSWORD LOCK SCREEN ---- */
+  #lockScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--teal-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease;
+  }
+  #lockScreen.unlocked {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .lock-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 48px 40px;
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+  }
+  .lock-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--white);
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .lock-logo span { color: var(--sun); }
+  .lock-subtitle {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 36px;
+  }
+  .lock-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+  }
+  .lock-input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.1);
+    color: var(--white);
+    font-family: 'Jost', sans-serif;
+    font-size: 16px;
+    outline: none;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .lock-input:focus { border-color: var(--teal-light); }
+  .lock-input::placeholder { color: rgba(255,255,255,0.3); }
+  .lock-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    background: var(--teal);
+    color: white;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .lock-btn:hover { background: var(--teal-dark); }
+  .lock-error {
+    margin-top: 12px;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    color: var(--coral-light);
+    min-height: 18px;
+  }
   </style>
 </head>
 <body>
+
+<!-- ===================== LOCK SCREEN ===================== -->
+<div id="lockScreen">
+  <div class="lock-card">
+    <div class="lock-logo">The <span>Breakwater</span></div>
+    <div class="lock-subtitle">Guest App &middot; Avalon, NJ</div>
+    <label class="lock-label" for="lockPwd">Password</label>
+    <input class="lock-input" type="password" id="lockPwd" placeholder="Enter guest password" autocomplete="current-password">
+    <button class="lock-btn" onclick="checkPassword()">Enter</button>
+    <div class="lock-error" id="lockError"></div>
+  </div>
+</div>
 
 <!-- ===================== NAVIGATION ===================== -->
 <nav class="nav">
@@ -2135,6 +2237,35 @@
 </div>
 
 <script>
+  // ===================== PASSWORD LOCK =====================
+  const SITE_PASSWORD = 'avalon'; // <-- change this to your guest password
+
+  (function() {
+    if (localStorage.getItem('bw_auth') === SITE_PASSWORD) {
+      document.getElementById('lockScreen').style.display = 'none';
+    }
+  })();
+
+  function checkPassword() {
+    const val = document.getElementById('lockPwd').value;
+    if (val === SITE_PASSWORD) {
+      localStorage.setItem('bw_auth', SITE_PASSWORD);
+      const lock = document.getElementById('lockScreen');
+      lock.classList.add('unlocked');
+      setTimeout(() => lock.style.display = 'none', 500);
+    } else {
+      document.getElementById('lockError').textContent = 'Incorrect password. Please try again.';
+      document.getElementById('lockPwd').value = '';
+      document.getElementById('lockPwd').focus();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('lockPwd').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+  });
+
   // ===================== NAVIGATION =====================
   function showPage(pageId, btn) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
