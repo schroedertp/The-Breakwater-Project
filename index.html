@@ -1202,12 +1202,22 @@
     transition: background 0.2s;
   }
   .lock-btn:hover { background: var(--teal-dark); }
+  @keyframes lockShake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-8px); }
+    40%      { transform: translateX(8px); }
+    60%      { transform: translateX(-6px); }
+    80%      { transform: translateX(6px); }
+  }
+  .lock-card.shake { animation: lockShake 0.4s ease; }
+  .lock-input.error { border-color: var(--coral-light) !important; }
   .lock-error {
     margin-top: 12px;
     font-family: 'Jost', sans-serif;
     font-size: 13px;
     color: var(--coral-light);
     min-height: 18px;
+    text-align: center;
   }
 
   /* ---- GUEST BANNER ---- */
@@ -2973,16 +2983,29 @@
       lock.classList.add('unlocked');
       setTimeout(() => lock.style.display = 'none', 500);
     } else {
-      document.getElementById('lockError').textContent = 'Incorrect password. Please try again.';
-      document.getElementById('lockPwd').value = '';
-      document.getElementById('lockPwd').focus();
+      const card  = document.querySelector('.lock-card');
+      const input = document.getElementById('lockPwd');
+      const err   = document.getElementById('lockError');
+      err.textContent = 'Incorrect password. Please try again.';
+      input.classList.add('error');
+      card.classList.remove('shake');
+      // Force reflow so the animation restarts if triggered twice in a row
+      void card.offsetWidth;
+      card.classList.add('shake');
+      input.value = '';
+      input.focus();
+      card.addEventListener('animationend', () => card.classList.remove('shake'), { once: true });
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('lockPwd').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') checkPassword();
-    });
+  document.getElementById('lockPwd').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      checkPassword();
+    } else {
+      // Clear error state as soon as the user starts typing a new character
+      this.classList.remove('error');
+      document.getElementById('lockError').textContent = '';
+    }
   });
 
   // ===================== NAVIGATION =====================
