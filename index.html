@@ -2966,8 +2966,8 @@
   applyPersonalization();
 
   function checkPassword() {
-    const val = document.getElementById('lockPwd').value;
-    if (val === SITE_PASSWORD) {
+    const val = document.getElementById('lockPwd').value.trim().toLowerCase();
+    if (val === SITE_PASSWORD.toLowerCase()) {
       localStorage.setItem('bw_auth', SITE_PASSWORD);
       const lock = document.getElementById('lockScreen');
       lock.classList.add('unlocked');
