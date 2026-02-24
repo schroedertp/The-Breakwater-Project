@@ -1619,11 +1619,13 @@
         <div class="hero-card">
           <div class="hero-card-label">Check In</div>
           <div class="hero-card-value" id="heroCheckin">Aug 8</div>
+          <div class="hero-card-value">Aug 8</div>
           <div class="hero-card-sub">Saturday &middot; 3:00 PM</div>
         </div>
         <div class="hero-card">
           <div class="hero-card-label">Check Out</div>
           <div class="hero-card-value" id="heroCheckout">Aug 15</div>
+          <div class="hero-card-value">Aug 15</div>
           <div class="hero-card-sub">Saturday &middot; 10:00 AM</div>
         </div>
         <div class="hero-card">
@@ -1633,7 +1635,7 @@
         </div>
         <div class="hero-card">
           <div class="hero-card-label">Address</div>
-          <div class="hero-card-value" style="font-size:17px">103 E 19th St</div>
+          <div class="hero-card-value" style="font-size:17px">34 W. 13th St.</div>
           <div class="hero-card-sub">Avalon, NJ 08202</div>
         </div>
       </div>
@@ -1793,6 +1795,56 @@
         </div>
       </div>
     </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll" onclick="document.querySelector('.conditions-section').scrollIntoView({behavior:'smooth'})">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
+      </svg>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- Beach Conditions Strip -->
+  <section class="conditions-section">
+    <div class="conditions-header">Forecast for your stay &mdash; Avalon, NJ &middot; Aug 8&ndash;15, 2026</div>
+    <div class="conditions-strip">
+      <div class="conditions-item">
+        <div class="conditions-icon">&#9925;</div>
+        <div class="conditions-value">83&deg;</div>
+        <div class="conditions-label">Air Temp (F)</div>
+        <div class="conditions-badge">Warm &amp; Sunny</div>
+      </div>
+      <div class="conditions-divider"></div>
+      <div class="conditions-item">
+        <div class="conditions-icon">&#127754;</div>
+        <div class="conditions-value">72&deg;</div>
+        <div class="conditions-label">Water Temp (F)</div>
+        <div class="conditions-badge">Perfect for swimming</div>
+      </div>
+      <div class="conditions-divider"></div>
+      <div class="conditions-item">
+        <div class="conditions-icon">&#127940;</div>
+        <div class="conditions-value">2&ndash;3 ft</div>
+        <div class="conditions-label">Wave Height</div>
+        <div class="conditions-badge">Ideal surf</div>
+      </div>
+      <div class="conditions-divider"></div>
+      <div class="conditions-item">
+        <div class="conditions-icon">&#127788;</div>
+        <div class="conditions-value">SW 10</div>
+        <div class="conditions-label">Wind (mph)</div>
+        <div class="conditions-badge">Light &amp; Pleasant</div>
+      </div>
+      <div class="conditions-divider"></div>
+      <div class="conditions-item">
+        <div class="conditions-icon">&#9728;&#65039;</div>
+        <div class="conditions-value">8</div>
+        <div class="conditions-label">UV Index</div>
+        <div class="conditions-badge">Sunscreen required</div>
+      </div>
+    </div>
   </section>
 </div>
 
@@ -1810,17 +1862,20 @@
       <!-- Booking Confirmation -->
       <div class="stay-booking-card">
         <div class="booking-confirmation-tag" id="stayConfirmation">Confirmation #BW-2026-0808</div>
+        <div class="booking-confirmation-tag">Confirmation #BW-2026-0808</div>
         <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:4px">The Breakwater</h3>
         <p style="opacity:0.65;font-size:13px">103 E 19th St, Avalon, NJ 08202</p>
         <div class="booking-details">
           <div>
             <div class="booking-detail-label">Check In</div>
             <div class="booking-detail-value" id="stayCheckin">Aug 8, 2026</div>
+            <div class="booking-detail-value">Aug 8, 2026</div>
             <div class="booking-detail-sub">Saturday &middot; 3:00 PM</div>
           </div>
           <div>
             <div class="booking-detail-label">Check Out</div>
             <div class="booking-detail-value" id="stayCheckout">Aug 15, 2026</div>
+            <div class="booking-detail-value">Aug 15, 2026</div>
             <div class="booking-detail-sub">Saturday &middot; 10:00 AM</div>
           </div>
           <div>
@@ -3262,6 +3317,8 @@
     const co = new Date(guestInfo.checkout + 'T10:00:00');
     if (!isNaN(co.getTime())) CHECK_OUT = co;
   }
+  const CHECK_IN  = new Date('2026-08-08T15:00:00');
+  const CHECK_OUT = new Date('2026-08-15T10:00:00');
 
   function updateCountdown() {
     const now = new Date();
