@@ -1628,8 +1628,8 @@
         </div>
         <div class="hero-card">
           <div class="hero-card-label">Guests</div>
-          <div class="hero-card-value">6</div>
-          <div class="hero-card-sub">4 adults &middot; 2 children</div>
+          <div class="hero-card-value" id="heroGuests">6</div>
+          <div class="hero-card-sub" id="heroGuestsSub">4 adults &middot; 2 children</div>
         </div>
         <div class="hero-card">
           <div class="hero-card-label">Address</div>
@@ -1809,7 +1809,7 @@
 
       <!-- Booking Confirmation -->
       <div class="stay-booking-card">
-        <div class="booking-confirmation-tag">Confirmation #BW-2026-0808</div>
+        <div class="booking-confirmation-tag" id="stayConfirmation">Confirmation #BW-2026-0808</div>
         <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:4px">The Breakwater</h3>
         <p style="opacity:0.65;font-size:13px">103 E 19th St, Avalon, NJ 08202</p>
         <div class="booking-details">
@@ -1830,8 +1830,8 @@
           </div>
           <div>
             <div class="booking-detail-label">Guests</div>
-            <div class="booking-detail-value">6</div>
-            <div class="booking-detail-sub">4 adults &middot; 2 children</div>
+            <div class="booking-detail-value" id="stayGuests">6</div>
+            <div class="booking-detail-sub" id="stayGuestsSub">4 adults &middot; 2 children</div>
           </div>
         </div>
         <button class="gallery-trigger-btn" onclick="openGallery()">&#128247; View Property Photos</button>
@@ -2808,9 +2808,12 @@
   let guestInfo = null;
   if (_params.get('guest') || _params.get('checkin') || _params.get('checkout')) {
     guestInfo = {
-      name:     _params.get('guest')    || '',
-      checkin:  _params.get('checkin')  || '',
-      checkout: _params.get('checkout') || ''
+      name:         _params.get('guest')    || '',
+      checkin:      _params.get('checkin')  || '',
+      checkout:     _params.get('checkout') || '',
+      adults:       _params.get('adults')   || '',
+      children:     _params.get('children') || '',
+      confirmation: _params.get('conf')     || ''
     };
     localStorage.setItem(GUEST_KEY, JSON.stringify(guestInfo));
   } else {
@@ -2838,7 +2841,7 @@
 
   function applyPersonalization() {
     if (!guestInfo) return;
-    const { name, checkin, checkout } = guestInfo;
+    const { name, checkin, checkout, adults, children, confirmation } = guestInfo;
     const ciShort = checkin  ? _fmtShort(checkin)  : '';
     const coShort = checkout ? _fmtShort(checkout) : '';
     const ciLong  = checkin  ? _fmtLong(checkin)   : '';
@@ -2854,14 +2857,47 @@
     if (ciShort) { const el = document.getElementById('heroCheckin');  if (el) el.textContent = ciShort; }
     if (coShort) { const el = document.getElementById('heroCheckout'); if (el) el.textContent = coShort; }
 
+    // Hero guest card
+    if (adults) {
+      const totalEl = document.getElementById('heroGuests');
+      const subEl   = document.getElementById('heroGuestsSub');
+      const total = parseInt(adults) + parseInt(children || 0);
+      if (totalEl) totalEl.textContent = total;
+      if (subEl) {
+        let sub = adults + ' adult' + (parseInt(adults) !== 1 ? 's' : '');
+        if (children && parseInt(children) > 0) sub += ' \u00b7 ' + children + ' child' + (parseInt(children) !== 1 ? 'ren' : '');
+        subEl.textContent = sub;
+      }
+    }
+
     // Conditions header
     if (ciShort && coShort) {
       const el = document.getElementById('conditionsHeader');
       if (el) el.innerHTML = 'Forecast for your stay &mdash; Avalon, NJ &middot; ' + ciShort + '&ndash;' + coShort + (ciYear ? ', ' + ciYear : '');
     }
+
     // My Stay tab booking details
     if (ciLong)  { const el = document.getElementById('stayCheckin');  if (el) el.textContent = ciLong; }
     if (coLong)  { const el = document.getElementById('stayCheckout'); if (el) el.textContent = coLong; }
+
+    // Confirmation number
+    if (confirmation) {
+      const el = document.getElementById('stayConfirmation');
+      if (el) el.textContent = 'Confirmation #' + confirmation;
+    }
+
+    // My Stay guest count
+    if (adults) {
+      const gEl  = document.getElementById('stayGuests');
+      const gsEl = document.getElementById('stayGuestsSub');
+      const total = parseInt(adults) + parseInt(children || 0);
+      if (gEl) gEl.textContent = total;
+      if (gsEl) {
+        let sub = adults + ' adult' + (parseInt(adults) !== 1 ? 's' : '');
+        if (children && parseInt(children) > 0) sub += ' \u00b7 ' + children + ' child' + (parseInt(children) !== 1 ? 'ren' : '');
+        gsEl.textContent = sub;
+      }
+    }
 
     // Guest banner text
     const banner = document.getElementById('guestBanner');
