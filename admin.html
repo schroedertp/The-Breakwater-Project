@@ -799,8 +799,9 @@
 
   // Guess base URL from current location
   (function() {
-    var loc = window.location.href.replace('admin.html', 'index.html');
-    document.getElementById('inBaseUrl').value = loc;
+    var origin = window.location.origin;
+    var path = window.location.pathname.replace(/\/admin(\.html)?$/, '/index.html');
+    document.getElementById('inBaseUrl').value = origin + path;
   })();
 
   renderHistory();
