@@ -2872,8 +2872,11 @@
   // Read guest info from URL params, falling back to localStorage
   let guestInfo = null;
   if (_params.get('guest') || _params.get('checkin') || _params.get('checkout')) {
+    const rawName = _params.get('guest') || '';
+    // Capitalize first letter of each word for display
+    const displayName = rawName.replace(/\b\w/g, function(c) { return c.toUpperCase(); });
     guestInfo = {
-      name:         _params.get('guest')    || '',
+      name:         displayName,
       checkin:      _params.get('checkin')  || '',
       checkout:     _params.get('checkout') || '',
       adults:       _params.get('adults')   || '',
@@ -2885,8 +2888,8 @@
     try { guestInfo = JSON.parse(localStorage.getItem(GUEST_KEY)); } catch(e) {}
   }
 
-  // Auto-unlock when pw is included in the URL
-  if (_params.get('pw') === SITE_PASSWORD) {
+  // Auto-unlock when pw is included in the URL, or when a guest link is present
+  if (_params.get('pw') === SITE_PASSWORD || _params.get('guest')) {
     localStorage.setItem('bw_auth', SITE_PASSWORD);
     document.getElementById('lockScreen').style.display = 'none';
   } else if (localStorage.getItem('bw_auth') === SITE_PASSWORD) {

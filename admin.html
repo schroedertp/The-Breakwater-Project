@@ -370,36 +370,9 @@
         <div class="section-subtitle">Who&rsquo;s staying</div>
 
         <div class="form-group">
-          <label class="form-label">Guest Name / Family</label>
-          <input type="text" class="form-input" id="inName" placeholder="e.g. The Smith Family" oninput="onFormChange()">
-          <div class="form-hint">This appears as the welcome greeting in the app</div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Adults</label>
-            <select class="form-select" id="inAdults" onchange="onFormChange()">
-              <option value="1">1 Adult</option>
-              <option value="2" selected>2 Adults</option>
-              <option value="3">3 Adults</option>
-              <option value="4">4 Adults</option>
-              <option value="5">5 Adults</option>
-              <option value="6">6 Adults</option>
-              <option value="7">7 Adults</option>
-              <option value="8">8 Adults</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Children</label>
-            <select class="form-select" id="inChildren" onchange="onFormChange()">
-              <option value="0" selected>0 Children</option>
-              <option value="1">1 Child</option>
-              <option value="2">2 Children</option>
-              <option value="3">3 Children</option>
-              <option value="4">4 Children</option>
-              <option value="5">5 Children</option>
-            </select>
-          </div>
+          <label class="form-label">Guest Last Name</label>
+          <input type="text" class="form-input" id="inName" placeholder="e.g. Smith" oninput="onFormChange()">
+          <div class="form-hint">Appears as the welcome greeting — e.g. "Welcome, Smith!"</div>
         </div>
 
         <hr class="divider">
@@ -413,21 +386,6 @@
           <div class="form-group">
             <label class="form-label">Check-Out Date</label>
             <input type="date" class="form-input" id="inCheckout" oninput="onFormChange()">
-          </div>
-        </div>
-
-        <hr class="divider">
-        <div class="section-subtitle">Booking details</div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Confirmation #</label>
-            <input type="text" class="form-input" id="inConfirmation" placeholder="e.g. BW-2025-0712" oninput="onFormChange()">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Guest Password</label>
-            <input type="text" class="form-input" id="inPassword" placeholder="e.g. avalon" value="avalon" oninput="onFormChange()">
-            <div class="form-hint">Password to unlock the app</div>
           </div>
         </div>
 
@@ -486,11 +444,6 @@
               <div class="preview-detail-value" id="previewNights">&mdash;</div>
               <div class="preview-detail-sub">Weekly rental</div>
             </div>
-            <div>
-              <div class="preview-detail-label">Guests</div>
-              <div class="preview-detail-value" id="previewGuests">&mdash;</div>
-              <div class="preview-detail-sub" id="previewGuestsSub"></div>
-            </div>
           </div>
         </div>
 
@@ -546,8 +499,6 @@
     var name     = document.getElementById('inName').value.trim();
     var checkin  = document.getElementById('inCheckin').value;
     var checkout = document.getElementById('inCheckout').value;
-    var adults   = parseInt(document.getElementById('inAdults').value) || 2;
-    var children = parseInt(document.getElementById('inChildren').value) || 0;
 
     if (name) document.getElementById('previewName').textContent = name;
 
@@ -565,42 +516,23 @@
       var nights = Math.round((new Date(checkout) - new Date(checkin)) / 86400000);
       document.getElementById('previewNights').textContent = nights + ' Night' + (nights !== 1 ? 's' : '');
     }
-
-    var totalGuests = adults + children;
-    document.getElementById('previewGuests').textContent = totalGuests;
-    var sub = adults + ' adult' + (adults !== 1 ? 's' : '');
-    if (children > 0) sub += ' \u00b7 ' + children + ' child' + (children !== 1 ? 'ren' : '');
-    document.getElementById('previewGuestsSub').textContent = sub;
   }
 
   // ===================== GENERATE =====================
   function generateLink() {
-    var name         = document.getElementById('inName').value.trim();
-    var checkin      = document.getElementById('inCheckin').value;
-    var checkout     = document.getElementById('inCheckout').value;
-    var adults       = document.getElementById('inAdults').value;
-    var children     = document.getElementById('inChildren').value;
-    var confirmation = document.getElementById('inConfirmation').value.trim();
-    var password     = document.getElementById('inPassword').value.trim();
-    var baseUrl      = document.getElementById('inBaseUrl').value.trim();
+    var name    = document.getElementById('inName').value.trim();
+    var checkin  = document.getElementById('inCheckin').value;
+    var checkout = document.getElementById('inCheckout').value;
+    var baseUrl  = document.getElementById('inBaseUrl').value.trim();
 
-    if (!name)     return showToast('Please enter the guest name.');
+    if (!name)     return showToast('Please enter the guest last name.');
     if (!checkin)  return showToast('Please enter a check-in date.');
     if (!checkout) return showToast('Please enter a check-out date.');
     if (!baseUrl)  return showToast('Please enter the app base URL.');
 
-    // Build URL
-    var params = new URLSearchParams();
-    params.set('guest',    name);
-    params.set('checkin',  checkin);
-    params.set('checkout', checkout);
-    params.set('adults',   adults);
-    params.set('children', children);
-    if (confirmation) params.set('conf', confirmation);
-    if (password)     params.set('pw',   password);
-
+    // Build simple URL — just the last name
     var base = baseUrl.replace(/\/$/, '');
-    generatedUrl = base + (base.includes('?') ? '&' : '?') + params.toString();
+    generatedUrl = base + '?guest=' + encodeURIComponent(name);
 
     // Show output panel
     document.getElementById('outputEmpty').style.display   = 'none';
@@ -610,7 +542,7 @@
     document.getElementById('outputUrl').textContent = generatedUrl;
 
     // Update email template
-    updateEmailTemplate(name, checkin, checkout, adults, children, confirmation);
+    updateEmailTemplate(name, checkin, checkout);
 
     // Generate QR
     generateQr(generatedUrl);
@@ -649,21 +581,17 @@
   }
 
   // ===================== EMAIL TEMPLATE =====================
-  function updateEmailTemplate(name, checkin, checkout, adults, children, confirmation) {
+  function updateEmailTemplate(name, checkin, checkout) {
     var ci = new Date(checkin + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
     var co = new Date(checkout + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
     var nights = Math.round((new Date(checkout) - new Date(checkin)) / 86400000);
-    var guestStr = adults + ' adult' + (adults != 1 ? 's' : '') + (children > 0 ? ', ' + children + ' child' + (children != 1 ? 'ren' : '') : '');
-    var conf = confirmation ? '\nConfirmation: ' + confirmation : '';
 
     var template =
       'Hi ' + name + ',\n\n' +
       'We\u2019re so excited to welcome you to The Breakwater! Here are your stay details:\n\n' +
       '  Check-In:   ' + ci + ' at 3:00 PM\n' +
       '  Check-Out:  ' + co + ' at 10:00 AM\n' +
-      '  Duration:   ' + nights + ' night' + (nights !== 1 ? 's' : '') + '\n' +
-      '  Guests:     ' + guestStr +
-      conf + '\n\n' +
+      '  Duration:   ' + nights + ' night' + (nights !== 1 ? 's' : '') + '\n\n' +
       'Access your personalized guest app here \u2014 everything you need for your stay is inside:\n\n' +
       generatedUrl + '\n\n' +
       '(Bookmark this link! It\u2019s your all-in-one guide: door codes, WiFi, beach conditions, local dining, events, and more.)\n\n' +
