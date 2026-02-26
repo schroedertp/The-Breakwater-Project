@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breakwater Guest Link Generator &mdash; T3D Properties</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <!-- QR code library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --teal: #2aab9e;
+      --teal-dark: #1d8278;
+      --teal-deep: #155e56;
+      --teal-light: #5bc9bf;
+      --coral: #e8735a;
+      --sand: #f5ede0;
+      --sand-dark: #e8d8c0;
+      --sand-mid: #d4ba96;
+      --sun: #f5c842;
+      --white: #fdfaf6;
+      --text: #1e2d2b;
+      --text-light: #5a7270;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--sand);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ---- HEADER ---- */
+    .header {
+      background: var(--teal-deep);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .header-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: white;
+      letter-spacing: 0.5px;
+    }
+    .header-logo span { color: var(--sun); }
+    .header-badge {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.1);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    /* ---- LAYOUT ---- */
+    .main {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+    .page-eyebrow {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 300;
+      color: var(--text);
+      line-height: 1.05;
+      margin-bottom: 6px;
+    }
+    .page-desc {
+      font-size: 14px;
+      color: var(--text-light);
+      font-weight: 300;
+      margin-bottom: 40px;
+    }
+    .layout-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 28px;
+      align-items: start;
+    }
+
+    /* ---- CARD ---- */
+    .card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 2px 20px rgba(30,45,43,0.07);
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 22px;
+    }
+
+    /* ---- FORM ---- */
+    .form-group { margin-bottom: 18px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 7px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--sand-dark);
+      border-radius: 10px;
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--white);
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { outline: none; border-color: var(--teal); }
+    .form-select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--sand-dark);
+      border-radius: 10px;
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--white);
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath stroke='%235a7270' stroke-width='1.5' d='m1 1 5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+    }
+    .form-select:focus { outline: none; border-color: var(--teal); }
+    .form-hint {
+      font-size: 11px;
+      color: var(--text-light);
+      margin-top: 5px;
+      font-weight: 300;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--sand-dark);
+      margin: 22px 0;
+    }
+    .section-subtitle {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+
+    /* ---- BUTTONS ---- */
+    .btn {
+      display: inline-block;
+      padding: 12px 26px;
+      border-radius: 8px;
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--coral); color: white; }
+    .btn-primary:hover { background: #f0937d; transform: translateY(-1px); }
+    .btn-teal { background: var(--teal); color: white; }
+    .btn-teal:hover { background: var(--teal-dark); transform: translateY(-1px); }
+    .btn-ghost { background: none; color: var(--text-light); border: 1px solid var(--sand-dark); }
+    .btn-ghost:hover { background: var(--sand); border-color: var(--sand-mid); }
+    .btn-sm { padding: 8px 16px; font-size: 10px; }
+    .btn-block { display: block; width: 100%; text-align: center; }
+
+    /* ---- OUTPUT PANEL ---- */
+    .output-panel { position: sticky; top: 24px; }
+    .output-empty {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-light);
+    }
+    .output-empty-icon { font-size: 40px; margin-bottom: 12px; }
+    .output-empty-text { font-size: 13px; font-weight: 300; }
+
+    .output-preview {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Guest preview card */
+    .preview-card {
+      background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 100%);
+      border-radius: 18px;
+      padding: 24px;
+      color: white;
+    }
+    .preview-greeting {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.65;
+      margin-bottom: 6px;
+    }
+    .preview-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      margin-bottom: 16px;
+    }
+    .preview-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .preview-detail-label {
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-bottom: 3px;
+    }
+    .preview-detail-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 300;
+    }
+    .preview-detail-sub { font-size: 11px; opacity: 0.6; }
+
+    /* URL box */
+    .url-box {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 2px 16px rgba(30,45,43,0.07);
+    }
+    .url-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+    .url-text {
+      font-family: monospace;
+      font-size: 11px;
+      color: var(--teal-dark);
+      word-break: break-all;
+      line-height: 1.6;
+      background: var(--sand);
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      user-select: all;
+    }
+    .url-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* QR code */
+    .qr-box {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 2px 16px rgba(30,45,43,0.07);
+      text-align: center;
+    }
+    .qr-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 14px;
+    }
+    #qrcode {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    #qrcode canvas, #qrcode img { border-radius: 8px; }
+    .qr-sub {
+      font-size: 11px;
+      color: var(--text-light);
+      font-weight: 300;
+    }
+
+    /* History */
+    .history-card { margin-top: 0; }
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--sand-dark);
+      gap: 10px;
+    }
+    .history-item:last-child { border-bottom: none; }
+    .history-name { font-size: 14px; color: var(--text); font-weight: 400; }
+    .history-dates { font-size: 11px; color: var(--text-light); }
+    .history-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .history-empty {
+      text-align: center;
+      padding: 24px 0;
+      font-size: 13px;
+      color: var(--text-light);
+      font-weight: 300;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: var(--teal-deep);
+      color: white;
+      padding: 13px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      z-index: 300;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s;
+      max-width: 300px;
+      box-shadow: 0 4px 20px rgba(21,94,86,0.3);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .layout-grid { grid-template-columns: 1fr; }
+      .output-panel { position: static; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-logo">The <span>Breakwater</span></div>
+  <div class="header-badge">&#128272; Admin &mdash; T3D Properties</div>
+</header>
+
+<main class="main">
+  <div class="page-eyebrow">T3D Properties &middot; 103 E 19th St, Avalon NJ</div>
+  <h1 class="page-title">Guest Link Generator</h1>
+  <p class="page-desc">Fill in the guest details below to generate a personalized app link and QR code for each weekly rental.</p>
+
+  <div class="layout-grid">
+
+    <!-- LEFT: FORM -->
+    <div>
+      <div class="card">
+        <div class="card-title">&#128100; Guest Details</div>
+
+        <div class="section-subtitle">Who&rsquo;s staying</div>
+
+        <div class="form-group">
+          <label class="form-label">Guest Name / Family</label>
+          <input type="text" class="form-input" id="inName" placeholder="e.g. The Smith Family" oninput="onFormChange()">
+          <div class="form-hint">This appears as the welcome greeting in the app</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Adults</label>
+            <select class="form-select" id="inAdults" onchange="onFormChange()">
+              <option value="1">1 Adult</option>
+              <option value="2" selected>2 Adults</option>
+              <option value="3">3 Adults</option>
+              <option value="4">4 Adults</option>
+              <option value="5">5 Adults</option>
+              <option value="6">6 Adults</option>
+              <option value="7">7 Adults</option>
+              <option value="8">8 Adults</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Children</label>
+            <select class="form-select" id="inChildren" onchange="onFormChange()">
+              <option value="0" selected>0 Children</option>
+              <option value="1">1 Child</option>
+              <option value="2">2 Children</option>
+              <option value="3">3 Children</option>
+              <option value="4">4 Children</option>
+              <option value="5">5 Children</option>
+            </select>
+          </div>
+        </div>
+
+        <hr class="divider">
+        <div class="section-subtitle">Stay dates</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Check-In Date</label>
+            <input type="date" class="form-input" id="inCheckin" oninput="onCheckinChange()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Check-Out Date</label>
+            <input type="date" class="form-input" id="inCheckout" oninput="onFormChange()">
+          </div>
+        </div>
+
+        <hr class="divider">
+        <div class="section-subtitle">Booking details</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Confirmation #</label>
+            <input type="text" class="form-input" id="inConfirmation" placeholder="e.g. BW-2025-0712" oninput="onFormChange()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Guest Password</label>
+            <input type="text" class="form-input" id="inPassword" placeholder="e.g. avalon" value="avalon" oninput="onFormChange()">
+            <div class="form-hint">Password to unlock the app</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">App Base URL</label>
+          <input type="text" class="form-input" id="inBaseUrl" placeholder="https://yoursite.com/index.html" oninput="onFormChange()">
+          <div class="form-hint">The public URL where the app is hosted</div>
+        </div>
+
+        <button class="btn btn-primary btn-block" onclick="generateLink()" style="margin-top:8px">
+          &#10024; Generate Guest Link &amp; QR Code
+        </button>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="card history-card" style="margin-top:22px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+          <div class="card-title" style="margin-bottom:0">&#128218; Recent Guests</div>
+          <button class="btn btn-ghost btn-sm" onclick="clearHistory()">Clear All</button>
+        </div>
+        <div id="historyList"><div class="history-empty">No guests generated yet.</div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: OUTPUT -->
+    <div class="output-panel">
+
+      <div id="outputEmpty">
+        <div class="card">
+          <div class="output-empty">
+            <div class="output-empty-icon">&#128279;</div>
+            <div class="output-empty-text">Fill in the guest details and click<br><strong>Generate Guest Link</strong> to get started.</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="outputPreview" class="output-preview">
+
+        <!-- Guest Preview Card -->
+        <div class="preview-card">
+          <div class="preview-greeting">Welcome to The Breakwater</div>
+          <div class="preview-name" id="previewName">&mdash;</div>
+          <div class="preview-details">
+            <div>
+              <div class="preview-detail-label">Check In</div>
+              <div class="preview-detail-value" id="previewCheckin">&mdash;</div>
+              <div class="preview-detail-sub" id="previewCheckinDay"></div>
+            </div>
+            <div>
+              <div class="preview-detail-label">Check Out</div>
+              <div class="preview-detail-value" id="previewCheckout">&mdash;</div>
+              <div class="preview-detail-sub" id="previewCheckoutDay"></div>
+            </div>
+            <div>
+              <div class="preview-detail-label">Duration</div>
+              <div class="preview-detail-value" id="previewNights">&mdash;</div>
+              <div class="preview-detail-sub">Weekly rental</div>
+            </div>
+            <div>
+              <div class="preview-detail-label">Guests</div>
+              <div class="preview-detail-value" id="previewGuests">&mdash;</div>
+              <div class="preview-detail-sub" id="previewGuestsSub"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- URL Box -->
+        <div class="url-box">
+          <div class="url-label">&#128279; Personalized Guest Link</div>
+          <div class="url-text" id="outputUrl"></div>
+          <div class="url-actions">
+            <button class="btn btn-teal btn-sm" onclick="copyUrl()">&#128203; Copy Link</button>
+            <button class="btn btn-ghost btn-sm" onclick="openUrl()">&#128065; Preview App</button>
+          </div>
+        </div>
+
+        <!-- QR Code -->
+        <div class="qr-box">
+          <div class="qr-label">&#9724; QR Code &mdash; Print for Welcome Card</div>
+          <div id="qrcode"></div>
+          <div class="qr-sub">Guests scan this to open their personalized app</div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="downloadQr()">&#11015; Download QR Code</button>
+        </div>
+
+        <!-- Email Template -->
+        <div class="url-box">
+          <div class="url-label">&#9993; Email Template</div>
+          <div class="url-text" id="emailTemplate" style="font-family:'Jost',sans-serif;font-size:12px;line-height:1.8;white-space:pre-wrap;"></div>
+          <button class="btn btn-ghost btn-sm" onclick="copyEmail()">&#128203; Copy Email</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<script>
+  // ===================== FORM STATE =====================
+  var generatedUrl = '';
+  var qrInstance   = null;
+
+  function onCheckinChange() {
+    var ci = document.getElementById('inCheckin').value;
+    if (ci) {
+      var d = new Date(ci + 'T12:00:00');
+      d.setDate(d.getDate() + 7);
+      document.getElementById('inCheckout').value = d.toISOString().split('T')[0];
+    }
+    onFormChange();
+  }
+
+  function onFormChange() {
+    // Live preview update (lightweight — no QR regeneration)
+    var name     = document.getElementById('inName').value.trim();
+    var checkin  = document.getElementById('inCheckin').value;
+    var checkout = document.getElementById('inCheckout').value;
+    var adults   = parseInt(document.getElementById('inAdults').value) || 2;
+    var children = parseInt(document.getElementById('inChildren').value) || 0;
+
+    if (name) document.getElementById('previewName').textContent = name;
+
+    if (checkin) {
+      var ci = new Date(checkin + 'T12:00:00');
+      document.getElementById('previewCheckin').textContent = ci.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      document.getElementById('previewCheckinDay').textContent = ci.toLocaleDateString('en-US', { weekday: 'long' }) + ' \u00b7 3:00 PM';
+    }
+    if (checkout) {
+      var co = new Date(checkout + 'T12:00:00');
+      document.getElementById('previewCheckout').textContent = co.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      document.getElementById('previewCheckoutDay').textContent = co.toLocaleDateString('en-US', { weekday: 'long' }) + ' \u00b7 10:00 AM';
+    }
+    if (checkin && checkout) {
+      var nights = Math.round((new Date(checkout) - new Date(checkin)) / 86400000);
+      document.getElementById('previewNights').textContent = nights + ' Night' + (nights !== 1 ? 's' : '');
+    }
+
+    var totalGuests = adults + children;
+    document.getElementById('previewGuests').textContent = totalGuests;
+    var sub = adults + ' adult' + (adults !== 1 ? 's' : '');
+    if (children > 0) sub += ' \u00b7 ' + children + ' child' + (children !== 1 ? 'ren' : '');
+    document.getElementById('previewGuestsSub').textContent = sub;
+  }
+
+  // ===================== GENERATE =====================
+  function generateLink() {
+    var name         = document.getElementById('inName').value.trim();
+    var checkin      = document.getElementById('inCheckin').value;
+    var checkout     = document.getElementById('inCheckout').value;
+    var adults       = document.getElementById('inAdults').value;
+    var children     = document.getElementById('inChildren').value;
+    var confirmation = document.getElementById('inConfirmation').value.trim();
+    var password     = document.getElementById('inPassword').value.trim();
+    var baseUrl      = document.getElementById('inBaseUrl').value.trim();
+
+    if (!name)     return showToast('Please enter the guest name.');
+    if (!checkin)  return showToast('Please enter a check-in date.');
+    if (!checkout) return showToast('Please enter a check-out date.');
+    if (!baseUrl)  return showToast('Please enter the app base URL.');
+
+    // Build URL
+    var params = new URLSearchParams();
+    params.set('guest',    name);
+    params.set('checkin',  checkin);
+    params.set('checkout', checkout);
+    params.set('adults',   adults);
+    params.set('children', children);
+    if (confirmation) params.set('conf', confirmation);
+    if (password)     params.set('pw',   password);
+
+    var base = baseUrl.replace(/\/$/, '');
+    generatedUrl = base + (base.includes('?') ? '&' : '?') + params.toString();
+
+    // Show output panel
+    document.getElementById('outputEmpty').style.display   = 'none';
+    document.getElementById('outputPreview').style.display = 'flex';
+
+    // Update URL box
+    document.getElementById('outputUrl').textContent = generatedUrl;
+
+    // Update email template
+    updateEmailTemplate(name, checkin, checkout, adults, children, confirmation);
+
+    // Generate QR
+    generateQr(generatedUrl);
+
+    // Save to history
+    saveToHistory(name, checkin, checkout, generatedUrl);
+    renderHistory();
+
+    showToast('Guest link generated!');
+  }
+
+  // ===================== QR CODE =====================
+  function generateQr(url) {
+    var container = document.getElementById('qrcode');
+    container.innerHTML = '';
+    qrInstance = new QRCode(container, {
+      text:         url,
+      width:        200,
+      height:       200,
+      colorDark:    '#155e56',
+      colorLight:   '#fdfaf6',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  }
+
+  function downloadQr() {
+    var canvas = document.querySelector('#qrcode canvas');
+    var img    = document.querySelector('#qrcode img');
+    var src    = canvas ? canvas.toDataURL('image/png') : (img ? img.src : null);
+    if (!src) return showToast('QR code not yet generated.');
+    var a = document.createElement('a');
+    a.href = src;
+    var name = document.getElementById('inName').value.trim().replace(/\s+/g, '-') || 'guest';
+    a.download = 'breakwater-qr-' + name + '.png';
+    a.click();
+  }
+
+  // ===================== EMAIL TEMPLATE =====================
+  function updateEmailTemplate(name, checkin, checkout, adults, children, confirmation) {
+    var ci = new Date(checkin + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    var co = new Date(checkout + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    var nights = Math.round((new Date(checkout) - new Date(checkin)) / 86400000);
+    var guestStr = adults + ' adult' + (adults != 1 ? 's' : '') + (children > 0 ? ', ' + children + ' child' + (children != 1 ? 'ren' : '') : '');
+    var conf = confirmation ? '\nConfirmation: ' + confirmation : '';
+
+    var template =
+      'Hi ' + name + ',\n\n' +
+      'We\u2019re so excited to welcome you to The Breakwater! Here are your stay details:\n\n' +
+      '  Check-In:   ' + ci + ' at 3:00 PM\n' +
+      '  Check-Out:  ' + co + ' at 10:00 AM\n' +
+      '  Duration:   ' + nights + ' night' + (nights !== 1 ? 's' : '') + '\n' +
+      '  Guests:     ' + guestStr +
+      conf + '\n\n' +
+      'Access your personalized guest app here \u2014 everything you need for your stay is inside:\n\n' +
+      generatedUrl + '\n\n' +
+      '(Bookmark this link! It\u2019s your all-in-one guide: door codes, WiFi, beach conditions, local dining, events, and more.)\n\n' +
+      'If you have any questions before arrival, don\u2019t hesitate to reach out.\n\n' +
+      'Warmly,\n' +
+      'T3D Properties\n' +
+      '(609) 555-0184 \u00b7 8am\u20139pm daily';
+
+    document.getElementById('emailTemplate').textContent = template;
+  }
+
+  // ===================== COPY / OPEN =====================
+  function copyUrl() {
+    if (!generatedUrl) return;
+    navigator.clipboard.writeText(generatedUrl)
+      .then(function() { showToast('Link copied to clipboard!'); })
+      .catch(function() {
+        // Fallback
+        var ta = document.createElement('textarea');
+        ta.value = generatedUrl;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('Link copied!');
+      });
+  }
+
+  function copyEmail() {
+    var text = document.getElementById('emailTemplate').textContent;
+    navigator.clipboard.writeText(text)
+      .then(function() { showToast('Email template copied!'); })
+      .catch(function() { showToast('Could not copy \u2014 please select and copy manually.'); });
+  }
+
+  function openUrl() {
+    if (generatedUrl) window.open(generatedUrl, '_blank');
+  }
+
+  // ===================== HISTORY =====================
+  var HISTORY_KEY = 'bw_admin_history';
+
+  function saveToHistory(name, checkin, checkout, url) {
+    var history = getHistory();
+    // Remove duplicate if same name+checkin
+    history = history.filter(function(h) { return !(h.name === name && h.checkin === checkin); });
+    history.unshift({ name: name, checkin: checkin, checkout: checkout, url: url, ts: Date.now() });
+    if (history.length > 20) history = history.slice(0, 20);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  }
+
+  function getHistory() {
+    try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; } catch(e) { return []; }
+  }
+
+  function clearHistory() {
+    localStorage.removeItem(HISTORY_KEY);
+    renderHistory();
+    showToast('History cleared.');
+  }
+
+  function renderHistory() {
+    var history = getHistory();
+    var list = document.getElementById('historyList');
+    if (history.length === 0) {
+      list.innerHTML = '<div class="history-empty">No guests generated yet.</div>';
+      return;
+    }
+    list.innerHTML = '';
+    history.forEach(function(h) {
+      var ci = h.checkin ? new Date(h.checkin + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+      var co = h.checkout ? new Date(h.checkout + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+      var item = document.createElement('div');
+      item.className = 'history-item';
+      item.innerHTML =
+        '<div>' +
+          '<div class="history-name">' + escHtml(h.name) + '</div>' +
+          '<div class="history-dates">' + ci + (co ? ' \u2013 ' + co : '') + '</div>' +
+        '</div>' +
+        '<div class="history-actions">' +
+          '<button class="btn btn-ghost btn-sm" onclick="reloadGuest(' + JSON.stringify(h).replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g, '&quot;') + ')">Load</button>' +
+          '<button class="btn btn-teal btn-sm" onclick="copyHistoryUrl(\'' + escHtml(h.url) + '\')">Copy</button>' +
+        '</div>';
+      list.appendChild(item);
+    });
+  }
+
+  function reloadGuest(h) {
+    document.getElementById('inName').value = h.name || '';
+    document.getElementById('inCheckin').value  = h.checkin  || '';
+    document.getElementById('inCheckout').value = h.checkout || '';
+    generatedUrl = h.url;
+    document.getElementById('outputUrl').textContent = h.url;
+    document.getElementById('outputEmpty').style.display   = 'none';
+    document.getElementById('outputPreview').style.display = 'flex';
+    generateQr(h.url);
+    onFormChange();
+    showToast('Guest loaded.');
+  }
+
+  function copyHistoryUrl(url) {
+    navigator.clipboard.writeText(url)
+      .catch(function() {});
+    showToast('Link copied!');
+  }
+
+  function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ===================== TOAST =====================
+  var toastTimer = null;
+  function showToast(msg) {
+    var toast = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    toast.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 3500);
+  }
+
+  // ===================== INIT =====================
+  // Default check-in to next Saturday
+  (function() {
+    var d = new Date();
+    var daysUntilSat = (6 - d.getDay() + 7) % 7 || 7;
+    d.setDate(d.getDate() + daysUntilSat);
+    document.getElementById('inCheckin').value  = d.toISOString().split('T')[0];
+    var co = new Date(d);
+    co.setDate(co.getDate() + 7);
+    document.getElementById('inCheckout').value = co.toISOString().split('T')[0];
+    onFormChange();
+  })();
+
+  // Guess base URL from current location
+  (function() {
+    var loc = window.location.href.replace('admin.html', 'index.html');
+    document.getElementById('inBaseUrl').value = loc;
+  })();
+
+  renderHistory();
+</script>
+</body>
+</html>

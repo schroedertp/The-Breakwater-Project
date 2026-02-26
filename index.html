@@ -1202,12 +1202,22 @@
     transition: background 0.2s;
   }
   .lock-btn:hover { background: var(--teal-dark); }
+  @keyframes lockShake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-8px); }
+    40%      { transform: translateX(8px); }
+    60%      { transform: translateX(-6px); }
+    80%      { transform: translateX(6px); }
+  }
+  .lock-card.shake { animation: lockShake 0.4s ease; }
+  .lock-input.error { border-color: var(--coral-light) !important; }
   .lock-error {
     margin-top: 12px;
     font-family: 'Jost', sans-serif;
     font-size: 13px;
     color: var(--coral-light);
     min-height: 18px;
+    text-align: center;
   }
 
   /* ---- GUEST BANNER ---- */
@@ -1232,6 +1242,334 @@
   body.banner-visible #page-restaurants,
   body.banner-visible #page-explore,
   body.banner-visible #page-maintenance { padding-top: 100px; }
+  body.banner-visible #page-events,
+  body.banner-visible #page-guestbook,
+  body.banner-visible #page-maintenance { padding-top: 100px; }
+
+  /* ---- FORECAST SECTION ---- */
+  .forecast-section {
+    background: var(--teal-deep);
+    padding: 28px 24px;
+  }
+  .forecast-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .forecast-eyebrow {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .forecast-strip {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+  }
+  .forecast-day {
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px;
+    color: white;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .forecast-day:last-child { border-right: none; }
+  .forecast-day-name {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.55;
+    margin-bottom: 10px;
+  }
+  .forecast-icon { font-size: 28px; margin-bottom: 8px; }
+  .forecast-hi {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+  }
+  .forecast-lo { font-size: 12px; opacity: 0.45; margin-top: 3px; }
+
+  /* ---- TIDES SECTION ---- */
+  .tides-section {
+    background: var(--sand);
+    padding: 48px 24px 56px;
+  }
+  .tides-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .tides-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .tides-eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 5px;
+  }
+  .tides-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1;
+  }
+  .tides-date {
+    font-size: 12px;
+    color: var(--text-light);
+    font-style: italic;
+  }
+  .tides-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .tide-card {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: 0 2px 18px rgba(30,45,43,0.06);
+  }
+  .tide-arrow { font-size: 22px; margin-bottom: 6px; }
+  .tide-type {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 8px;
+  }
+  .tide-time {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1;
+  }
+  .tide-height {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 5px;
+  }
+  .tide-label {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+  .tide-high { color: var(--teal-dark); background: rgba(42,171,158,0.12); }
+  .tide-low  { color: var(--coral);     background: rgba(232,115,90,0.12); }
+
+  /* ---- BEACH BADGE CARD ---- */
+  .badge-highlight {
+    display: inline-block;
+    background: var(--teal-deep);
+    color: white;
+    font-size: 18px;
+    font-family: 'Cormorant Garamond', serif;
+    padding: 7px 16px;
+    border-radius: 10px;
+    margin-top: 6px;
+    letter-spacing: 1px;
+  }
+
+  /* ---- CHECKOUT CHECKLIST ---- */
+  .checklist-progress-wrap {
+    height: 4px;
+    background: var(--sand-dark);
+    border-radius: 2px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  .checklist-progress-bar {
+    height: 100%;
+    background: var(--teal);
+    border-radius: 2px;
+    transition: width 0.35s ease;
+  }
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--sand);
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-box {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--sand-dark);
+    border-radius: 6px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: white;
+    font-size: 13px;
+  }
+  .checklist-item.done .checklist-box { background: var(--teal); border-color: var(--teal); }
+  .checklist-text { font-size: 14px; color: var(--text); font-weight: 300; line-height: 1.4; }
+  .checklist-item.done .checklist-text { text-decoration: line-through; color: var(--text-light); }
+  .checklist-reset {
+    background: none;
+    border: 1px solid var(--sand-dark);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .checklist-reset:hover { border-color: var(--coral); color: var(--coral); }
+
+  /* ---- EVENTS PAGE ---- */
+  #page-events { background: var(--sand); padding-top: 64px; }
+  .events-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
+  .event-pill {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--sand-dark);
+    background: var(--white);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Jost', sans-serif;
+  }
+  .event-pill:hover { border-color: var(--teal); color: var(--teal); }
+  .event-pill.active { background: var(--teal); border-color: var(--teal); color: white; }
+  .events-date-group { margin-bottom: 32px; }
+  .events-date-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--sand-dark);
+  }
+  .event-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    box-shadow: 0 2px 16px rgba(30,45,43,0.05);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .event-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(30,45,43,0.1); }
+  .event-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .event-body { flex: 1; min-width: 0; }
+  .event-name { font-size: 16px; font-weight: 400; color: var(--text); margin-bottom: 4px; }
+  .event-meta { font-size: 12px; color: var(--text-light); margin-bottom: 6px; line-height: 1.6; }
+  .event-desc { font-size: 13px; color: var(--text-light); font-weight: 300; line-height: 1.65; }
+  .event-tag {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+  .event-tag-free { background: rgba(42,171,158,0.12); color: var(--teal-dark); }
+  .event-tag-paid { background: rgba(232,115,90,0.12); color: var(--coral); }
+
+  /* ---- GUEST BOOK PAGE ---- */
+  #page-guestbook { background: var(--sand); padding-top: 64px; }
+  .guestbook-layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 28px;
+    align-items: start;
+  }
+  .guestbook-entry {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 26px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 18px rgba(30,45,43,0.06);
+  }
+  .guestbook-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    gap: 10px;
+  }
+  .guestbook-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px;
+    font-weight: 400;
+    color: var(--text);
+  }
+  .guestbook-dates { font-size: 11px; color: var(--text-light); margin-top: 2px; letter-spacing: 0.5px; }
+  .guestbook-stars { color: var(--sun); font-size: 17px; letter-spacing: 1px; flex-shrink: 0; }
+  .guestbook-message {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 300;
+    line-height: 1.75;
+    font-style: italic;
+  }
+  .guestbook-timestamp {
+    font-size: 10px;
+    color: var(--text-light);
+    margin-top: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .star-selector { display: flex; gap: 4px; }
+  .star-btn {
+    font-size: 26px;
+    color: var(--sand-mid);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 2px;
+    transition: color 0.15s;
+    line-height: 1;
+  }
+  .star-btn.lit { color: var(--sun); }
+
+  @media (max-width: 820px) {
+    .tides-grid { grid-template-columns: repeat(2, 1fr); }
+    .forecast-day { padding: 12px 4px; }
+    .forecast-icon { font-size: 22px; }
+    .forecast-hi { font-size: 18px; }
+    .guestbook-layout { grid-template-columns: 1fr; }
+  }
   </style>
 </head>
 <body>
@@ -1259,6 +1597,8 @@
     <li><button onclick="showPage('book', this)">Book</button></li>
     <li><button onclick="showPage('restaurants', this)">Restaurants</button></li>
     <li><button onclick="showPage('explore', this)">Explore</button></li>
+    <li><button onclick="showPage('events', this)">Events</button></li>
+    <li><button onclick="showPage('guestbook', this)">Guest Book</button></li>
     <li><button onclick="showPage('maintenance', this)">Maintenance</button></li>
   </ul>
   <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -1290,21 +1630,23 @@
         <div class="hero-card">
           <div class="hero-card-label">Check In</div>
           <div class="hero-card-value" id="heroCheckin">Aug 8</div>
+          <div class="hero-card-value">Aug 8</div>
           <div class="hero-card-sub">Saturday &middot; 3:00 PM</div>
         </div>
         <div class="hero-card">
           <div class="hero-card-label">Check Out</div>
           <div class="hero-card-value" id="heroCheckout">Aug 15</div>
+          <div class="hero-card-value">Aug 15</div>
           <div class="hero-card-sub">Saturday &middot; 10:00 AM</div>
         </div>
         <div class="hero-card">
           <div class="hero-card-label">Guests</div>
-          <div class="hero-card-value">6</div>
-          <div class="hero-card-sub">4 adults &middot; 2 children</div>
+          <div class="hero-card-value" id="heroGuests">6</div>
+          <div class="hero-card-sub" id="heroGuestsSub">4 adults &middot; 2 children</div>
         </div>
         <div class="hero-card">
           <div class="hero-card-label">Address</div>
-          <div class="hero-card-value" style="font-size:17px">103 E 19th St</div>
+          <div class="hero-card-value" style="font-size:17px">34 W. 13th St.</div>
           <div class="hero-card-sub">Avalon, NJ 08202</div>
         </div>
       </div>
@@ -1383,6 +1725,138 @@
       </div>
     </div>
   </section>
+
+  <!-- 5-Day Forecast -->
+  <section class="forecast-section">
+    <div class="forecast-inner">
+      <div class="forecast-eyebrow">5-Day Weather Forecast &middot; Avalon, NJ</div>
+      <div class="forecast-strip">
+        <div class="forecast-day">
+          <div class="forecast-day-name">Sat</div>
+          <div class="forecast-icon">&#9925;</div>
+          <div class="forecast-hi">86&deg;</div>
+          <div class="forecast-lo">74&deg;</div>
+        </div>
+        <div class="forecast-day">
+          <div class="forecast-day-name">Sun</div>
+          <div class="forecast-icon">&#9925;&#65039;</div>
+          <div class="forecast-hi">84&deg;</div>
+          <div class="forecast-lo">73&deg;</div>
+        </div>
+        <div class="forecast-day">
+          <div class="forecast-day-name">Mon</div>
+          <div class="forecast-icon">&#9928;&#65039;</div>
+          <div class="forecast-hi">80&deg;</div>
+          <div class="forecast-lo">70&deg;</div>
+        </div>
+        <div class="forecast-day">
+          <div class="forecast-day-name">Tue</div>
+          <div class="forecast-icon">&#127783;&#65039;</div>
+          <div class="forecast-hi">78&deg;</div>
+          <div class="forecast-lo">69&deg;</div>
+        </div>
+        <div class="forecast-day">
+          <div class="forecast-day-name">Wed</div>
+          <div class="forecast-icon">&#9925;</div>
+          <div class="forecast-hi">88&deg;</div>
+          <div class="forecast-lo">75&deg;</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tides Today -->
+  <section class="tides-section">
+    <div class="tides-inner">
+      <div class="tides-header">
+        <div>
+          <div class="tides-eyebrow">Avalon, NJ</div>
+          <div class="tides-title">Today&rsquo;s Tides</div>
+        </div>
+        <div class="tides-date">Saturday, August 8 &middot; Lifeguards on duty 9am&ndash;5pm</div>
+      </div>
+      <div class="tides-grid">
+        <div class="tide-card">
+          <div class="tide-arrow">&#8595;</div>
+          <div class="tide-type">Low Tide</div>
+          <div class="tide-time">5:48 AM</div>
+          <div class="tide-height">0.3 ft</div>
+          <span class="tide-label tide-low">Low</span>
+        </div>
+        <div class="tide-card">
+          <div class="tide-arrow">&#8593;</div>
+          <div class="tide-type">High Tide</div>
+          <div class="tide-time">12:06 PM</div>
+          <div class="tide-height">4.8 ft</div>
+          <span class="tide-label tide-high">High</span>
+        </div>
+        <div class="tide-card">
+          <div class="tide-arrow">&#8595;</div>
+          <div class="tide-type">Low Tide</div>
+          <div class="tide-time">6:24 PM</div>
+          <div class="tide-height">0.2 ft</div>
+          <span class="tide-label tide-low">Low</span>
+        </div>
+        <div class="tide-card">
+          <div class="tide-arrow">&#8593;</div>
+          <div class="tide-type">High Tide</div>
+          <div class="tide-time">12:38 AM</div>
+          <div class="tide-height">4.5 ft</div>
+          <span class="tide-label tide-high">High &mdash; Tomorrow</span>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll" onclick="document.querySelector('.conditions-section').scrollIntoView({behavior:'smooth'})">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
+      </svg>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- Beach Conditions Strip -->
+  <section class="conditions-section">
+    <div class="conditions-header">Forecast for your stay &mdash; Avalon, NJ &middot; Aug 8&ndash;15, 2026</div>
+    <div class="conditions-strip">
+      <div class="conditions-item">
+        <div class="conditions-icon">&#9925;</div>
+        <div class="conditions-value">83&deg;</div>
+        <div class="conditions-label">Air Temp (F)</div>
+        <div class="conditions-badge">Warm &amp; Sunny</div>
+      </div>
+      <div class="conditions-divider"></div>
+      <div class="conditions-item">
+        <div class="conditions-icon">&#127754;</div>
+        <div class="conditions-value">72&deg;</div>
+        <div class="conditions-label">Water Temp (F)</div>
+        <div class="conditions-badge">Perfect for swimming</div>
+      </div>
+      <div class="conditions-divider"></div>
+      <div class="conditions-item">
+        <div class="conditions-icon">&#127940;</div>
+        <div class="conditions-value">2&ndash;3 ft</div>
+        <div class="conditions-label">Wave Height</div>
+        <div class="conditions-badge">Ideal surf</div>
+      </div>
+      <div class="conditions-divider"></div>
+      <div class="conditions-item">
+        <div class="conditions-icon">&#127788;</div>
+        <div class="conditions-value">SW 10</div>
+        <div class="conditions-label">Wind (mph)</div>
+        <div class="conditions-badge">Light &amp; Pleasant</div>
+      </div>
+      <div class="conditions-divider"></div>
+      <div class="conditions-item">
+        <div class="conditions-icon">&#9728;&#65039;</div>
+        <div class="conditions-value">8</div>
+        <div class="conditions-label">UV Index</div>
+        <div class="conditions-badge">Sunscreen required</div>
+      </div>
+    </div>
+  </section>
 </div>
 
 <!-- ===================== MY STAY PAGE ===================== -->
@@ -1398,6 +1872,7 @@
 
       <!-- Booking Confirmation -->
       <div class="stay-booking-card">
+        <div class="booking-confirmation-tag" id="stayConfirmation">Confirmation #BW-2026-0808</div>
         <div class="booking-confirmation-tag">Confirmation #BW-2026-0808</div>
         <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:4px">The Breakwater</h3>
         <p style="opacity:0.65;font-size:13px">103 E 19th St, Avalon, NJ 08202</p>
@@ -1405,11 +1880,13 @@
           <div>
             <div class="booking-detail-label">Check In</div>
             <div class="booking-detail-value" id="stayCheckin">Aug 8, 2026</div>
+            <div class="booking-detail-value">Aug 8, 2026</div>
             <div class="booking-detail-sub">Saturday &middot; 3:00 PM</div>
           </div>
           <div>
             <div class="booking-detail-label">Check Out</div>
             <div class="booking-detail-value" id="stayCheckout">Aug 15, 2026</div>
+            <div class="booking-detail-value">Aug 15, 2026</div>
             <div class="booking-detail-sub">Saturday &middot; 10:00 AM</div>
           </div>
           <div>
@@ -1419,8 +1896,8 @@
           </div>
           <div>
             <div class="booking-detail-label">Guests</div>
-            <div class="booking-detail-value">6</div>
-            <div class="booking-detail-sub">4 adults &middot; 2 children</div>
+            <div class="booking-detail-value" id="stayGuests">6</div>
+            <div class="booking-detail-sub" id="stayGuestsSub">4 adults &middot; 2 children</div>
           </div>
         </div>
         <button class="gallery-trigger-btn" onclick="openGallery()">&#128247; View Property Photos</button>
@@ -1480,6 +1957,56 @@
           <div class="amenity-item"><span class="amenity-icon">&#128085;</span><span class="amenity-label">Washer/Dryer</span></div>
           <div class="amenity-item"><span class="amenity-icon">&#10052;&#65039;</span><span class="amenity-label">A/C &amp; Heat</span></div>
         </div>
+      </div>
+
+      <!-- Beach Badges -->
+      <div class="card">
+        <h4 class="card-title">&#127958; Avalon Beach Badges</h4>
+        <div class="info-row">
+          <div class="info-icon">&#127915;</div>
+          <div>
+            <div class="info-label">Requirement</div>
+            <div class="info-value">Required daily, Memorial Day &ndash; Labor Day</div>
+            <div class="info-sub">All guests 12 and older must display a badge</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">&#128181;</div>
+          <div>
+            <div class="info-label">Pricing</div>
+            <div class="badge-highlight">Daily $8 &nbsp;&middot;&nbsp; Weekly $22 &nbsp;&middot;&nbsp; Season $55</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">&#128205;</div>
+          <div>
+            <div class="info-label">Nearest Purchase Location</div>
+            <div class="info-value">19th St &amp; Ocean Dr beach entrance</div>
+            <div class="info-sub">Open daily 9:00 AM &ndash; 5:00 PM &middot; Cash &amp; card accepted</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">&#9888;&#65039;</div>
+          <div>
+            <div class="info-label">Pro Tip</div>
+            <div class="info-value">Badges sell out on holiday weekends</div>
+            <div class="info-sub">Buy early morning for best availability</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkout Checklist -->
+      <div class="card" style="grid-column:1/-1">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <h4 class="card-title" style="margin-bottom:0">&#9989; Checkout Checklist</h4>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span id="checklistProgress" style="font-size:12px;color:var(--text-light)">0 of 12 done</span>
+            <button class="checklist-reset" onclick="resetChecklist()">Reset</button>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-light);margin-bottom:14px;font-weight:300">Check-out is at 10:00 AM. Complete these before you go!</p>
+        <div class="checklist-progress-wrap"><div class="checklist-progress-bar" id="checklistBar" style="width:0%"></div></div>
+        <div id="checklistItems"></div>
       </div>
 
       <!-- House Rules -->
@@ -2045,6 +2572,79 @@
   </div>
 </div>
 
+<!-- ===================== EVENTS PAGE ===================== -->
+<div id="page-events" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Avalon &amp; Stone Harbor</div>
+      <h2 class="section-title">Local Events</h2>
+      <p class="section-desc">What&rsquo;s happening during your stay &mdash; curated for The Breakwater guests.</p>
+    </div>
+
+    <div class="events-filter" id="eventsFilter">
+      <button class="event-pill active" onclick="filterEvents('all',this)">&#127381; All Events</button>
+      <button class="event-pill" onclick="filterEvents('music',this)">&#127925; Music</button>
+      <button class="event-pill" onclick="filterEvents('food',this)">&#127869;&#65039; Food &amp; Drink</button>
+      <button class="event-pill" onclick="filterEvents('activity',this)">&#127940; Activities</button>
+      <button class="event-pill" onclick="filterEvents('family',this)">&#128106; Family</button>
+      <button class="event-pill" onclick="filterEvents('nature',this)">&#127807; Nature</button>
+      <button class="event-pill" onclick="filterEvents('special',this)">&#10024; Special</button>
+    </div>
+
+    <div id="eventsList"></div>
+  </div>
+</div>
+
+<!-- ===================== GUEST BOOK PAGE ===================== -->
+<div id="page-guestbook" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">From our guests</div>
+      <h2 class="section-title">Guest Book</h2>
+      <p class="section-desc">Notes &amp; memories from those who&rsquo;ve called The Breakwater home. Leave one of your own!</p>
+    </div>
+
+    <div class="guestbook-layout">
+      <!-- Entries -->
+      <div id="guestbookEntries"></div>
+
+      <!-- Submission Form -->
+      <div style="position:sticky;top:80px">
+        <div class="card">
+          <h4 class="card-title">&#9998; Sign the Guest Book</h4>
+
+          <div class="form-group">
+            <label class="form-label">Your Name or Group</label>
+            <input type="text" class="form-input" id="gbName" placeholder="The Smith Family">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Stay Dates <span style="font-size:10px;text-transform:none;letter-spacing:0">(optional)</span></label>
+            <input type="text" class="form-input" id="gbDates" placeholder="Jul 12 &ndash; Jul 19, 2025">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Your Rating</label>
+            <div class="star-selector" id="starSelector">
+              <button class="star-btn lit" onclick="setRating(1)">&#9733;</button>
+              <button class="star-btn lit" onclick="setRating(2)">&#9733;</button>
+              <button class="star-btn lit" onclick="setRating(3)">&#9733;</button>
+              <button class="star-btn lit" onclick="setRating(4)">&#9733;</button>
+              <button class="star-btn lit" onclick="setRating(5)">&#9733;</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Your Message</label>
+            <textarea class="textarea" id="gbMessage" placeholder="Share a highlight, a tip for future guests, or just say hello..." style="min-height:110px"></textarea>
+          </div>
+          <button class="btn btn-primary" style="width:100%;display:block;text-align:center" onclick="submitGuestBookEntry()">
+            Sign the Guest Book
+          </button>
+          <p style="font-size:11px;color:var(--text-light);text-align:center;margin-top:10px">Your note will appear instantly for future guests</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ===================== MAINTENANCE PAGE ===================== -->
 <div id="page-maintenance" class="page">
   <div class="section">
@@ -2277,6 +2877,12 @@
       name:     _params.get('guest')    || '',
       checkin:  _params.get('checkin')  || '',
       checkout: _params.get('checkout') || ''
+      name:         _params.get('guest')    || '',
+      checkin:      _params.get('checkin')  || '',
+      checkout:     _params.get('checkout') || '',
+      adults:       _params.get('adults')   || '',
+      children:     _params.get('children') || '',
+      confirmation: _params.get('conf')     || ''
     };
     localStorage.setItem(GUEST_KEY, JSON.stringify(guestInfo));
   } else {
@@ -2305,6 +2911,7 @@
   function applyPersonalization() {
     if (!guestInfo) return;
     const { name, checkin, checkout } = guestInfo;
+    const { name, checkin, checkout, adults, children, confirmation } = guestInfo;
     const ciShort = checkin  ? _fmtShort(checkin)  : '';
     const coShort = checkout ? _fmtShort(checkout) : '';
     const ciLong  = checkin  ? _fmtLong(checkin)   : '';
@@ -2320,14 +2927,47 @@
     if (ciShort) { const el = document.getElementById('heroCheckin');  if (el) el.textContent = ciShort; }
     if (coShort) { const el = document.getElementById('heroCheckout'); if (el) el.textContent = coShort; }
 
+    // Hero guest card
+    if (adults) {
+      const totalEl = document.getElementById('heroGuests');
+      const subEl   = document.getElementById('heroGuestsSub');
+      const total = parseInt(adults) + parseInt(children || 0);
+      if (totalEl) totalEl.textContent = total;
+      if (subEl) {
+        let sub = adults + ' adult' + (parseInt(adults) !== 1 ? 's' : '');
+        if (children && parseInt(children) > 0) sub += ' \u00b7 ' + children + ' child' + (parseInt(children) !== 1 ? 'ren' : '');
+        subEl.textContent = sub;
+      }
+    }
+
     // Conditions header
     if (ciShort && coShort) {
       const el = document.getElementById('conditionsHeader');
       if (el) el.innerHTML = 'Forecast for your stay &mdash; Avalon, NJ &middot; ' + ciShort + '&ndash;' + coShort + (ciYear ? ', ' + ciYear : '');
     }
+
     // My Stay tab booking details
     if (ciLong)  { const el = document.getElementById('stayCheckin');  if (el) el.textContent = ciLong; }
     if (coLong)  { const el = document.getElementById('stayCheckout'); if (el) el.textContent = coLong; }
+
+    // Confirmation number
+    if (confirmation) {
+      const el = document.getElementById('stayConfirmation');
+      if (el) el.textContent = 'Confirmation #' + confirmation;
+    }
+
+    // My Stay guest count
+    if (adults) {
+      const gEl  = document.getElementById('stayGuests');
+      const gsEl = document.getElementById('stayGuestsSub');
+      const total = parseInt(adults) + parseInt(children || 0);
+      if (gEl) gEl.textContent = total;
+      if (gsEl) {
+        let sub = adults + ' adult' + (parseInt(adults) !== 1 ? 's' : '');
+        if (children && parseInt(children) > 0) sub += ' \u00b7 ' + children + ' child' + (parseInt(children) !== 1 ? 'ren' : '');
+        gsEl.textContent = sub;
+      }
+    }
 
     // Guest banner text
     const banner = document.getElementById('guestBanner');
@@ -2343,6 +2983,8 @@
   function checkPassword() {
     const val = document.getElementById('lockPwd').value;
     if (val === SITE_PASSWORD) {
+    const val = document.getElementById('lockPwd').value.trim().toLowerCase();
+    if (val === SITE_PASSWORD.toLowerCase()) {
       localStorage.setItem('bw_auth', SITE_PASSWORD);
       const lock = document.getElementById('lockScreen');
       lock.classList.add('unlocked');
@@ -2358,6 +3000,29 @@
     document.getElementById('lockPwd').addEventListener('keydown', function(e) {
       if (e.key === 'Enter') checkPassword();
     });
+      const card  = document.querySelector('.lock-card');
+      const input = document.getElementById('lockPwd');
+      const err   = document.getElementById('lockError');
+      err.textContent = 'Incorrect password. Please try again.';
+      input.classList.add('error');
+      card.classList.remove('shake');
+      // Force reflow so the animation restarts if triggered twice in a row
+      void card.offsetWidth;
+      card.classList.add('shake');
+      input.value = '';
+      input.focus();
+      card.addEventListener('animationend', () => card.classList.remove('shake'), { once: true });
+    }
+  }
+
+  document.getElementById('lockPwd').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      checkPassword();
+    } else {
+      // Clear error state as soon as the user starts typing a new character
+      this.classList.remove('error');
+      document.getElementById('lockError').textContent = '';
+    }
   });
 
   // ===================== NAVIGATION =====================
@@ -2692,6 +3357,8 @@
     const co = new Date(guestInfo.checkout + 'T10:00:00');
     if (!isNaN(co.getTime())) CHECK_OUT = co;
   }
+  const CHECK_IN  = new Date('2026-08-08T15:00:00');
+  const CHECK_OUT = new Date('2026-08-15T10:00:00');
 
   function updateCountdown() {
     const now = new Date();
@@ -2797,6 +3464,196 @@
       card.style.display = (category === 'all' || card.dataset.category === category) ? 'block' : 'none';
     });
   }
+
+  // ===================== EVENTS =====================
+  var eventsData = [
+    { date: '2025-07-12', title: 'Avalon Seafood Festival', location: 'Avalon Boardwalk, 21st St', time: '12:00 PM \u2013 8:00 PM', category: 'food', desc: "Annual celebration of the Jersey Shore's finest seafood with live music, local vendors, and fresh catches.", free: false, price: '$5 entry', icon: '&#129362;', color: 'linear-gradient(135deg,#7c2d12,#c2410c)' },
+    { date: '2025-07-12', title: 'Stone Harbor Farmers Market', location: '95th St & 2nd Ave, Stone Harbor', time: '8:00 AM \u2013 12:00 PM', category: 'food', desc: 'Fresh local produce, artisan goods, hand-cut flowers, and baked treats every Saturday morning.', free: true, icon: '&#127807;', color: 'linear-gradient(135deg,#14532d,#16a34a)' },
+    { date: '2025-07-13', title: 'Avalon Summer Concert Series', location: "Veteran's Memorial Park, 30th St", time: '7:00 PM \u2013 9:00 PM', category: 'music', desc: "Free outdoor concert at Veteran's Memorial Park. This week: coastal cover band playing classic rock and beach favorites.", free: true, icon: '&#127928;', color: 'linear-gradient(135deg,#1e1b4b,#4c1d95)' },
+    { date: '2025-07-13', title: 'Kayak & Paddleboard Sunset Tour', location: 'Avalon Watersports, 7th St Dock', time: '6:30 PM \u2013 8:30 PM', category: 'activity', desc: 'Guided sunset tour through the back bay. Equipment provided. All skill levels welcome \u2014 a perfect way to close a beach day.', free: false, price: '$45/person', icon: '&#127700;', color: 'linear-gradient(135deg,#0c4a6e,#0369a1)' },
+    { date: '2025-07-14', title: 'Stone Harbor Bird Sanctuary Walk', location: 'Stone Harbor Bird Sanctuary, 114th St', time: '7:30 AM \u2013 9:00 AM', category: 'nature', desc: "Guided morning walk through one of the East Coast's only remaining colonial waterbird nesting sanctuaries. Binoculars provided.", free: true, icon: '&#129413;', color: 'linear-gradient(135deg,#064e3b,#059669)' },
+    { date: '2025-07-15', title: 'Avalon Beach 5K', location: '8th St Beach, Avalon', time: '7:00 AM \u2013 10:00 AM', category: 'activity', desc: 'Annual charity 5K run along the shoreline. All ages and skill levels welcome. Register at the start line morning-of.', free: false, price: '$25 registration', icon: '&#127939;', color: 'linear-gradient(135deg,#7f1d1d,#b91c1c)' },
+    { date: '2025-07-16', title: 'Avalon Wine & Jazz Night', location: 'Avalon Cultural Arts Center, 3100 Dune Dr', time: '7:00 PM \u2013 10:00 PM', category: 'music', desc: 'An evening of smooth jazz, local wine tastings, and light appetizers. Featuring the Cape May Jazz Quartet.', free: false, price: '$35/person', icon: '&#127927;', color: 'linear-gradient(135deg,#3b0764,#7e22ce)' },
+    { date: '2025-07-17', title: 'Stone Harbor Farmers Market', location: '95th St & 2nd Ave, Stone Harbor', time: '8:00 AM \u2013 12:00 PM', category: 'food', desc: 'Fresh local produce, artisan goods, hand-cut flowers, and baked treats every Saturday morning.', free: true, icon: '&#127807;', color: 'linear-gradient(135deg,#14532d,#16a34a)' },
+    { date: '2025-07-18', title: 'Kids\' Sandcastle Competition', location: '21st St Beach, Avalon', time: '10:00 AM \u2013 1:00 PM', category: 'family', desc: 'Annual family sandcastle building contest on the beach. Register the morning of at the lifeguard stand. Prizes for all age groups.', free: true, icon: '&#127963;', color: 'linear-gradient(135deg,#78350f,#d97706)' },
+    { date: '2025-07-19', title: 'July Fireworks Spectacular', location: 'Beach at 32nd St, Avalon', time: '9:00 PM', category: 'special', desc: "Avalon's signature fireworks display launched over the ocean. Arrive by 8pm for best spots on the beach. Bring chairs!", free: true, icon: '&#127878;', color: 'linear-gradient(135deg,#1e1b4b,#be185d)' },
+  ];
+
+  function renderEvents(filter) {
+    var list = document.getElementById('eventsList');
+    if (!list) return;
+    var filtered = filter === 'all' ? eventsData : eventsData.filter(function(e) { return e.category === filter; });
+    var byDate = {};
+    filtered.forEach(function(e) { if (!byDate[e.date]) byDate[e.date] = []; byDate[e.date].push(e); });
+    list.innerHTML = '';
+    Object.keys(byDate).sort().forEach(function(dateStr) {
+      var dateLabel = new Date(dateStr + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+      var group = document.createElement('div');
+      group.className = 'events-date-group';
+      group.innerHTML = '<div class="events-date-label">' + dateLabel + '</div>';
+      byDate[dateStr].forEach(function(e) {
+        var card = document.createElement('div');
+        card.className = 'event-card';
+        card.dataset.category = e.category;
+        var tagHtml = e.free
+          ? '<span class="event-tag event-tag-free">Free</span>'
+          : '<span class="event-tag event-tag-paid">' + e.price + '</span>';
+        card.innerHTML =
+          '<div class="event-icon" style="background:' + e.color + '">' + e.icon + '</div>' +
+          '<div class="event-body">' +
+            '<div class="event-name">' + e.title + '</div>' +
+            '<div class="event-meta">&#128205; ' + e.location + '<br>&#128336; ' + e.time + '</div>' +
+            '<div class="event-desc">' + e.desc + '</div>' +
+            tagHtml +
+          '</div>';
+        group.appendChild(card);
+      });
+      list.appendChild(group);
+    });
+    if (filtered.length === 0) {
+      list.innerHTML = '<div style="text-align:center;padding:60px 0;color:var(--text-light);font-size:15px">No events in this category during your stay.</div>';
+    }
+  }
+
+  function filterEvents(cat, btn) {
+    document.querySelectorAll('#eventsFilter .event-pill').forEach(function(p) { p.classList.remove('active'); });
+    btn.classList.add('active');
+    renderEvents(cat);
+  }
+
+  renderEvents('all');
+
+  // ===================== GUEST BOOK =====================
+  var gbRating = 5;
+
+  function setRating(val) {
+    gbRating = val;
+    document.querySelectorAll('#starSelector .star-btn').forEach(function(btn, i) {
+      btn.classList.toggle('lit', i < val);
+    });
+  }
+
+  var defaultGbEntries = [
+    { name: 'The Williams Family', dates: 'Jul 5 \u2013 Jul 12, 2025', rating: 5, message: "Absolutely magical week at The Breakwater. The kids lived in the pool and we closed down the hot tub every night. Highly recommend The Diving Horse for a special dinner \u2014 make a reservation well in advance!", ts: '2025-07-12T10:30:00' },
+    { name: 'Sarah & Mike T.', dates: 'Jun 21 \u2013 Jun 28, 2025', rating: 5, message: "Our third year back at The Breakwater and it never disappoints. Tip: bike to Stone Harbor for breakfast \u2014 the ride along the bay is stunning in the morning. Already booked for next summer!", ts: '2025-06-28T09:15:00' },
+    { name: 'The Kowalski Crew', dates: 'Jun 14 \u2013 Jun 21, 2025', rating: 5, message: "Nine of us for the week and the house fit everyone comfortably. The game room was a huge hit every evening. Beach badges sell out on holiday weekends so go early. T3D was super responsive when the AC needed a quick tune-up.", ts: '2025-06-21T11:00:00' },
+    { name: 'The Patel Family', dates: 'May 24 \u2013 May 31, 2025', rating: 5, message: "First trip to Avalon and The Breakwater made it perfect. The deck at sunset is unbeatable. Kids loved Fred's Tavern and the Bird Sanctuary walk was a surprise favorite. Can't wait to come back!", ts: '2025-05-31T08:45:00' },
+  ];
+
+  function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+  }
+
+  function loadGuestBook() {
+    var stored = localStorage.getItem('bw_guestbook');
+    var userEntries = stored ? JSON.parse(stored) : [];
+    var allEntries = userEntries.concat(defaultGbEntries);
+    var container = document.getElementById('guestbookEntries');
+    if (!container) return;
+    container.innerHTML = '';
+    allEntries.forEach(function(e) {
+      var el = document.createElement('div');
+      el.className = 'guestbook-entry';
+      var stars = '';
+      for (var i = 0; i < 5; i++) stars += i < e.rating ? '&#9733;' : '&#9734;';
+      var dateStr = new Date(e.ts).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      el.innerHTML =
+        '<div class="guestbook-entry-header">' +
+          '<div>' +
+            '<div class="guestbook-name">' + escapeHtml(e.name) + '</div>' +
+            (e.dates ? '<div class="guestbook-dates">' + escapeHtml(e.dates) + '</div>' : '') +
+          '</div>' +
+          '<div class="guestbook-stars">' + stars + '</div>' +
+        '</div>' +
+        '<div class="guestbook-message">&ldquo;' + escapeHtml(e.message) + '&rdquo;</div>' +
+        '<div class="guestbook-timestamp">Signed ' + dateStr + '</div>';
+      container.appendChild(el);
+    });
+  }
+
+  function submitGuestBookEntry() {
+    var name    = document.getElementById('gbName').value.trim();
+    var dates   = document.getElementById('gbDates').value.trim();
+    var message = document.getElementById('gbMessage').value.trim();
+    if (!name)    return showToast('Please enter your name or group name.');
+    if (!message) return showToast('Please write a message before signing.');
+    var entry = { name: name, dates: dates, rating: gbRating, message: message, ts: new Date().toISOString() };
+    var stored = localStorage.getItem('bw_guestbook');
+    var existing = stored ? JSON.parse(stored) : [];
+    existing.unshift(entry);
+    localStorage.setItem('bw_guestbook', JSON.stringify(existing));
+    document.getElementById('gbName').value = '';
+    document.getElementById('gbDates').value = '';
+    document.getElementById('gbMessage').value = '';
+    setRating(5);
+    loadGuestBook();
+    showToast('Your note has been added to the Guest Book!');
+  }
+
+  loadGuestBook();
+
+  // ===================== CHECKOUT CHECKLIST =====================
+  var checklistItems = [
+    'Strip all bed linens and leave on bedroom floors',
+    'Place used towels in bathtubs',
+    'Empty all trash into outdoor bins',
+    'Run dishwasher with remaining dishes',
+    'Clean BBQ grill grates and replace cover',
+    'Return all beach badges to hook by front door',
+    'Close and lock all windows',
+    'Lock all doors \u2014 front, back, and garage',
+    'Turn off all lights and ceiling fans',
+    'Set A/C to 78\u00b0F before departing',
+    'Report any damages to T3D Properties: (609) 555-0184',
+    'Leave a note in the Guest Book!',
+  ];
+
+  function buildChecklist() {
+    var stored = JSON.parse(localStorage.getItem('bw_checklist') || '{}');
+    var container = document.getElementById('checklistItems');
+    if (!container) return;
+    container.innerHTML = '';
+    checklistItems.forEach(function(text, i) {
+      var done = !!stored[i];
+      var item = document.createElement('div');
+      item.className = 'checklist-item' + (done ? ' done' : '');
+      item.setAttribute('data-idx', i);
+      item.onclick = function() { toggleCheck(i); };
+      item.innerHTML =
+        '<div class="checklist-box">' + (done ? '&#10003;' : '') + '</div>' +
+        '<span class="checklist-text">' + text + '</span>';
+      container.appendChild(item);
+    });
+    updateChecklistProgress();
+  }
+
+  function toggleCheck(i) {
+    var stored = JSON.parse(localStorage.getItem('bw_checklist') || '{}');
+    stored[i] = !stored[i];
+    localStorage.setItem('bw_checklist', JSON.stringify(stored));
+    buildChecklist();
+  }
+
+  function resetChecklist() {
+    localStorage.removeItem('bw_checklist');
+    buildChecklist();
+    showToast('Checklist reset.');
+  }
+
+  function updateChecklistProgress() {
+    var stored = JSON.parse(localStorage.getItem('bw_checklist') || '{}');
+    var done  = Object.values(stored).filter(Boolean).length;
+    var total = checklistItems.length;
+    var pct   = Math.round((done / total) * 100);
+    var bar   = document.getElementById('checklistBar');
+    var label = document.getElementById('checklistProgress');
+    if (bar)   bar.style.width = pct + '%';
+    if (label) label.textContent = done + ' of ' + total + ' done';
+  }
+
+  buildChecklist();
 </script>
 </body>
 </html>
