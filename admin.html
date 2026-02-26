@@ -345,6 +345,53 @@
       .output-panel { position: static; }
       .form-row { grid-template-columns: 1fr; }
     }
+
+    /* ---- EVENTS ADMIN ---- */
+    .events-admin-section {
+      margin-top: 52px;
+      padding-top: 48px;
+      border-top: 2px solid var(--sand-dark);
+    }
+    .events-admin-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+    .admin-event-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--sand-dark);
+    }
+    .admin-event-item:last-child { border-bottom: none; }
+    .admin-event-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .admin-event-body { flex: 1; min-width: 0; }
+    .admin-event-title { font-size: 14px; font-weight: 400; color: var(--text); }
+    .admin-event-meta  { font-size: 11px; color: var(--text-light); margin-top: 2px; line-height: 1.5; }
+    .admin-event-del {
+      background: none; border: 1px solid var(--sand-dark); border-radius: 6px;
+      padding: 4px 10px; font-family: 'Jost', sans-serif; font-size: 10px;
+      color: var(--text-light); cursor: pointer; flex-shrink: 0; transition: all 0.2s;
+    }
+    .admin-event-del:hover { border-color: var(--coral); color: var(--coral); }
+    .ev-empty {
+      text-align: center; padding: 32px 0;
+      font-size: 13px; color: var(--text-light); font-weight: 300;
+    }
+    .ev-count {
+      font-size: 11px; color: var(--text-light);
+      margin-bottom: 16px; letter-spacing: 0.5px;
+    }
+    @media (max-width: 860px) {
+      .events-admin-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -475,6 +522,95 @@
       </div>
     </div>
   </div>
+
+  <!-- ===================== EVENTS ADMIN ===================== -->
+  <div class="events-admin-section">
+    <div class="page-eyebrow">Season Calendar</div>
+    <h2 class="page-title" style="font-size:36px;margin-bottom:6px">Manage Events</h2>
+    <p class="page-desc">Add Avalon &amp; Stone Harbor events for the season. Guests see only the events that fall within their rental dates.</p>
+
+    <div class="events-admin-grid">
+
+      <!-- ADD EVENT FORM -->
+      <div class="card">
+        <div class="card-title">&#127881; Add New Event</div>
+
+        <div class="form-group">
+          <label class="form-label">Event Name</label>
+          <input type="text" class="form-input" id="evTitle" placeholder="e.g. Avalon Summer Concert Series">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-input" id="evDate">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Time</label>
+            <input type="text" class="form-input" id="evTime" placeholder="e.g. 7:00 PM – 9:00 PM">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Location</label>
+          <input type="text" class="form-input" id="evLocation" placeholder="e.g. Veterans Memorial Park, 30th St">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select class="form-select" id="evCategory">
+              <option value="music">&#127928; Music</option>
+              <option value="food">&#127869; Food &amp; Drink</option>
+              <option value="activity">&#127940; Activities</option>
+              <option value="family">&#127965; Family</option>
+              <option value="nature">&#127807; Nature</option>
+              <option value="special">&#10024; Special</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Admission</label>
+            <select class="form-select" id="evFree" onchange="togglePriceField()">
+              <option value="free">Free</option>
+              <option value="paid">Paid</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" id="evPriceGroup" style="display:none">
+          <label class="form-label">Price</label>
+          <input type="text" class="form-input" id="evPrice" placeholder="e.g. $25/person">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description <span style="font-size:10px;text-transform:none;letter-spacing:0">(optional)</span></label>
+          <textarea class="form-input" id="evDesc" placeholder="Brief description for guests..." style="min-height:68px;resize:vertical"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Link / URL <span style="font-size:10px;text-transform:none;letter-spacing:0">(optional)</span></label>
+          <input type="url" class="form-input" id="evUrl" placeholder="https://...">
+          <div class="form-hint">Guests can tap the card to get more info</div>
+        </div>
+
+        <button class="btn btn-teal btn-block" onclick="addEvent()" style="margin-top:4px">
+          &#43; Add Event
+        </button>
+      </div>
+
+      <!-- EVENT LIST -->
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div class="card-title" style="margin-bottom:0">&#128197; Saved Events</div>
+          <button class="btn btn-ghost btn-sm" onclick="clearAllEvents()">Clear All</button>
+        </div>
+        <div class="ev-count" id="eventsCount"></div>
+        <div id="adminEventsList"><div class="ev-empty">No events yet.</div></div>
+      </div>
+
+    </div>
+  </div>
+
 </main>
 
 <div class="toast" id="toast"><span id="toastMsg"></span></div>
@@ -733,6 +869,114 @@
   })();
 
   renderHistory();
+
+  // ===================== EVENTS MANAGEMENT =====================
+  var BW_EVENTS_KEY = 'bw_events';
+
+  var EV_ICON = {
+    music:    '&#127928;',
+    food:     '&#127869;',
+    activity: '&#127940;',
+    family:   '&#127965;',
+    nature:   '&#127807;',
+    special:  '&#10024;'
+  };
+  var EV_COLOR = {
+    music:    'linear-gradient(135deg,#1e1b4b,#4c1d95)',
+    food:     'linear-gradient(135deg,#7c2d12,#c2410c)',
+    activity: 'linear-gradient(135deg,#0c4a6e,#0369a1)',
+    family:   'linear-gradient(135deg,#78350f,#d97706)',
+    nature:   'linear-gradient(135deg,#064e3b,#059669)',
+    special:  'linear-gradient(135deg,#1e1b4b,#be185d)'
+  };
+
+  function getEvents() {
+    try { return JSON.parse(localStorage.getItem(BW_EVENTS_KEY)) || []; } catch(e) { return []; }
+  }
+  function saveEvents(events) {
+    localStorage.setItem(BW_EVENTS_KEY, JSON.stringify(events));
+  }
+
+  function togglePriceField() {
+    var free = document.getElementById('evFree').value === 'free';
+    document.getElementById('evPriceGroup').style.display = free ? 'none' : 'block';
+  }
+
+  function addEvent() {
+    var title    = document.getElementById('evTitle').value.trim();
+    var date     = document.getElementById('evDate').value;
+    var time     = document.getElementById('evTime').value.trim();
+    var location = document.getElementById('evLocation').value.trim();
+    var category = document.getElementById('evCategory').value;
+    var free     = document.getElementById('evFree').value === 'free';
+    var price    = free ? '' : document.getElementById('evPrice').value.trim();
+    var desc     = document.getElementById('evDesc').value.trim();
+    var url      = document.getElementById('evUrl').value.trim();
+
+    if (!title)    return showToast('Please enter an event name.');
+    if (!date)     return showToast('Please select a date.');
+    if (!location) return showToast('Please enter a location.');
+
+    var events = getEvents();
+    events.push({ id: Date.now().toString(), date: date, title: title, location: location,
+                  time: time, category: category, desc: desc, free: free, price: price, url: url });
+    events.sort(function(a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : a.time < b.time ? -1 : 1; });
+    saveEvents(events);
+    renderAdminEvents();
+    clearEventForm();
+    showToast('Event added!');
+  }
+
+  function deleteEvent(id) {
+    saveEvents(getEvents().filter(function(e) { return e.id !== id; }));
+    renderAdminEvents();
+    showToast('Event removed.');
+  }
+
+  function clearAllEvents() {
+    if (!confirm('Remove all events? This cannot be undone.')) return;
+    localStorage.removeItem(BW_EVENTS_KEY);
+    renderAdminEvents();
+    showToast('All events cleared.');
+  }
+
+  function clearEventForm() {
+    ['evTitle','evTime','evLocation','evDesc','evUrl','evPrice'].forEach(function(id) {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('evCategory').value = 'music';
+    document.getElementById('evFree').value = 'free';
+    togglePriceField();
+  }
+
+  function renderAdminEvents() {
+    var events = getEvents();
+    var countEl = document.getElementById('eventsCount');
+    var list    = document.getElementById('adminEventsList');
+    if (countEl) countEl.textContent = events.length + ' event' + (events.length !== 1 ? 's' : '') + ' saved';
+    if (events.length === 0) { list.innerHTML = '<div class="ev-empty">No events yet. Add your first event to the left.</div>'; return; }
+    list.innerHTML = '';
+    events.forEach(function(e) {
+      var icon  = EV_ICON[e.category]  || '&#127881;';
+      var color = EV_COLOR[e.category] || 'linear-gradient(135deg,#155e56,#2aab9e)';
+      var dLabel = new Date(e.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      var meta   = dLabel + (e.time ? ' \u00b7 ' + escHtml(e.time) : '') + ' \u00b7 ' + escHtml(e.location);
+      if (!e.free && e.price) meta += ' \u00b7 ' + escHtml(e.price);
+      if (e.url) meta += ' \u00b7 <a href="' + escHtml(e.url) + '" target="_blank" style="color:var(--teal)">Link</a>';
+      var item = document.createElement('div');
+      item.className = 'admin-event-item';
+      item.innerHTML =
+        '<div class="admin-event-icon" style="background:' + color + '">' + icon + '</div>' +
+        '<div class="admin-event-body">' +
+          '<div class="admin-event-title">' + escHtml(e.title) + '</div>' +
+          '<div class="admin-event-meta">' + meta + '</div>' +
+        '</div>' +
+        '<button class="admin-event-del" onclick="deleteEvent(\'' + escHtml(e.id) + '\')">Remove</button>';
+      list.appendChild(item);
+    });
+  }
+
+  renderAdminEvents();
 </script>
 </body>
 </html>

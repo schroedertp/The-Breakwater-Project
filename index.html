@@ -3519,53 +3519,91 @@
   }
 
   // ===================== EVENTS =====================
-  var eventsData = [
-    { date: '2025-07-12', title: 'Avalon Seafood Festival', location: 'Avalon Boardwalk, 21st St', time: '12:00 PM \u2013 8:00 PM', category: 'food', desc: "Annual celebration of the Jersey Shore's finest seafood with live music, local vendors, and fresh catches.", free: false, price: '$5 entry', icon: '&#129362;', color: 'linear-gradient(135deg,#7c2d12,#c2410c)' },
-    { date: '2025-07-12', title: 'Stone Harbor Farmers Market', location: '95th St & 2nd Ave, Stone Harbor', time: '8:00 AM \u2013 12:00 PM', category: 'food', desc: 'Fresh local produce, artisan goods, hand-cut flowers, and baked treats every Saturday morning.', free: true, icon: '&#127807;', color: 'linear-gradient(135deg,#14532d,#16a34a)' },
-    { date: '2025-07-13', title: 'Avalon Summer Concert Series', location: "Veteran's Memorial Park, 30th St", time: '7:00 PM \u2013 9:00 PM', category: 'music', desc: "Free outdoor concert at Veteran's Memorial Park. This week: coastal cover band playing classic rock and beach favorites.", free: true, icon: '&#127928;', color: 'linear-gradient(135deg,#1e1b4b,#4c1d95)' },
-    { date: '2025-07-13', title: 'Kayak & Paddleboard Sunset Tour', location: 'Avalon Watersports, 7th St Dock', time: '6:30 PM \u2013 8:30 PM', category: 'activity', desc: 'Guided sunset tour through the back bay. Equipment provided. All skill levels welcome \u2014 a perfect way to close a beach day.', free: false, price: '$45/person', icon: '&#127700;', color: 'linear-gradient(135deg,#0c4a6e,#0369a1)' },
-    { date: '2025-07-14', title: 'Stone Harbor Bird Sanctuary Walk', location: 'Stone Harbor Bird Sanctuary, 114th St', time: '7:30 AM \u2013 9:00 AM', category: 'nature', desc: "Guided morning walk through one of the East Coast's only remaining colonial waterbird nesting sanctuaries. Binoculars provided.", free: true, icon: '&#129413;', color: 'linear-gradient(135deg,#064e3b,#059669)' },
-    { date: '2025-07-15', title: 'Avalon Beach 5K', location: '8th St Beach, Avalon', time: '7:00 AM \u2013 10:00 AM', category: 'activity', desc: 'Annual charity 5K run along the shoreline. All ages and skill levels welcome. Register at the start line morning-of.', free: false, price: '$25 registration', icon: '&#127939;', color: 'linear-gradient(135deg,#7f1d1d,#b91c1c)' },
-    { date: '2025-07-16', title: 'Avalon Wine & Jazz Night', location: 'Avalon Cultural Arts Center, 3100 Dune Dr', time: '7:00 PM \u2013 10:00 PM', category: 'music', desc: 'An evening of smooth jazz, local wine tastings, and light appetizers. Featuring the Cape May Jazz Quartet.', free: false, price: '$35/person', icon: '&#127927;', color: 'linear-gradient(135deg,#3b0764,#7e22ce)' },
-    { date: '2025-07-17', title: 'Stone Harbor Farmers Market', location: '95th St & 2nd Ave, Stone Harbor', time: '8:00 AM \u2013 12:00 PM', category: 'food', desc: 'Fresh local produce, artisan goods, hand-cut flowers, and baked treats every Saturday morning.', free: true, icon: '&#127807;', color: 'linear-gradient(135deg,#14532d,#16a34a)' },
-    { date: '2025-07-18', title: 'Kids\' Sandcastle Competition', location: '21st St Beach, Avalon', time: '10:00 AM \u2013 1:00 PM', category: 'family', desc: 'Annual family sandcastle building contest on the beach. Register the morning of at the lifeguard stand. Prizes for all age groups.', free: true, icon: '&#127963;', color: 'linear-gradient(135deg,#78350f,#d97706)' },
-    { date: '2025-07-19', title: 'July Fireworks Spectacular', location: 'Beach at 32nd St, Avalon', time: '9:00 PM', category: 'special', desc: "Avalon's signature fireworks display launched over the ocean. Arrive by 8pm for best spots on the beach. Bring chairs!", free: true, icon: '&#127878;', color: 'linear-gradient(135deg,#1e1b4b,#be185d)' },
-  ];
+  // ===================== EVENTS =====================
+  var BW_EVENTS_KEY = 'bw_events';
+  var _evFilter = 'all';
+
+  var EV_ICON = {
+    music:    '&#127928;', food:     '&#127869;', activity: '&#127940;',
+    family:   '&#127965;', nature:   '&#127807;', special:  '&#10024;'
+  };
+  var EV_COLOR = {
+    music:    'linear-gradient(135deg,#1e1b4b,#4c1d95)',
+    food:     'linear-gradient(135deg,#7c2d12,#c2410c)',
+    activity: 'linear-gradient(135deg,#0c4a6e,#0369a1)',
+    family:   'linear-gradient(135deg,#78350f,#d97706)',
+    nature:   'linear-gradient(135deg,#064e3b,#059669)',
+    special:  'linear-gradient(135deg,#1e1b4b,#be185d)'
+  };
+
+  function _escEv(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
 
   function renderEvents(filter) {
+    if (filter !== undefined) _evFilter = filter;
     var list = document.getElementById('eventsList');
     if (!list) return;
-    var filtered = filter === 'all' ? eventsData : eventsData.filter(function(e) { return e.category === filter; });
+
+    var allEvents = [];
+    try { allEvents = JSON.parse(localStorage.getItem(BW_EVENTS_KEY)) || []; } catch(e) {}
+
+    // Filter to guest's stay dates if known
+    var ciStr = guestInfo && guestInfo.checkin  ? guestInfo.checkin  : null;
+    var coStr = guestInfo && guestInfo.checkout ? guestInfo.checkout : null;
+    var stayEvents = (ciStr && coStr)
+      ? allEvents.filter(function(e) { return e.date >= ciStr && e.date <= coStr; })
+      : allEvents;
+
+    // Filter by selected category
+    var filtered = _evFilter === 'all'
+      ? stayEvents
+      : stayEvents.filter(function(e) { return e.category === _evFilter; });
+
+    list.innerHTML = '';
+
+    if (allEvents.length === 0) {
+      list.innerHTML = '<div style="text-align:center;padding:60px 0;color:var(--text-light);font-size:14px;font-weight:300">No events have been added yet.<br>Check back closer to your stay.</div>';
+      return;
+    }
+    if (filtered.length === 0) {
+      list.innerHTML = '<div style="text-align:center;padding:60px 0;color:var(--text-light);font-size:14px;font-weight:300">No ' + (_evFilter === 'all' ? '' : _evFilter + ' ') + 'events during your stay.</div>';
+      return;
+    }
+
     var byDate = {};
     filtered.forEach(function(e) { if (!byDate[e.date]) byDate[e.date] = []; byDate[e.date].push(e); });
-    list.innerHTML = '';
+
     Object.keys(byDate).sort().forEach(function(dateStr) {
       var dateLabel = new Date(dateStr + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
       var group = document.createElement('div');
       group.className = 'events-date-group';
       group.innerHTML = '<div class="events-date-label">' + dateLabel + '</div>';
       byDate[dateStr].forEach(function(e) {
+        var icon  = EV_ICON[e.category]  || '&#127881;';
+        var color = EV_COLOR[e.category] || 'linear-gradient(135deg,#155e56,#2aab9e)';
+        var tagHtml = e.free
+          ? '<span class="event-tag event-tag-free">Free</span>'
+          : (e.price ? '<span class="event-tag event-tag-paid">' + _escEv(e.price) + '</span>' : '');
+        var linkHtml = e.url
+          ? '<a href="' + _escEv(e.url) + '" target="_blank" rel="noopener" style="display:inline-block;margin-left:8px;font-size:11px;color:var(--teal);text-decoration:none">Details &#8599;</a>'
+          : '';
         var card = document.createElement('div');
         card.className = 'event-card';
         card.dataset.category = e.category;
-        var tagHtml = e.free
-          ? '<span class="event-tag event-tag-free">Free</span>'
-          : '<span class="event-tag event-tag-paid">' + e.price + '</span>';
+        if (e.url) { card.style.cursor = 'pointer'; card.addEventListener('click', (function(u){ return function(ev){ if (ev.target.tagName !== 'A') window.open(u,'_blank'); }; })(e.url)); }
         card.innerHTML =
-          '<div class="event-icon" style="background:' + e.color + '">' + e.icon + '</div>' +
+          '<div class="event-icon" style="background:' + color + '">' + icon + '</div>' +
           '<div class="event-body">' +
-            '<div class="event-name">' + e.title + '</div>' +
-            '<div class="event-meta">&#128205; ' + e.location + '<br>&#128336; ' + e.time + '</div>' +
-            '<div class="event-desc">' + e.desc + '</div>' +
-            tagHtml +
+            '<div class="event-name">' + _escEv(e.title) + '</div>' +
+            '<div class="event-meta">&#128205; ' + _escEv(e.location) + (e.time ? '<br>&#128336; ' + _escEv(e.time) : '') + '</div>' +
+            (e.desc ? '<div class="event-desc">' + _escEv(e.desc) + '</div>' : '') +
+            tagHtml + linkHtml +
           '</div>';
         group.appendChild(card);
       });
       list.appendChild(group);
     });
-    if (filtered.length === 0) {
-      list.innerHTML = '<div style="text-align:center;padding:60px 0;color:var(--text-light);font-size:15px">No events in this category during your stay.</div>';
-    }
   }
 
   function filterEvents(cat, btn) {
