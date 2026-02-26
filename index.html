@@ -2889,11 +2889,16 @@
   }
 
   // Auto-unlock when pw is included in the URL, or when a guest link is present
-  if (_params.get('pw') === SITE_PASSWORD || _params.get('guest')) {
-    localStorage.setItem('bw_auth', SITE_PASSWORD);
+  const _pw = (_params.get('pw') || '').trim().toLowerCase();
+  if (_pw === SITE_PASSWORD.toLowerCase() || _params.get('guest')) {
+    try { localStorage.setItem('bw_auth', SITE_PASSWORD); } catch(e) {}
     document.getElementById('lockScreen').style.display = 'none';
-  } else if (localStorage.getItem('bw_auth') === SITE_PASSWORD) {
-    document.getElementById('lockScreen').style.display = 'none';
+  } else {
+    let _stored = '';
+    try { _stored = localStorage.getItem('bw_auth') || ''; } catch(e) {}
+    if (_stored === SITE_PASSWORD) {
+      document.getElementById('lockScreen').style.display = 'none';
+    }
   }
 
   function _fmtShort(iso) {
@@ -2981,7 +2986,7 @@
   function checkPassword() {
     const val = document.getElementById('lockPwd').value.trim().toLowerCase();
     if (val === SITE_PASSWORD.toLowerCase()) {
-      localStorage.setItem('bw_auth', SITE_PASSWORD);
+      try { localStorage.setItem('bw_auth', SITE_PASSWORD); } catch(e) {}
       const lock = document.getElementById('lockScreen');
       lock.classList.add('unlocked');
       setTimeout(() => lock.style.display = 'none', 500);
