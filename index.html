@@ -1241,6 +1241,7 @@
   body.banner-visible #page-book,
   body.banner-visible #page-restaurants,
   body.banner-visible #page-explore,
+  body.banner-visible #page-maintenance { padding-top: 100px; }
   body.banner-visible #page-events,
   body.banner-visible #page-guestbook,
   body.banner-visible #page-maintenance { padding-top: 100px; }
@@ -2873,6 +2874,9 @@
   let guestInfo = null;
   if (_params.get('guest') || _params.get('checkin') || _params.get('checkout')) {
     guestInfo = {
+      name:     _params.get('guest')    || '',
+      checkin:  _params.get('checkin')  || '',
+      checkout: _params.get('checkout') || ''
       name:         _params.get('guest')    || '',
       checkin:      _params.get('checkin')  || '',
       checkout:     _params.get('checkout') || '',
@@ -2906,6 +2910,7 @@
 
   function applyPersonalization() {
     if (!guestInfo) return;
+    const { name, checkin, checkout } = guestInfo;
     const { name, checkin, checkout, adults, children, confirmation } = guestInfo;
     const ciShort = checkin  ? _fmtShort(checkin)  : '';
     const coShort = checkout ? _fmtShort(checkout) : '';
@@ -2976,6 +2981,8 @@
   applyPersonalization();
 
   function checkPassword() {
+    const val = document.getElementById('lockPwd').value;
+    if (val === SITE_PASSWORD) {
     const val = document.getElementById('lockPwd').value.trim().toLowerCase();
     if (val === SITE_PASSWORD.toLowerCase()) {
       localStorage.setItem('bw_auth', SITE_PASSWORD);
@@ -2983,6 +2990,16 @@
       lock.classList.add('unlocked');
       setTimeout(() => lock.style.display = 'none', 500);
     } else {
+      document.getElementById('lockError').textContent = 'Incorrect password. Please try again.';
+      document.getElementById('lockPwd').value = '';
+      document.getElementById('lockPwd').focus();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('lockPwd').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
       const card  = document.querySelector('.lock-card');
       const input = document.getElementById('lockPwd');
       const err   = document.getElementById('lockError');
