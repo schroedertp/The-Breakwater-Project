@@ -1171,9 +1171,13 @@
     text-align: left;
     margin-bottom: 8px;
   }
+  .lock-input-wrap {
+    position: relative;
+    margin-bottom: 16px;
+  }
   .lock-input {
     width: 100%;
-    padding: 14px 16px;
+    padding: 14px 44px 14px 16px;
     border-radius: 10px;
     border: 1px solid rgba(255,255,255,0.2);
     background: rgba(255,255,255,0.1);
@@ -1181,11 +1185,25 @@
     font-family: 'Jost', sans-serif;
     font-size: 16px;
     outline: none;
-    margin-bottom: 16px;
     transition: border-color 0.2s;
   }
   .lock-input:focus { border-color: var(--teal-light); }
   .lock-input::placeholder { color: rgba(255,255,255,0.3); }
+  .lock-pwd-toggle {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: rgba(255,255,255,0.45);
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+  }
+  .lock-pwd-toggle:hover { color: rgba(255,255,255,0.85); }
   .lock-btn {
     width: 100%;
     padding: 14px;
@@ -1580,8 +1598,18 @@
     <div class="lock-logo">The <span>Breakwater</span></div>
     <div class="lock-subtitle">Guest App &middot; Avalon, NJ</div>
     <label class="lock-label" for="lockPwd">Password</label>
-    <input class="lock-input" type="password" id="lockPwd" placeholder="Enter guest password" autocomplete="current-password">
-    <button class="lock-btn" onclick="checkPassword()">Enter</button>
+    <div class="lock-input-wrap">
+      <input class="lock-input" type="password" id="lockPwd" placeholder="Enter guest password" autocomplete="current-password">
+      <button class="lock-pwd-toggle" type="button" aria-label="Show password" id="lockPwdToggle">
+        <svg id="lockEyeOpen" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+        <svg id="lockEyeOff" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>
+        </svg>
+      </button>
+    </div>
+    <button class="lock-btn" type="button" id="lockEnterBtn">Enter</button>
     <div class="lock-error" id="lockError"></div>
   </div>
 </div>
@@ -2870,10 +2898,31 @@
   const _params = new URLSearchParams(window.location.search);
   const GUEST_KEY = 'bw_guest';
 
-  // Read guest info from URL params, falling back to localStorage
+  // Path-based guest: t3dproperties.com/smith → "Smith"
+  // Only treat as a guest path if it looks like a name (no dots, no slashes after trimming)
+  const _rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  const _pathGuest = /^[a-zA-Z0-9][a-zA-Z0-9\- ]*$/.test(_rawPath) ? _rawPath : '';
+
+  // Read guest info from URL path, ?guest= param (legacy), or localStorage
   let guestInfo = null;
-  if (_params.get('guest') || _params.get('checkin') || _params.get('checkout')) {
+  if (_pathGuest) {
+    const rawName = decodeURIComponent(_pathGuest).replace(/-/g, ' ');
+    const displayName = rawName.replace(/\b\w/g, function(c) { return c.toUpperCase(); });
     guestInfo = {
+      name:         displayName,
+      checkin:      _params.get('checkin')  || '',
+      checkout:     _params.get('checkout') || '',
+      adults:       _params.get('adults')   || '',
+      children:     _params.get('children') || '',
+      confirmation: _params.get('conf')     || ''
+    };
+    try { localStorage.setItem(GUEST_KEY, JSON.stringify(guestInfo)); } catch(e) {}
+  } else if (_params.get('guest') || _params.get('checkin') || _params.get('checkout')) {
+    const rawName = _params.get('guest') || '';
+    // Capitalize first letter of each word for display
+    const displayName = rawName.replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+    guestInfo = {
+      name:         displayName,
       name:     _params.get('guest')    || '',
       checkin:  _params.get('checkin')  || '',
       checkout: _params.get('checkout') || ''
@@ -2884,17 +2933,22 @@
       children:     _params.get('children') || '',
       confirmation: _params.get('conf')     || ''
     };
-    localStorage.setItem(GUEST_KEY, JSON.stringify(guestInfo));
+    try { localStorage.setItem(GUEST_KEY, JSON.stringify(guestInfo)); } catch(e) {}
   } else {
     try { guestInfo = JSON.parse(localStorage.getItem(GUEST_KEY)); } catch(e) {}
   }
 
-  // Auto-unlock when pw is included in the URL
-  if (_params.get('pw') === SITE_PASSWORD) {
-    localStorage.setItem('bw_auth', SITE_PASSWORD);
+  // Auto-unlock when pw is in the URL, or when a guest path/param is present
+  const _pw = (_params.get('pw') || '').trim().toLowerCase();
+  if (_pw === SITE_PASSWORD.toLowerCase() || _pathGuest || _params.get('guest')) {
+    try { localStorage.setItem('bw_auth', SITE_PASSWORD); } catch(e) {}
     document.getElementById('lockScreen').style.display = 'none';
-  } else if (localStorage.getItem('bw_auth') === SITE_PASSWORD) {
-    document.getElementById('lockScreen').style.display = 'none';
+  } else {
+    let _stored = '';
+    try { _stored = localStorage.getItem('bw_auth') || ''; } catch(e) {}
+    if (_stored === SITE_PASSWORD) {
+      document.getElementById('lockScreen').style.display = 'none';
+    }
   }
 
   function _fmtShort(iso) {
@@ -2985,7 +3039,7 @@
     if (val === SITE_PASSWORD) {
     const val = document.getElementById('lockPwd').value.trim().toLowerCase();
     if (val === SITE_PASSWORD.toLowerCase()) {
-      localStorage.setItem('bw_auth', SITE_PASSWORD);
+      try { localStorage.setItem('bw_auth', SITE_PASSWORD); } catch(e) {}
       const lock = document.getElementById('lockScreen');
       lock.classList.add('unlocked');
       setTimeout(() => lock.style.display = 'none', 500);
@@ -3014,6 +3068,29 @@
       card.addEventListener('animationend', () => card.classList.remove('shake'), { once: true });
     }
   }
+
+  function togglePwdVisibility() {
+    const input  = document.getElementById('lockPwd');
+    const eyeOn  = document.getElementById('lockEyeOpen');
+    const eyeOff = document.getElementById('lockEyeOff');
+    const toggle = document.getElementById('lockPwdToggle');
+    if (input.type === 'password') {
+      input.type = 'text';
+      eyeOn.style.display  = 'none';
+      eyeOff.style.display = '';
+      toggle.setAttribute('aria-label', 'Hide password');
+    } else {
+      input.type = 'password';
+      eyeOn.style.display  = '';
+      eyeOff.style.display = 'none';
+      toggle.setAttribute('aria-label', 'Show password');
+    }
+    input.focus();
+  }
+
+  document.getElementById('lockEnterBtn').addEventListener('click', checkPassword);
+
+  document.getElementById('lockPwdToggle').addEventListener('click', togglePwdVisibility);
 
   document.getElementById('lockPwd').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
@@ -3466,53 +3543,91 @@
   }
 
   // ===================== EVENTS =====================
-  var eventsData = [
-    { date: '2025-07-12', title: 'Avalon Seafood Festival', location: 'Avalon Boardwalk, 21st St', time: '12:00 PM \u2013 8:00 PM', category: 'food', desc: "Annual celebration of the Jersey Shore's finest seafood with live music, local vendors, and fresh catches.", free: false, price: '$5 entry', icon: '&#129362;', color: 'linear-gradient(135deg,#7c2d12,#c2410c)' },
-    { date: '2025-07-12', title: 'Stone Harbor Farmers Market', location: '95th St & 2nd Ave, Stone Harbor', time: '8:00 AM \u2013 12:00 PM', category: 'food', desc: 'Fresh local produce, artisan goods, hand-cut flowers, and baked treats every Saturday morning.', free: true, icon: '&#127807;', color: 'linear-gradient(135deg,#14532d,#16a34a)' },
-    { date: '2025-07-13', title: 'Avalon Summer Concert Series', location: "Veteran's Memorial Park, 30th St", time: '7:00 PM \u2013 9:00 PM', category: 'music', desc: "Free outdoor concert at Veteran's Memorial Park. This week: coastal cover band playing classic rock and beach favorites.", free: true, icon: '&#127928;', color: 'linear-gradient(135deg,#1e1b4b,#4c1d95)' },
-    { date: '2025-07-13', title: 'Kayak & Paddleboard Sunset Tour', location: 'Avalon Watersports, 7th St Dock', time: '6:30 PM \u2013 8:30 PM', category: 'activity', desc: 'Guided sunset tour through the back bay. Equipment provided. All skill levels welcome \u2014 a perfect way to close a beach day.', free: false, price: '$45/person', icon: '&#127700;', color: 'linear-gradient(135deg,#0c4a6e,#0369a1)' },
-    { date: '2025-07-14', title: 'Stone Harbor Bird Sanctuary Walk', location: 'Stone Harbor Bird Sanctuary, 114th St', time: '7:30 AM \u2013 9:00 AM', category: 'nature', desc: "Guided morning walk through one of the East Coast's only remaining colonial waterbird nesting sanctuaries. Binoculars provided.", free: true, icon: '&#129413;', color: 'linear-gradient(135deg,#064e3b,#059669)' },
-    { date: '2025-07-15', title: 'Avalon Beach 5K', location: '8th St Beach, Avalon', time: '7:00 AM \u2013 10:00 AM', category: 'activity', desc: 'Annual charity 5K run along the shoreline. All ages and skill levels welcome. Register at the start line morning-of.', free: false, price: '$25 registration', icon: '&#127939;', color: 'linear-gradient(135deg,#7f1d1d,#b91c1c)' },
-    { date: '2025-07-16', title: 'Avalon Wine & Jazz Night', location: 'Avalon Cultural Arts Center, 3100 Dune Dr', time: '7:00 PM \u2013 10:00 PM', category: 'music', desc: 'An evening of smooth jazz, local wine tastings, and light appetizers. Featuring the Cape May Jazz Quartet.', free: false, price: '$35/person', icon: '&#127927;', color: 'linear-gradient(135deg,#3b0764,#7e22ce)' },
-    { date: '2025-07-17', title: 'Stone Harbor Farmers Market', location: '95th St & 2nd Ave, Stone Harbor', time: '8:00 AM \u2013 12:00 PM', category: 'food', desc: 'Fresh local produce, artisan goods, hand-cut flowers, and baked treats every Saturday morning.', free: true, icon: '&#127807;', color: 'linear-gradient(135deg,#14532d,#16a34a)' },
-    { date: '2025-07-18', title: 'Kids\' Sandcastle Competition', location: '21st St Beach, Avalon', time: '10:00 AM \u2013 1:00 PM', category: 'family', desc: 'Annual family sandcastle building contest on the beach. Register the morning of at the lifeguard stand. Prizes for all age groups.', free: true, icon: '&#127963;', color: 'linear-gradient(135deg,#78350f,#d97706)' },
-    { date: '2025-07-19', title: 'July Fireworks Spectacular', location: 'Beach at 32nd St, Avalon', time: '9:00 PM', category: 'special', desc: "Avalon's signature fireworks display launched over the ocean. Arrive by 8pm for best spots on the beach. Bring chairs!", free: true, icon: '&#127878;', color: 'linear-gradient(135deg,#1e1b4b,#be185d)' },
-  ];
+  // ===================== EVENTS =====================
+  var BW_EVENTS_KEY = 'bw_events';
+  var _evFilter = 'all';
+
+  var EV_ICON = {
+    music:    '&#127928;', food:     '&#127869;', activity: '&#127940;',
+    family:   '&#127965;', nature:   '&#127807;', special:  '&#10024;'
+  };
+  var EV_COLOR = {
+    music:    'linear-gradient(135deg,#1e1b4b,#4c1d95)',
+    food:     'linear-gradient(135deg,#7c2d12,#c2410c)',
+    activity: 'linear-gradient(135deg,#0c4a6e,#0369a1)',
+    family:   'linear-gradient(135deg,#78350f,#d97706)',
+    nature:   'linear-gradient(135deg,#064e3b,#059669)',
+    special:  'linear-gradient(135deg,#1e1b4b,#be185d)'
+  };
+
+  function _escEv(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
 
   function renderEvents(filter) {
+    if (filter !== undefined) _evFilter = filter;
     var list = document.getElementById('eventsList');
     if (!list) return;
-    var filtered = filter === 'all' ? eventsData : eventsData.filter(function(e) { return e.category === filter; });
+
+    var allEvents = [];
+    try { allEvents = JSON.parse(localStorage.getItem(BW_EVENTS_KEY)) || []; } catch(e) {}
+
+    // Filter to guest's stay dates if known
+    var ciStr = guestInfo && guestInfo.checkin  ? guestInfo.checkin  : null;
+    var coStr = guestInfo && guestInfo.checkout ? guestInfo.checkout : null;
+    var stayEvents = (ciStr && coStr)
+      ? allEvents.filter(function(e) { return e.date >= ciStr && e.date <= coStr; })
+      : allEvents;
+
+    // Filter by selected category
+    var filtered = _evFilter === 'all'
+      ? stayEvents
+      : stayEvents.filter(function(e) { return e.category === _evFilter; });
+
+    list.innerHTML = '';
+
+    if (allEvents.length === 0) {
+      list.innerHTML = '<div style="text-align:center;padding:60px 0;color:var(--text-light);font-size:14px;font-weight:300">No events have been added yet.<br>Check back closer to your stay.</div>';
+      return;
+    }
+    if (filtered.length === 0) {
+      list.innerHTML = '<div style="text-align:center;padding:60px 0;color:var(--text-light);font-size:14px;font-weight:300">No ' + (_evFilter === 'all' ? '' : _evFilter + ' ') + 'events during your stay.</div>';
+      return;
+    }
+
     var byDate = {};
     filtered.forEach(function(e) { if (!byDate[e.date]) byDate[e.date] = []; byDate[e.date].push(e); });
-    list.innerHTML = '';
+
     Object.keys(byDate).sort().forEach(function(dateStr) {
       var dateLabel = new Date(dateStr + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
       var group = document.createElement('div');
       group.className = 'events-date-group';
       group.innerHTML = '<div class="events-date-label">' + dateLabel + '</div>';
       byDate[dateStr].forEach(function(e) {
+        var icon  = EV_ICON[e.category]  || '&#127881;';
+        var color = EV_COLOR[e.category] || 'linear-gradient(135deg,#155e56,#2aab9e)';
+        var tagHtml = e.free
+          ? '<span class="event-tag event-tag-free">Free</span>'
+          : (e.price ? '<span class="event-tag event-tag-paid">' + _escEv(e.price) + '</span>' : '');
+        var linkHtml = e.url
+          ? '<a href="' + _escEv(e.url) + '" target="_blank" rel="noopener" style="display:inline-block;margin-left:8px;font-size:11px;color:var(--teal);text-decoration:none">Details &#8599;</a>'
+          : '';
         var card = document.createElement('div');
         card.className = 'event-card';
         card.dataset.category = e.category;
-        var tagHtml = e.free
-          ? '<span class="event-tag event-tag-free">Free</span>'
-          : '<span class="event-tag event-tag-paid">' + e.price + '</span>';
+        if (e.url) { card.style.cursor = 'pointer'; card.addEventListener('click', (function(u){ return function(ev){ if (ev.target.tagName !== 'A') window.open(u,'_blank'); }; })(e.url)); }
         card.innerHTML =
-          '<div class="event-icon" style="background:' + e.color + '">' + e.icon + '</div>' +
+          '<div class="event-icon" style="background:' + color + '">' + icon + '</div>' +
           '<div class="event-body">' +
-            '<div class="event-name">' + e.title + '</div>' +
-            '<div class="event-meta">&#128205; ' + e.location + '<br>&#128336; ' + e.time + '</div>' +
-            '<div class="event-desc">' + e.desc + '</div>' +
-            tagHtml +
+            '<div class="event-name">' + _escEv(e.title) + '</div>' +
+            '<div class="event-meta">&#128205; ' + _escEv(e.location) + (e.time ? '<br>&#128336; ' + _escEv(e.time) : '') + '</div>' +
+            (e.desc ? '<div class="event-desc">' + _escEv(e.desc) + '</div>' : '') +
+            tagHtml + linkHtml +
           '</div>';
         group.appendChild(card);
       });
       list.appendChild(group);
     });
-    if (filtered.length === 0) {
-      list.innerHTML = '<div style="text-align:center;padding:60px 0;color:var(--text-light);font-size:15px">No events in this category during your stay.</div>';
-    }
   }
 
   function filterEvents(cat, btn) {
@@ -3548,7 +3663,8 @@
 
   function loadGuestBook() {
     var stored = localStorage.getItem('bw_guestbook');
-    var userEntries = stored ? JSON.parse(stored) : [];
+    var userEntries = [];
+    try { userEntries = stored ? JSON.parse(stored) : []; } catch(e) {}
     var allEntries = userEntries.concat(defaultGbEntries);
     var container = document.getElementById('guestbookEntries');
     if (!container) return;
