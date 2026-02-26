@@ -1600,7 +1600,7 @@
     <label class="lock-label" for="lockPwd">Password</label>
     <div class="lock-input-wrap">
       <input class="lock-input" type="password" id="lockPwd" placeholder="Enter guest password" autocomplete="current-password">
-      <button class="lock-pwd-toggle" type="button" onclick="togglePwdVisibility()" aria-label="Show password" id="lockPwdToggle">
+      <button class="lock-pwd-toggle" type="button" aria-label="Show password" id="lockPwdToggle">
         <svg id="lockEyeOpen" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
         </svg>
@@ -1609,7 +1609,7 @@
         </svg>
       </button>
     </div>
-    <button class="lock-btn" onclick="checkPassword()">Enter</button>
+    <button class="lock-btn" type="button" id="lockEnterBtn">Enter</button>
     <div class="lock-error" id="lockError"></div>
   </div>
 </div>
@@ -2899,7 +2899,9 @@
   const GUEST_KEY = 'bw_guest';
 
   // Path-based guest: t3dproperties.com/smith → "Smith"
-  const _pathGuest = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  // Only treat as a guest path if it looks like a name (no dots, no slashes after trimming)
+  const _rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  const _pathGuest = /^[a-zA-Z0-9][a-zA-Z0-9\- ]*$/.test(_rawPath) ? _rawPath : '';
 
   // Read guest info from URL path, ?guest= param (legacy), or localStorage
   let guestInfo = null;
@@ -3085,6 +3087,10 @@
     }
     input.focus();
   }
+
+  document.getElementById('lockEnterBtn').addEventListener('click', checkPassword);
+
+  document.getElementById('lockPwdToggle').addEventListener('click', togglePwdVisibility);
 
   document.getElementById('lockPwd').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
@@ -3657,7 +3663,8 @@
 
   function loadGuestBook() {
     var stored = localStorage.getItem('bw_guestbook');
-    var userEntries = stored ? JSON.parse(stored) : [];
+    var userEntries = [];
+    try { userEntries = stored ? JSON.parse(stored) : []; } catch(e) {}
     var allEntries = userEntries.concat(defaultGbEntries);
     var container = document.getElementById('guestbookEntries');
     if (!container) return;
