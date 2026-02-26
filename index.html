@@ -2897,9 +2897,24 @@
   const _params = new URLSearchParams(window.location.search);
   const GUEST_KEY = 'bw_guest';
 
-  // Read guest info from URL params, falling back to localStorage
+  // Path-based guest: t3dproperties.com/smith → "Smith"
+  const _pathGuest = window.location.pathname.replace(/^\/+|\/+$/g, '');
+
+  // Read guest info from URL path, ?guest= param (legacy), or localStorage
   let guestInfo = null;
-  if (_params.get('guest') || _params.get('checkin') || _params.get('checkout')) {
+  if (_pathGuest) {
+    const rawName = decodeURIComponent(_pathGuest).replace(/-/g, ' ');
+    const displayName = rawName.replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+    guestInfo = {
+      name:         displayName,
+      checkin:      _params.get('checkin')  || '',
+      checkout:     _params.get('checkout') || '',
+      adults:       _params.get('adults')   || '',
+      children:     _params.get('children') || '',
+      confirmation: _params.get('conf')     || ''
+    };
+    try { localStorage.setItem(GUEST_KEY, JSON.stringify(guestInfo)); } catch(e) {}
+  } else if (_params.get('guest') || _params.get('checkin') || _params.get('checkout')) {
     const rawName = _params.get('guest') || '';
     // Capitalize first letter of each word for display
     const displayName = rawName.replace(/\b\w/g, function(c) { return c.toUpperCase(); });
@@ -2911,14 +2926,14 @@
       children:     _params.get('children') || '',
       confirmation: _params.get('conf')     || ''
     };
-    localStorage.setItem(GUEST_KEY, JSON.stringify(guestInfo));
+    try { localStorage.setItem(GUEST_KEY, JSON.stringify(guestInfo)); } catch(e) {}
   } else {
     try { guestInfo = JSON.parse(localStorage.getItem(GUEST_KEY)); } catch(e) {}
   }
 
-  // Auto-unlock when pw is included in the URL, or when a guest link is present
+  // Auto-unlock when pw is in the URL, or when a guest path/param is present
   const _pw = (_params.get('pw') || '').trim().toLowerCase();
-  if (_pw === SITE_PASSWORD.toLowerCase() || _params.get('guest')) {
+  if (_pw === SITE_PASSWORD.toLowerCase() || _pathGuest || _params.get('guest')) {
     try { localStorage.setItem('bw_auth', SITE_PASSWORD); } catch(e) {}
     document.getElementById('lockScreen').style.display = 'none';
   } else {

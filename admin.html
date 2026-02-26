@@ -391,8 +391,8 @@
 
         <div class="form-group">
           <label class="form-label">App Base URL</label>
-          <input type="text" class="form-input" id="inBaseUrl" placeholder="https://yoursite.com/index.html" oninput="onFormChange()">
-          <div class="form-hint">The public URL where the app is hosted</div>
+          <input type="text" class="form-input" id="inBaseUrl" placeholder="https://t3dproperties.com" oninput="onFormChange()">
+          <div class="form-hint">The public URL where the app is hosted (no trailing slash)</div>
         </div>
 
         <button class="btn btn-primary btn-block" onclick="generateLink()" style="margin-top:8px">
@@ -530,9 +530,9 @@
     if (!checkout) return showToast('Please enter a check-out date.');
     if (!baseUrl)  return showToast('Please enter the app base URL.');
 
-    // Build simple URL — just the last name
-    var base = baseUrl.replace(/\/$/, '');
-    generatedUrl = base + '?guest=' + encodeURIComponent(name);
+    // Build clean path-based URL: t3dproperties.com/smith
+    var base = baseUrl.replace(/\/$/, '').replace(/\/index\.html$/, '');
+    generatedUrl = base + '/' + encodeURIComponent(name.toLowerCase().replace(/\s+/g, '-'));
 
     // Show output panel
     document.getElementById('outputEmpty').style.display   = 'none';
