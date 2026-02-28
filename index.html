@@ -2970,7 +2970,7 @@
     // Hero subtitle
     if (name) {
       const el = document.getElementById('heroSubtitle');
-      if (el) el.textContent = 'Welcome, ' + name + '!';
+      if (el) el.textContent = 'Welcome, ' + name + ' Family!';
     }
     // Hero date cards
     if (ciShort) { const el = document.getElementById('heroCheckin');  if (el) el.textContent = ciShort; }
@@ -3021,7 +3021,7 @@
     // Guest banner text
     const banner = document.getElementById('guestBanner');
     if (banner && name) {
-      let txt = name;
+      let txt = name + ' Family';
       if (ciShort && coShort) txt += ' \u00b7 ' + ciShort + '\u2013' + coShort;
       banner.textContent = txt;
     }
