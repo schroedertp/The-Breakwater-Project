@@ -3035,8 +3035,6 @@
   applyPersonalization();
 
   function checkPassword() {
-    const val = document.getElementById('lockPwd').value;
-    if (val === SITE_PASSWORD) {
     const val = document.getElementById('lockPwd').value.trim().toLowerCase();
     if (val === SITE_PASSWORD.toLowerCase()) {
       try { localStorage.setItem('bw_auth', SITE_PASSWORD); } catch(e) {}
@@ -3044,23 +3042,12 @@
       lock.classList.add('unlocked');
       setTimeout(() => lock.style.display = 'none', 500);
     } else {
-      document.getElementById('lockError').textContent = 'Incorrect password. Please try again.';
-      document.getElementById('lockPwd').value = '';
-      document.getElementById('lockPwd').focus();
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('lockPwd').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') checkPassword();
-    });
       const card  = document.querySelector('.lock-card');
       const input = document.getElementById('lockPwd');
       const err   = document.getElementById('lockError');
       err.textContent = 'Incorrect password. Please try again.';
       input.classList.add('error');
       card.classList.remove('shake');
-      // Force reflow so the animation restarts if triggered twice in a row
       void card.offsetWidth;
       card.classList.add('shake');
       input.value = '';
