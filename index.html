@@ -2923,10 +2923,6 @@
     const displayName = rawName.replace(/\b\w/g, function(c) { return c.toUpperCase(); });
     guestInfo = {
       name:         displayName,
-      name:     _params.get('guest')    || '',
-      checkin:  _params.get('checkin')  || '',
-      checkout: _params.get('checkout') || ''
-      name:         _params.get('guest')    || '',
       checkin:      _params.get('checkin')  || '',
       checkout:     _params.get('checkout') || '',
       adults:       _params.get('adults')   || '',
@@ -2964,7 +2960,6 @@
 
   function applyPersonalization() {
     if (!guestInfo) return;
-    const { name, checkin, checkout } = guestInfo;
     const { name, checkin, checkout, adults, children, confirmation } = guestInfo;
     const ciShort = checkin  ? _fmtShort(checkin)  : '';
     const coShort = checkout ? _fmtShort(checkout) : '';
@@ -3421,8 +3416,6 @@
     const co = new Date(guestInfo.checkout + 'T10:00:00');
     if (!isNaN(co.getTime())) CHECK_OUT = co;
   }
-  const CHECK_IN  = new Date('2026-08-08T15:00:00');
-  const CHECK_OUT = new Date('2026-08-15T10:00:00');
 
   function updateCountdown() {
     const now = new Date();
