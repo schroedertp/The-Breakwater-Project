@@ -9,55 +9,69 @@
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     :root {
-      --teal: #2aab9e;
-      --teal-dark: #1d8278;
-      --teal-deep: #155e56;
-      --teal-light: #5bc9bf;
-      --coral: #e8735a;
-      --coral-light: #f0937d;
-      --sand: #f5ede0;
-      --sand-dark: #e8d8c0;
-      --sand-mid: #d4ba96;
-      --sun: #f5c842;
-      --white: #fdfaf6;
-      --text: #1e2d2b;
-      --text-light: #5a7270;
+      /* Ocean blues */
+      --ocean: #0ea5e9;
+      --ocean-dark: #0284c7;
+      --ocean-deep: #075985;
+      --ocean-light: #38bdf8;
+      --ocean-pale: #e0f2fe;
+      /* Backwards-compat aliases used throughout */
+      --teal: #0ea5e9;
+      --teal-dark: #0284c7;
+      --teal-deep: #075985;
+      --teal-light: #38bdf8;
+      /* Warm accents */
+      --coral: #f97316;
+      --coral-light: #fb923c;
+      --sun: #f59e0b;
+      --gold: #f59e0b;
+      /* Neutrals */
+      --sand: #f0f7ff;
+      --sand-warm: #fef9f0;
+      --sand-dark: #dde9f4;
+      --sand-mid: #b8d0e8;
+      --white: #ffffff;
+      /* Text */
+      --text: #0f172a;
+      --text-mid: #334155;
+      --text-light: #64748b;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Jost', sans-serif; background: var(--sand); color: var(--text); overflow-x: hidden; }
+    body { font-family: 'Jost', sans-serif; background: #ffffff; color: var(--text); overflow-x: hidden; }
 
     /* ---- NAVIGATION ---- */
     .nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
-      background: rgba(21, 94, 86, 0.97);
+      background: rgba(255,255,255,0.97);
       backdrop-filter: blur(12px);
-      padding: 0 28px;
+      padding: 0 32px;
       height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid var(--sand-dark);
+      box-shadow: 0 1px 12px rgba(15,23,42,0.06);
     }
     .nav-logo {
       font-family: 'Cormorant Garamond', serif;
       font-size: 22px;
       font-weight: 400;
-      color: var(--white);
+      color: var(--text);
       letter-spacing: 0.5px;
       cursor: pointer;
     }
-    .nav-logo span { color: var(--sun); }
+    .nav-logo span { color: var(--ocean); }
     .nav-tabs { display: flex; gap: 2px; list-style: none; }
     .nav-tabs button {
       background: none;
       border: none;
-      color: rgba(255,255,255,0.7);
+      color: var(--text-light);
       font-family: 'Jost', sans-serif;
-      font-size: 12px;
-      font-weight: 300;
+      font-size: 11px;
+      font-weight: 400;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       padding: 8px 14px;
@@ -65,8 +79,8 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .nav-tabs button:hover { color: white; background: rgba(255,255,255,0.1); }
-    .nav-tabs button.active { color: var(--sun); background: rgba(245,200,66,0.15); }
+    .nav-tabs button:hover { color: var(--ocean); background: var(--ocean-pale); }
+    .nav-tabs button.active { color: var(--ocean); background: var(--ocean-pale); font-weight: 500; }
     .nav-hamburger {
       display: none;
       flex-direction: column;
@@ -78,7 +92,7 @@
       display: block;
       width: 22px;
       height: 2px;
-      background: white;
+      background: var(--text);
       border-radius: 2px;
       transition: 0.3s;
     }
@@ -91,39 +105,20 @@
     .hero {
       position: relative;
       height: 100vh;
-      min-height: 600px;
-      background: linear-gradient(160deg, var(--teal-deep) 0%, var(--teal) 45%, var(--teal-light) 75%, #8dd8d2 100%);
+      min-height: 620px;
+      background:
+        linear-gradient(to bottom, rgba(7,41,67,0.45) 0%, rgba(7,41,67,0.25) 40%, rgba(7,41,67,0.55) 100%),
+        url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow: hidden;
     }
-    .sun-orb {
-      position: absolute;
-      top: 12%; right: 12%;
-      width: 90px; height: 90px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #ffe066, var(--sun));
-      box-shadow: 0 0 70px 30px rgba(245,200,66,.35);
-      animation: sunPulse 4s ease-in-out infinite;
-    }
-    @keyframes sunPulse {
-      0%, 100% { box-shadow: 0 0 60px 25px rgba(245,200,66,.3); }
-      50% { box-shadow: 0 0 90px 40px rgba(245,200,66,.5); }
-    }
-    .bubble {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255,255,255,.12);
-      animation: rise linear infinite;
-    }
-    @keyframes rise {
-      0% { transform: translateY(110vh) scale(.5); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: .6; }
-      100% { transform: translateY(-120px) scale(1.1); opacity: 0; }
-    }
+    /* Swap this URL with your actual property photo when ready */
+    /* .hero { background-image: url('YOUR_PHOTO_URL_HERE'); } */
+    .sun-orb { display: none; }
+    .bubble  { display: none; }
     .hero-content {
       position: relative;
       z-index: 2;
@@ -221,14 +216,14 @@
       border: none;
       transition: all 0.2s;
     }
-    .btn-primary { background: var(--coral); color: white; }
-    .btn-primary:hover { background: var(--coral-light); transform: translateY(-1px); }
-    .btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.45); }
-    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; }
-    .btn-teal { background: var(--teal); color: white; }
-    .btn-teal:hover { background: var(--teal-dark); transform: translateY(-1px); }
+    .btn-primary { background: var(--ocean); color: white; box-shadow: 0 4px 14px rgba(14,165,233,0.35); }
+    .btn-primary:hover { background: var(--ocean-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(14,165,233,0.4); }
+    .btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.6); }
+    .btn-outline:hover { background: rgba(255,255,255,0.15); border-color: white; }
+    .btn-teal { background: var(--ocean); color: white; box-shadow: 0 4px 14px rgba(14,165,233,0.3); }
+    .btn-teal:hover { background: var(--ocean-dark); transform: translateY(-1px); }
     .btn-ghost { background: none; color: var(--text-light); border: 1px solid var(--sand-dark); }
-    .btn-ghost:hover { background: var(--sand); border-color: var(--sand-mid); }
+    .btn-ghost:hover { background: var(--ocean-pale); border-color: var(--ocean-light); color: var(--ocean); }
     .btn-sm { padding: 8px 16px; font-size: 10px; }
 
     /* ---- SECTION LAYOUT ---- */
@@ -242,8 +237,9 @@
       font-size: 11px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--teal);
+      color: var(--ocean);
       margin-bottom: 8px;
+      font-weight: 500;
     }
     .section-title {
       font-family: 'Cormorant Garamond', serif;
@@ -263,9 +259,10 @@
     /* ---- CARDS ---- */
     .card {
       background: var(--white);
-      border-radius: 18px;
-      padding: 24px;
-      box-shadow: 0 2px 20px rgba(30,45,43,0.06);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 4px 24px rgba(15,23,42,0.07), 0 1px 4px rgba(15,23,42,0.04);
+      border: 1px solid var(--sand-dark);
     }
     .card-title {
       font-family: 'Cormorant Garamond', serif;
@@ -276,18 +273,19 @@
     }
 
     /* ---- MY STAY PAGE ---- */
-    #page-stay { background: var(--sand); padding-top: 64px; }
+    #page-stay { background: #f8fafc; padding-top: 64px; }
     .stay-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 22px;
     }
     .stay-booking-card {
-      background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 100%);
+      background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean) 100%);
       color: white;
       border-radius: 20px;
       padding: 32px;
       grid-column: 1 / -1;
+      box-shadow: 0 8px 32px rgba(14,165,233,0.3);
     }
     .booking-confirmation-tag {
       display: inline-block;
@@ -329,9 +327,10 @@
       align-items: center;
       gap: 7px;
       padding: 14px 6px;
-      background: var(--sand);
+      background: var(--ocean-pale);
       border-radius: 12px;
       text-align: center;
+      border: 1px solid var(--sand-dark);
     }
     .amenity-icon { font-size: 22px; }
     .amenity-label { font-size: 10px; color: var(--text-light); font-weight: 300; }
@@ -345,13 +344,14 @@
     .info-row:last-child { border-bottom: none; }
     .info-icon {
       width: 38px; height: 38px;
-      background: var(--sand);
+      background: var(--ocean-pale);
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 18px;
       flex-shrink: 0;
+      border: 1px solid var(--sand-dark);
     }
     .info-label {
       font-size: 10px;
@@ -393,7 +393,7 @@
     }
 
     /* ---- BOOKING PAGE ---- */
-    #page-book { background: var(--sand); padding-top: 64px; }
+    #page-book { background: #f8fafc; padding-top: 64px; }
     .booking-layout {
       display: grid;
       grid-template-columns: 1fr 360px;
@@ -404,7 +404,7 @@
       background: var(--white);
       border-radius: 20px;
       padding: 28px;
-      box-shadow: 0 2px 20px rgba(30,45,43,0.06);
+      box-shadow: 0 2px 20px rgba(15,23,42,0.06);
     }
     .calendar-nav {
       display: flex;
@@ -459,7 +459,7 @@
     .cal-day.today { font-weight: 500; color: var(--teal); }
     .cal-day.booked { background: var(--sand-dark); color: var(--sand-mid); cursor: not-allowed; text-decoration: line-through; }
     .cal-day.selected { background: var(--teal); color: white; font-weight: 500; }
-    .cal-day.in-range { background: rgba(42,171,158,0.14); color: var(--teal-dark); border-radius: 0; }
+    .cal-day.in-range { background: rgba(14,165,233,0.14); color: var(--teal-dark); border-radius: 0; }
     .cal-day.range-start { background: var(--teal); color: white; border-radius: 8px 0 0 8px; }
     .cal-day.range-end { background: var(--teal); color: white; border-radius: 0 8px 8px 0; }
     .cal-legend { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
@@ -526,7 +526,7 @@
     }
 
     /* ---- RESTAURANTS PAGE ---- */
-    #page-restaurants { background: var(--sand); padding-top: 64px; }
+    #page-restaurants { background: #f8fafc; padding-top: 64px; }
     .restaurants-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -536,21 +536,24 @@
       background: var(--white);
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 2px 20px rgba(30,45,43,0.06);
+      box-shadow: 0 2px 20px rgba(15,23,42,0.06);
       transition: transform 0.2s, box-shadow 0.2s;
     }
     .restaurant-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 32px rgba(30,45,43,0.12);
+      box-shadow: 0 8px 32px rgba(15,23,42,0.12);
     }
     .restaurant-img {
-      height: 170px;
+      height: 190px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 52px;
+      font-size: 0;
       position: relative;
       overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--sand);
     }
     .restaurant-img::after {
       content: '';
@@ -600,7 +603,7 @@
     .restaurant-actions { display: flex; gap: 8px; }
 
     /* ---- MAINTENANCE PAGE ---- */
-    #page-maintenance { background: var(--sand); padding-top: 64px; }
+    #page-maintenance { background: #f8fafc; padding-top: 64px; }
     .maintenance-layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -617,7 +620,7 @@
       font-weight: 500;
     }
     .status-open { background: rgba(232,115,90,0.14); color: var(--coral); }
-    .status-progress { background: rgba(42,171,158,0.14); color: var(--teal-dark); }
+    .status-progress { background: rgba(14,165,233,0.14); color: var(--teal-dark); }
     .status-resolved { background: rgba(90,114,112,0.12); color: var(--text-light); }
     .request-item {
       padding: 15px;
@@ -650,8 +653,8 @@
       transition: all 0.2s;
       font-family: 'Jost', sans-serif;
     }
-    .category-btn:hover { border-color: var(--teal); background: rgba(42,171,158,0.04); }
-    .category-btn.selected { border-color: var(--teal); background: rgba(42,171,158,0.09); color: var(--teal-dark); }
+    .category-btn:hover { border-color: var(--teal); background: rgba(14,165,233,0.04); }
+    .category-btn.selected { border-color: var(--teal); background: rgba(14,165,233,0.09); color: var(--teal-dark); }
     .cat-icon { font-size: 20px; display: block; margin-bottom: 4px; }
     .cat-label { font-size: 10px; letter-spacing: 0.5px; }
     .textarea {
@@ -673,7 +676,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(21,94,86,0.6);
+      background: rgba(7,41,67,0.6);
       backdrop-filter: blur(4px);
       z-index: 200;
       align-items: center;
@@ -734,7 +737,7 @@
       opacity: 0;
       transition: all 0.3s;
       max-width: 320px;
-      box-shadow: 0 4px 20px rgba(21,94,86,0.3);
+      box-shadow: 0 4px 20px rgba(7,41,67,0.3);
     }
     .toast.show { transform: translateY(0); opacity: 1; }
 
@@ -998,7 +1001,7 @@
     .gallery-trigger-btn:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.5); }
 
     /* ---- EXPLORE PAGE ---- */
-    #page-explore { background: var(--sand); padding-top: 64px; }
+    #page-explore { background: #f8fafc; padding-top: 64px; }
     .explore-filters {
       display: flex;
       gap: 8px;
@@ -1030,20 +1033,23 @@
       background: var(--white);
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 2px 20px rgba(30,45,43,0.06);
+      box-shadow: 0 2px 20px rgba(15,23,42,0.06);
       transition: transform 0.2s, box-shadow 0.2s;
     }
     .explore-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 32px rgba(30,45,43,0.12);
+      box-shadow: 0 8px 32px rgba(15,23,42,0.12);
     }
     .explore-card-img {
-      height: 130px;
+      height: 150px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 46px;
+      font-size: 0;
       position: relative;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--ocean-pale);
     }
     .explore-card-img::after {
       content: '';
@@ -1090,12 +1096,13 @@
       font-size: 10px;
       letter-spacing: 0.5px;
     }
-    .tag-beach { background: rgba(42,171,158,0.12); color: var(--teal-dark); }
+    .tag-beach { background: rgba(14,165,233,0.12); color: var(--teal-dark); }
     .tag-water { background: rgba(30,100,200,0.1); color: #1a60a0; }
     .tag-family { background: rgba(232,115,90,0.12); color: var(--coral); }
     .tag-shopping { background: rgba(140,90,200,0.1); color: #7040aa; }
     .tag-sightseeing { background: rgba(245,200,66,0.18); color: #8a6000; }
     .tag-free { background: rgba(60,160,70,0.12); color: #287a2a; }
+    .tag-golf { background: rgba(60,160,70,0.12); color: #287a2a; }
     .explore-meta {
       display: flex;
       align-items: center;
@@ -1124,7 +1131,9 @@
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: var(--teal-deep);
+    background:
+      linear-gradient(to bottom, rgba(7,41,67,0.6) 0%, rgba(7,41,67,0.5) 100%),
+      url('https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1355,7 +1364,7 @@
     border-radius: 18px;
     padding: 20px 16px;
     text-align: center;
-    box-shadow: 0 2px 18px rgba(30,45,43,0.06);
+    box-shadow: 0 2px 18px rgba(15,23,42,0.06);
   }
   .tide-arrow { font-size: 22px; margin-bottom: 6px; }
   .tide-type {
@@ -1386,7 +1395,7 @@
     margin-top: 6px;
     font-weight: 500;
   }
-  .tide-high { color: var(--teal-dark); background: rgba(42,171,158,0.12); }
+  .tide-high { color: var(--teal-dark); background: rgba(14,165,233,0.12); }
   .tide-low  { color: var(--coral);     background: rgba(232,115,90,0.12); }
 
   /* ---- BEACH BADGE CARD ---- */
@@ -1458,7 +1467,7 @@
   .checklist-reset:hover { border-color: var(--coral); color: var(--coral); }
 
   /* ---- EVENTS PAGE ---- */
-  #page-events { background: var(--sand); padding-top: 64px; }
+  #page-events { background: #f8fafc; padding-top: 64px; }
   .events-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
   .event-pill {
     padding: 8px 16px;
@@ -1493,10 +1502,10 @@
     display: flex;
     gap: 18px;
     align-items: flex-start;
-    box-shadow: 0 2px 16px rgba(30,45,43,0.05);
+    box-shadow: 0 2px 16px rgba(15,23,42,0.05);
     transition: transform 0.15s, box-shadow 0.15s;
   }
-  .event-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(30,45,43,0.1); }
+  .event-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(15,23,42,0.1); }
   .event-icon {
     width: 48px;
     height: 48px;
@@ -1521,11 +1530,11 @@
     margin-top: 8px;
     font-weight: 500;
   }
-  .event-tag-free { background: rgba(42,171,158,0.12); color: var(--teal-dark); }
+  .event-tag-free { background: rgba(14,165,233,0.12); color: var(--teal-dark); }
   .event-tag-paid { background: rgba(232,115,90,0.12); color: var(--coral); }
 
   /* ---- GUEST BOOK PAGE ---- */
-  #page-guestbook { background: var(--sand); padding-top: 64px; }
+  #page-guestbook { background: #f8fafc; padding-top: 64px; }
   .guestbook-layout {
     display: grid;
     grid-template-columns: 1fr 360px;
@@ -1537,7 +1546,7 @@
     border-radius: 18px;
     padding: 26px;
     margin-bottom: 16px;
-    box-shadow: 0 2px 18px rgba(30,45,43,0.06);
+    box-shadow: 0 2px 18px rgba(15,23,42,0.06);
   }
   .guestbook-entry-header {
     display: flex;
@@ -1640,15 +1649,6 @@
 <!-- ===================== HOME PAGE ===================== -->
 <div id="page-home" class="page active">
   <section class="hero">
-    <div class="sun-orb"></div>
-    <div class="bubble" style="left:7%;width:14px;height:14px;animation-duration:7s;animation-delay:0s"></div>
-    <div class="bubble" style="left:17%;width:8px;height:8px;animation-duration:9s;animation-delay:1.2s"></div>
-    <div class="bubble" style="left:34%;width:20px;height:20px;animation-duration:11s;animation-delay:2.5s"></div>
-    <div class="bubble" style="left:54%;width:10px;height:10px;animation-duration:8s;animation-delay:3s"></div>
-    <div class="bubble" style="left:69%;width:16px;height:16px;animation-duration:10s;animation-delay:1.5s"></div>
-    <div class="bubble" style="left:84%;width:7px;height:7px;animation-duration:6s;animation-delay:4s"></div>
-    <div class="bubble" style="left:27%;width:12px;height:12px;animation-duration:12s;animation-delay:0.8s"></div>
-
     <div class="hero-content">
       <div class="hero-eyebrow">T3D Properties &middot; Avalon, New Jersey</div>
       <h1 class="hero-title">The Breakwater</h1>
@@ -1658,13 +1658,11 @@
         <div class="hero-card">
           <div class="hero-card-label">Check In</div>
           <div class="hero-card-value" id="heroCheckin">Aug 8</div>
-          <div class="hero-card-value">Aug 8</div>
           <div class="hero-card-sub">Saturday &middot; 3:00 PM</div>
         </div>
         <div class="hero-card">
           <div class="hero-card-label">Check Out</div>
           <div class="hero-card-value" id="heroCheckout">Aug 15</div>
-          <div class="hero-card-value">Aug 15</div>
           <div class="hero-card-sub">Saturday &middot; 10:00 AM</div>
         </div>
         <div class="hero-card">
@@ -1901,20 +1899,17 @@
       <!-- Booking Confirmation -->
       <div class="stay-booking-card">
         <div class="booking-confirmation-tag" id="stayConfirmation">Confirmation #BW-2026-0808</div>
-        <div class="booking-confirmation-tag">Confirmation #BW-2026-0808</div>
         <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:4px">The Breakwater</h3>
         <p style="opacity:0.65;font-size:13px">103 E 19th St, Avalon, NJ 08202</p>
         <div class="booking-details">
           <div>
             <div class="booking-detail-label">Check In</div>
             <div class="booking-detail-value" id="stayCheckin">Aug 8, 2026</div>
-            <div class="booking-detail-value">Aug 8, 2026</div>
             <div class="booking-detail-sub">Saturday &middot; 3:00 PM</div>
           </div>
           <div>
             <div class="booking-detail-label">Check Out</div>
             <div class="booking-detail-value" id="stayCheckout">Aug 15, 2026</div>
-            <div class="booking-detail-value">Aug 15, 2026</div>
             <div class="booking-detail-sub">Saturday &middot; 10:00 AM</div>
           </div>
           <div>
@@ -1973,7 +1968,7 @@
         <h4 class="card-title">&#10024; Amenities</h4>
         <div class="amenities-grid">
           <div class="amenity-item"><span class="amenity-icon">&#127754;</span><span class="amenity-label">Beach Access</span></div>
-          <div class="amenity-item"><span class="amenity-icon">&#127944;</span><span class="amenity-label">Private Pool</span></div>
+          <div class="amenity-item"><span class="amenity-icon">&#127946;</span><span class="amenity-label">Private Pool</span></div>
           <div class="amenity-item"><span class="amenity-icon">&#9832;&#65039;</span><span class="amenity-label">Hot Tub</span></div>
           <div class="amenity-item"><span class="amenity-icon">&#128250;</span><span class="amenity-label">Smart TV</span></div>
           <div class="amenity-item"><span class="amenity-icon">&#128246;</span><span class="amenity-label">High-Speed WiFi</span></div>
@@ -2020,6 +2015,52 @@
             <div class="info-value">Badges sell out on holiday weekends</div>
             <div class="info-sub">Buy early morning for best availability</div>
           </div>
+        </div>
+      </div>
+
+      <!-- Pool & Hot Tub Instructions -->
+      <div class="card" style="grid-column:1/-1">
+        <h4 class="card-title">&#9832;&#65039; Pool &amp; Hot Tub Instructions</h4>
+        <p style="font-size:13px;color:var(--text-light);margin-bottom:16px;font-weight:300">The pool and spa are controlled by a <strong style="color:var(--text)">Pentair EasyTouch</strong> panel located at the pool equipment area. Follow the steps below.</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+
+          <div class="info-row" style="padding-right:24px">
+            <div class="info-icon">&#9654;&#65039;</div>
+            <div>
+              <div class="info-label">Step 1 &mdash; Turn On</div>
+              <div class="info-value">Press the <strong>SPA</strong> button on the control panel</div>
+              <div class="info-sub">The LED lights up and the filter pump starts. The valves rotate into position &mdash; the pump will briefly pause during this (normal). The heater activates automatically once water is circulating.</div>
+            </div>
+          </div>
+
+          <div class="info-row" style="padding-left:24px;border-left:1px solid var(--sand-dark)">
+            <div class="info-icon">&#127777;&#65039;</div>
+            <div>
+              <div class="info-label">Step 2 &mdash; Set Temperature</div>
+              <div class="info-value">Use the <strong>+ / &minus;</strong> buttons to adjust the set temp</div>
+              <div class="info-sub">Recommended range: 100&ndash;104&deg;F. &ldquo;Heater&rdquo; appears on the display while actively heating. The heater shuts off automatically once the set temperature is reached.</div>
+            </div>
+          </div>
+
+          <div class="info-row" style="padding-right:24px;margin-top:4px">
+            <div class="info-icon">&#9209;&#65039;</div>
+            <div>
+              <div class="info-label">Step 3 &mdash; Turn Off</div>
+              <div class="info-value">Press the <strong>SPA</strong> button again to turn off</div>
+              <div class="info-sub">The LED turns off and the system shuts down. If the heater was running, the pump may continue circulating for up to 10 minutes to cool the heater &mdash; this is normal and expected.</div>
+            </div>
+          </div>
+
+          <div class="info-row" style="padding-left:24px;border-left:1px solid var(--sand-dark);margin-top:4px">
+            <div class="info-icon">&#9888;&#65039;</div>
+            <div>
+              <div class="info-label">Good to Know</div>
+              <div class="info-value">The spa automatically shuts off after 24 hours</div>
+              <div class="info-sub">Always replace the cover when finished to retain heat. If the water appears cloudy or has a strong chemical odor, please do not use it and contact T3D Properties right away.</div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -2081,7 +2122,7 @@
             <div class="legend-dot" style="background:var(--teal)"></div>Selected
           </div>
           <div class="legend-item">
-            <div class="legend-dot" style="background:rgba(42,171,158,.14)"></div>In Range
+            <div class="legend-dot" style="background:rgba(14,165,233,.14)"></div>In Range
           </div>
           <div class="legend-item">
             <div class="legend-dot" style="background:var(--sand-dark)"></div>Unavailable
@@ -2175,8 +2216,8 @@
     <div class="restaurants-grid">
 
       <div class="restaurant-card">
-        <div class="restaurant-img" style="background:linear-gradient(135deg,#1d4e4a,#2aab9e)">
-          &#129362;
+        <div class="restaurant-img" style="background-image:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=600&q=80')">
+          <!-- The Diving Horse -->
           <span class="restaurant-cuisine-tag">Seafood &middot; BYOB</span>
           <span class="restaurant-price-tag">$$$</span>
         </div>
@@ -2196,8 +2237,8 @@
       </div>
 
       <div class="restaurant-card">
-        <div class="restaurant-img" style="background:linear-gradient(135deg,#4a3010,#c87020)">
-          &#127866;
+        <div class="restaurant-img" style="background-image:url('https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=600&q=80')">
+          <!-- Whitebrier -->
           <span class="restaurant-cuisine-tag">American &middot; Bar</span>
           <span class="restaurant-price-tag">$$</span>
         </div>
@@ -2217,8 +2258,8 @@
       </div>
 
       <div class="restaurant-card">
-        <div class="restaurant-img" style="background:linear-gradient(135deg,#1a3050,#2060a0)">
-          &#127828;
+        <div class="restaurant-img" style="background-image:url('https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80')">
+          <!-- Fred's Tavern -->
           <span class="restaurant-cuisine-tag">Bar &amp; Grill</span>
           <span class="restaurant-price-tag">$$</span>
         </div>
@@ -2238,8 +2279,8 @@
       </div>
 
       <div class="restaurant-card">
-        <div class="restaurant-img" style="background:linear-gradient(135deg,#2a1a40,#6030a0)">
-          &#127754;
+        <div class="restaurant-img" style="background-image:url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80')">
+          <!-- Princeton Bar & Grill -->
           <span class="restaurant-cuisine-tag">Seafood &middot; Waterfront</span>
           <span class="restaurant-price-tag">$$$</span>
         </div>
@@ -2259,8 +2300,8 @@
       </div>
 
       <div class="restaurant-card">
-        <div class="restaurant-img" style="background:linear-gradient(135deg,#1a3a18,#388a30)">
-          &#9749;
+        <div class="restaurant-img" style="background-image:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80')">
+          <!-- Avalon Coffee -->
           <span class="restaurant-cuisine-tag">Caf&eacute; &middot; Breakfast</span>
           <span class="restaurant-price-tag">$</span>
         </div>
@@ -2280,8 +2321,8 @@
       </div>
 
       <div class="restaurant-card">
-        <div class="restaurant-img" style="background:linear-gradient(135deg,#3a1010,#a82020)">
-          &#127829;
+        <div class="restaurant-img" style="background-image:url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80')">
+          <!-- Casel's Market -->
           <span class="restaurant-cuisine-tag">Italian &middot; Deli</span>
           <span class="restaurant-price-tag">$$</span>
         </div>
@@ -2320,13 +2361,14 @@
       <button class="filter-pill" onclick="filterExplore('family', this)">&#128106; Family</button>
       <button class="filter-pill" onclick="filterExplore('shopping', this)">&#128717; Shopping</button>
       <button class="filter-pill" onclick="filterExplore('sightseeing', this)">&#127966; Sightseeing</button>
+      <button class="filter-pill" onclick="filterExplore('golf', this)">&#9971; Golf</button>
     </div>
 
     <div class="explore-grid">
 
       <!-- BEACHES -->
       <div class="explore-card" data-category="beach">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#0a3050,#1a80c0)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80')">
           &#127754;
           <span class="explore-dist-badge">0.1 mi away</span>
         </div>
@@ -2345,7 +2387,7 @@
       </div>
 
       <div class="explore-card" data-category="beach">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#083a5a,#1a70a8)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=600&q=80')">
           &#127958;
           <span class="explore-dist-badge">0.9 mi away</span>
         </div>
@@ -2365,7 +2407,7 @@
       </div>
 
       <div class="explore-card" data-category="beach">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#0a2840,#1a5890)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1473116763249-2faaef81ccda?auto=format&fit=crop&w=600&q=80')">
           &#127787;
           <span class="explore-dist-badge">2.2 mi away</span>
         </div>
@@ -2386,7 +2428,7 @@
 
       <!-- WATER SPORTS -->
       <div class="explore-card" data-category="water">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#155e56,#2aab9e)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=600&q=80')">
           &#127940;
           <span class="explore-dist-badge">0.5 mi away</span>
         </div>
@@ -2405,7 +2447,7 @@
       </div>
 
       <div class="explore-card" data-category="water">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#0a3a50,#1a7080)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1472745433479-4556f973e5b1?auto=format&fit=crop&w=600&q=80')">
           &#128675;
           <span class="explore-dist-badge">1.1 mi away</span>
         </div>
@@ -2424,7 +2466,7 @@
       </div>
 
       <div class="explore-card" data-category="water">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#1a2040,#3050a0)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=600&q=80')">
           &#128011;
           <span class="explore-dist-badge">15 mi south</span>
         </div>
@@ -2444,7 +2486,7 @@
 
       <!-- FAMILY -->
       <div class="explore-card" data-category="family">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#2a3a10,#5a8020)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1474511320723-9a56873867b5?auto=format&fit=crop&w=600&q=80')">
           &#129426;
           <span class="explore-dist-badge">12 mi away</span>
         </div>
@@ -2463,7 +2505,7 @@
       </div>
 
       <div class="explore-card" data-category="family">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#1a3a30,#2a7060)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1443890923422-7819ed4101c0?auto=format&fit=crop&w=600&q=80')">
           &#128034;
           <span class="explore-dist-badge">3 mi away</span>
         </div>
@@ -2482,7 +2524,7 @@
       </div>
 
       <div class="explore-card" data-category="family">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#3a1a40,#8030a0)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1535982330050-f1c2fb79ff78?auto=format&fit=crop&w=600&q=80')">
           &#9971;
           <span class="explore-dist-badge">0.8 mi away</span>
         </div>
@@ -2501,7 +2543,7 @@
 
       <!-- SHOPPING -->
       <div class="explore-card" data-category="shopping">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#3a2a10,#8a6020)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=600&q=80')">
           &#127873;
           <span class="explore-dist-badge">0.3 mi away</span>
         </div>
@@ -2520,7 +2562,7 @@
       </div>
 
       <div class="explore-card" data-category="shopping">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#1a3a20,#3a8040)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=600&q=80')">
           &#127807;
           <span class="explore-dist-badge">1.2 mi away</span>
         </div>
@@ -2540,7 +2582,7 @@
 
       <!-- SIGHTSEEING -->
       <div class="explore-card" data-category="sightseeing">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#3a2a10,#c88020)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1529946825062-62c9e0b5d6a3?auto=format&fit=crop&w=600&q=80')">
           &#127956;
           <span class="explore-dist-badge">22 mi south</span>
         </div>
@@ -2559,7 +2601,7 @@
       </div>
 
       <div class="explore-card" data-category="sightseeing">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#1a2a40,#3a5080)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=600&q=80')">
           &#9875;
           <span class="explore-dist-badge">7 mi away</span>
         </div>
@@ -2578,7 +2620,7 @@
       </div>
 
       <div class="explore-card" data-category="sightseeing">
-        <div class="explore-card-img" style="background:linear-gradient(135deg,#0a3020,#1a6040)">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80')">
           &#129413;
           <span class="explore-dist-badge">4 mi away</span>
         </div>
@@ -2592,6 +2634,83 @@
           <div class="explore-meta">
             <span>Open daily &middot; Dawn to dusk</span>
             <span class="star-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- GOLF -->
+      <div class="explore-card" data-category="golf">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=600&q=80')">
+          &#9971;
+          <span class="explore-dist-badge">9 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Avalon Golf Club</div>
+          <div class="explore-card-desc">Award-winning 18-hole championship course in Swainton. Consistently ranked among South Jersey's best. Scenic layout with challenging par-5s and impeccable conditioning.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-golf">18 Holes</span>
+            <span class="explore-tag tag-golf">Championship</span>
+          </div>
+          <div class="explore-meta">
+            <span>Swainton, NJ &middot; (609) 465-4653</span>
+            <a href="https://www.golfnow.com/tee-times/facility/6558-avalon-golf-club/search" target="_blank" rel="noopener" class="btn btn-teal btn-sm" style="text-decoration:none;display:inline-block;">Book Tee Time</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-card" data-category="golf">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&w=600&q=80')">
+          &#9971;
+          <span class="explore-dist-badge">11 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Stone Harbor Golf Club</div>
+          <div class="explore-card-desc">Classic 18-hole layout in Cape May Court House with a welcoming atmosphere. Tree-lined fairways and fast greens make this a favorite for a relaxed but satisfying round.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-golf">18 Holes</span>
+            <span class="explore-tag tag-golf">Semi-Private</span>
+          </div>
+          <div class="explore-meta">
+            <span>Cape May C.H. &middot; (609) 465-9270</span>
+            <a href="https://www.golfnow.com/tee-times/facility/6557-stone-harbor-golf-club/search" target="_blank" rel="noopener" class="btn btn-teal btn-sm" style="text-decoration:none;display:inline-block;">Book Tee Time</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-card" data-category="golf">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1461695008884-244cb4543d74?auto=format&fit=crop&w=600&q=80')">
+          &#9971;
+          <span class="explore-dist-badge">14 mi away</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Cape May National Golf Club</div>
+          <div class="explore-card-desc">One of the Shore's most celebrated courses. Carved through wetlands and pines, the layout rewards strategic play. A bucket-list round for any serious golfer visiting South Jersey.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-golf">18 Holes</span>
+            <span class="explore-tag tag-golf">Top-Rated</span>
+          </div>
+          <div class="explore-meta">
+            <span>Cape May C.H. &middot; (609) 884-1563</span>
+            <a href="https://www.golfnow.com/tee-times/facility/2718-cape-may-national-golf-club/search" target="_blank" rel="noopener" class="btn btn-teal btn-sm" style="text-decoration:none;display:inline-block;">Book Tee Time</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-card" data-category="golf">
+        <div class="explore-card-img" style="background-image:url('https://images.unsplash.com/photo-1593111774642-a3a6ea9e3bdf?auto=format&fit=crop&w=600&q=80')">
+          &#9971;
+          <span class="explore-dist-badge">Area courses</span>
+        </div>
+        <div class="explore-card-body">
+          <div class="explore-card-name">Search All Area Courses</div>
+          <div class="explore-card-desc">Browse tee times across all Cape May County courses on GolfNow — compare prices, check availability, and book instantly. Great for finding last-minute deals on premium rounds.</div>
+          <div class="explore-tags">
+            <span class="explore-tag tag-golf">Multiple Courses</span>
+            <span class="explore-tag tag-golf">Best Rates</span>
+          </div>
+          <div class="explore-meta">
+            <span>Powered by GolfNow</span>
+            <a href="https://www.golfnow.com/tee-times/search?metroId=59" target="_blank" rel="noopener" class="btn btn-teal btn-sm" style="text-decoration:none;display:inline-block;">Search Times</a>
           </div>
         </div>
       </div>
@@ -2708,7 +2827,7 @@
               <span class="cat-label">Appliance</span>
             </button>
             <button class="category-btn" onclick="selectCategory(this, 'Pool / Hot Tub')">
-              <span class="cat-icon">&#127944;</span>
+              <span class="cat-icon">&#127946;</span>
               <span class="cat-label">Pool / Hot Tub</span>
             </button>
             <button class="category-btn" onclick="selectCategory(this, 'Exterior')">
@@ -2970,7 +3089,7 @@
     // Hero subtitle
     if (name) {
       const el = document.getElementById('heroSubtitle');
-      if (el) el.textContent = 'Welcome, ' + name + '!';
+      if (el) el.textContent = 'Welcome, ' + name + ' Family!';
     }
     // Hero date cards
     if (ciShort) { const el = document.getElementById('heroCheckin');  if (el) el.textContent = ciShort; }
@@ -3021,7 +3140,7 @@
     // Guest banner text
     const banner = document.getElementById('guestBanner');
     if (banner && name) {
-      let txt = name;
+      let txt = name + ' Family';
       if (ciShort && coShort) txt += ' \u00b7 ' + ciShort + '\u2013' + coShort;
       banner.textContent = txt;
     }
@@ -3453,14 +3572,14 @@
 
   // ===================== PHOTO GALLERY =====================
   const galleryItems = [
-    { emoji: '&#127968;', bg: 'linear-gradient(135deg,#1d4e4a,#2aab9e)',      name: 'The Breakwater',        sub: 'Exterior &middot; 103 E 19th St, Avalon NJ' },
-    { emoji: '&#128636;', bg: 'linear-gradient(135deg,#2a3a50,#3a6080)',      name: 'Living Room',           sub: 'Open concept &middot; Ocean breezes &middot; Smart TV' },
-    { emoji: '&#127859;', bg: 'linear-gradient(135deg,#3a2a1a,#8a5020)',      name: 'Gourmet Kitchen',       sub: 'Fully equipped &middot; Breakfast bar &middot; Farmhouse sink' },
-    { emoji: '&#128716;', bg: 'linear-gradient(135deg,#1a2a3a,#2a5070)',      name: 'Master Suite',          sub: 'King bed &middot; En suite bath &middot; Balcony access' },
-    { emoji: '&#128703;', bg: 'linear-gradient(135deg,#2a1a3a,#6030a0)',      name: 'Spa Bath',              sub: 'Soaking tub &middot; Walk-in shower &middot; Double vanity' },
-    { emoji: '&#127944;', bg: 'linear-gradient(135deg,#155e56,#2aab9e)',      name: 'Private Pool &amp; Hot Tub', sub: 'Heated pool &middot; Outdoor shower &middot; Lounge deck' },
-    { emoji: '&#127978;', bg: 'linear-gradient(135deg,#c85020,#f5a030)',      name: 'Rooftop Deck',          sub: 'Panoramic views &middot; Gas grill &middot; Dining for 8' },
-    { emoji: '&#127754;', bg: 'linear-gradient(135deg,#0a2040,#1560a0)',      name: 'Beach Walkover',        sub: 'Direct beach access &middot; 1 block to the surf' },
+    { emoji: '', bg: "url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1400&q=85') center/cover", name: 'The Breakwater',        sub: 'Exterior &middot; 103 E 19th St, Avalon NJ' },
+    { emoji: '', bg: "url('https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?auto=format&fit=crop&w=1400&q=85') center/cover", name: 'Living Room',           sub: 'Open concept &middot; Ocean breezes &middot; Smart TV' },
+    { emoji: '', bg: "url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1400&q=85') center/cover", name: 'Gourmet Kitchen',       sub: 'Fully equipped &middot; Breakfast bar &middot; Farmhouse sink' },
+    { emoji: '', bg: "url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1400&q=85') center/cover", name: 'Master Suite',          sub: 'King bed &middot; En suite bath &middot; Balcony access' },
+    { emoji: '', bg: "url('https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1400&q=85') center/cover", name: 'Spa Bath',              sub: 'Soaking tub &middot; Walk-in shower &middot; Double vanity' },
+    { emoji: '', bg: "url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1400&q=85') center/cover", name: 'Private Pool &amp; Hot Tub', sub: 'Heated pool &middot; Outdoor shower &middot; Lounge deck' },
+    { emoji: '', bg: "url('https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=1400&q=85') center/cover", name: 'Rooftop Deck',          sub: 'Panoramic views &middot; Gas grill &middot; Dining for 8' },
+    { emoji: '', bg: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=85') center/cover", name: 'Beach Walkover',        sub: 'Direct beach access &middot; 1 block to the surf' },
   ];
 
   let galleryIdx = 0;
@@ -3585,7 +3704,7 @@
       group.innerHTML = '<div class="events-date-label">' + dateLabel + '</div>';
       byDate[dateStr].forEach(function(e) {
         var icon  = EV_ICON[e.category]  || '&#127881;';
-        var color = EV_COLOR[e.category] || 'linear-gradient(135deg,#155e56,#2aab9e)';
+        var color = EV_COLOR[e.category] || 'linear-gradient(135deg,#075985,#0ea5e9)';
         var tagHtml = e.free
           ? '<span class="event-tag event-tag-free">Free</span>'
           : (e.price ? '<span class="event-tag event-tag-paid">' + _escEv(e.price) + '</span>' : '');
