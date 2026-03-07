@@ -87,6 +87,9 @@
       gap: 5px;
       cursor: pointer;
       padding: 8px;
+      background: none;
+      border: none;
+      border-radius: 6px;
     }
     .nav-hamburger span {
       display: block;
@@ -94,7 +97,18 @@
       height: 2px;
       background: var(--text);
       border-radius: 2px;
-      transition: 0.3s;
+      transition: transform 0.3s, opacity 0.3s;
+      transform-origin: center;
+    }
+    /* Hamburger → X animation when open */
+    .nav-hamburger[aria-expanded="true"] span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
     }
 
     /* ---- PAGES ---- */
@@ -742,6 +756,21 @@
     .toast.show { transform: translateY(0); opacity: 1; }
 
     /* ---- RESPONSIVE ---- */
+    /* Fix 2: Pool instructions single-column on mobile */
+    /* Fix 3: House rules single-column on mobile */
+    @media (max-width: 600px) {
+      .pool-instructions-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .pool-instructions-grid .info-row[style*="border-left"] {
+        border-left: none !important;
+        padding-left: 0 !important;
+      }
+      .house-rules-columns {
+        columns: 1 !important;
+      }
+    }
+
     @media (max-width: 820px) {
       .nav-tabs { display: none; }
       .nav-hamburger { display: flex; }
@@ -754,6 +783,17 @@
         padding: 12px;
         gap: 2px;
         border-bottom: 1px solid rgba(255,255,255,0.1);
+        z-index: 99;
+      }
+      .nav-tabs.open button {
+        color: rgba(255,255,255,0.9);
+        font-size: 12px;
+        letter-spacing: 1.5px;
+      }
+      .nav-tabs.open button:hover,
+      .nav-tabs.open button.active {
+        background: rgba(255,255,255,0.15);
+        color: #ffffff;
       }
       .stay-grid { grid-template-columns: 1fr; }
       .booking-layout { grid-template-columns: 1fr; }
@@ -1638,9 +1678,9 @@
     <li><button onclick="showPage('guestbook', this)">Guest Book</button></li>
     <li><button onclick="showPage('maintenance', this)">Maintenance</button></li>
   </ul>
-  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open navigation menu" aria-expanded="false" type="button">
     <span></span><span></span><span></span>
-  </div>
+  </button>
 </nav>
 
 <!-- ===================== GUEST BANNER ===================== -->
@@ -1781,56 +1821,6 @@
         <div class="tide-card"><div class="tide-arrow" style="opacity:.3">⋯</div><div class="tide-type" style="opacity:.3">Loading</div><div class="tide-time" style="opacity:.3">—:—</div><div class="tide-height" style="opacity:.3">— ft</div><span class="tide-label tide-high" style="opacity:.3">—</span></div>
         <div class="tide-card"><div class="tide-arrow" style="opacity:.3">⋯</div><div class="tide-type" style="opacity:.3">Loading</div><div class="tide-time" style="opacity:.3">—:—</div><div class="tide-height" style="opacity:.3">— ft</div><span class="tide-label tide-low" style="opacity:.3">—</span></div>
         <div class="tide-card"><div class="tide-arrow" style="opacity:.3">⋯</div><div class="tide-type" style="opacity:.3">Loading</div><div class="tide-time" style="opacity:.3">—:—</div><div class="tide-height" style="opacity:.3">— ft</div><span class="tide-label tide-high" style="opacity:.3">—</span></div>
-      </div>
-    </div>
-      </div>
-    </div>
-
-    <div class="hero-scroll" onclick="document.querySelector('.conditions-section').scrollIntoView({behavior:'smooth'})">
-      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
-      </svg>
-      <span>Scroll</span>
-    </div>
-  </section>
-
-  <!-- Beach Conditions Strip -->
-  <section class="conditions-section">
-    <div class="conditions-header">Forecast for your stay &mdash; Avalon, NJ &middot; Aug 8&ndash;15, 2026</div>
-    <div class="conditions-strip">
-      <div class="conditions-item">
-        <div class="conditions-icon">&#9925;</div>
-        <div class="conditions-value">83&deg;</div>
-        <div class="conditions-label">Air Temp (F)</div>
-        <div class="conditions-badge">Warm &amp; Sunny</div>
-      </div>
-      <div class="conditions-divider"></div>
-      <div class="conditions-item">
-        <div class="conditions-icon">&#127754;</div>
-        <div class="conditions-value">72&deg;</div>
-        <div class="conditions-label">Water Temp (F)</div>
-        <div class="conditions-badge">Perfect for swimming</div>
-      </div>
-      <div class="conditions-divider"></div>
-      <div class="conditions-item">
-        <div class="conditions-icon">&#127940;</div>
-        <div class="conditions-value">2&ndash;3 ft</div>
-        <div class="conditions-label">Wave Height</div>
-        <div class="conditions-badge">Ideal surf</div>
-      </div>
-      <div class="conditions-divider"></div>
-      <div class="conditions-item">
-        <div class="conditions-icon">&#127788;</div>
-        <div class="conditions-value">SW 10</div>
-        <div class="conditions-label">Wind (mph)</div>
-        <div class="conditions-badge">Light &amp; Pleasant</div>
-      </div>
-      <div class="conditions-divider"></div>
-      <div class="conditions-item">
-        <div class="conditions-icon">&#9728;&#65039;</div>
-        <div class="conditions-value">8</div>
-        <div class="conditions-label">UV Index</div>
-        <div class="conditions-badge">Sunscreen required</div>
       </div>
     </div>
   </section>
@@ -1974,7 +1964,7 @@
         <h4 class="card-title">&#9832;&#65039; Pool &amp; Hot Tub Instructions</h4>
         <p style="font-size:13px;color:var(--text-light);margin-bottom:16px;font-weight:300">The pool and spa are controlled by a <strong style="color:var(--text)">Pentair EasyTouch</strong> panel located at the pool equipment area. Follow the steps below.</p>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+        <div class="pool-instructions-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0">
 
           <div class="info-row" style="padding-right:24px">
             <div class="info-icon">&#9654;&#65039;</div>
@@ -2032,7 +2022,7 @@
       <!-- House Rules -->
       <div class="card" style="grid-column:1/-1">
         <h4 class="card-title">&#128203; House Rules</h4>
-        <div style="columns:2;column-gap:32px">
+        <div class="house-rules-columns" style="columns:2;column-gap:32px">
           <div class="rule-item"><div class="rule-dot"></div><span>Check-in after 3:00 PM, check-out by 10:00 AM</span></div>
           <div class="rule-item"><div class="rule-dot"></div><span>No smoking indoors or on covered decks</span></div>
           <div class="rule-item"><div class="rule-dot"></div><span>No pets allowed on the property</span></div>
