@@ -12,7 +12,7 @@ Usage:
 """
 
 import anyio
-from claude_agent_sdk import query, ClaudeAgentOptions, ResultMessage, SystemMessage
+from claude_agent_sdk import query, ClaudeAgentOptions, ResultMessage
 import os
 
 # ─── Configuration ────────────────────────────────────────────────────────────
@@ -85,9 +85,6 @@ async def run_enhancement_agent():
                 print("\nFinal summary:")
                 print(message.result)
             print("═" * 60 + "\n")
-        elif isinstance(message, SystemMessage):
-            if message.subtype == "init":
-                print(f"Session ID: {message.session_id}\n")
 
 
 # ─── Entry Point ──────────────────────────────────────────────────────────────
