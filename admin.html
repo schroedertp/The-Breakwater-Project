@@ -9,18 +9,25 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root {
-      --teal: #2aab9e;
-      --teal-dark: #1d8278;
-      --teal-deep: #155e56;
-      --teal-light: #5bc9bf;
-      --coral: #e8735a;
-      --sand: #f5ede0;
-      --sand-dark: #e8d8c0;
-      --sand-mid: #d4ba96;
-      --sun: #f5c842;
-      --white: #fdfaf6;
-      --text: #1e2d2b;
-      --text-light: #5a7270;
+      /* Ocean blues — aligned with main site (item 5) */
+      --ocean: #0ea5e9;
+      --ocean-dark: #0284c7;
+      --ocean-deep: #075985;
+      --ocean-light: #38bdf8;
+      --ocean-pale: #e0f2fe;
+      /* Backwards-compat aliases */
+      --teal: #0ea5e9;
+      --teal-dark: #0284c7;
+      --teal-deep: #075985;
+      --teal-light: #38bdf8;
+      --coral: #f97316;
+      --sand: #f0f7ff;
+      --sand-dark: #dde9f4;
+      --sand-mid: #b8d0e8;
+      --sun: #f59e0b;
+      --white: #ffffff;
+      --text: #0f172a;
+      --text-light: #64748b;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,13 +40,14 @@
 
     /* ---- HEADER ---- */
     .header {
-      background: var(--teal-deep);
+      background: var(--ocean-deep);
       padding: 0 32px;
       height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 1px 12px rgba(7,89,133,0.2);
     }
     .header-logo {
       font-family: 'Cormorant Garamond', serif;
@@ -48,13 +56,13 @@
       color: white;
       letter-spacing: 0.5px;
     }
-    .header-logo span { color: var(--sun); }
+    .header-logo span { color: var(--ocean-light); }
     .header-badge {
-      font-size: 10px;
+      font-size: 11px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.65);
+      background: rgba(255,255,255,0.12);
       padding: 4px 12px;
       border-radius: 20px;
     }
@@ -69,7 +77,7 @@
       font-size: 11px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--teal);
+      color: var(--ocean);
       margin-bottom: 8px;
     }
     .page-title {
@@ -162,7 +170,7 @@
       font-size: 11px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--teal);
+      color: var(--ocean);
       margin-bottom: 16px;
     }
 
@@ -180,12 +188,12 @@
       border: none;
       transition: all 0.2s;
     }
-    .btn-primary { background: var(--coral); color: white; }
-    .btn-primary:hover { background: #f0937d; transform: translateY(-1px); }
-    .btn-teal { background: var(--teal); color: white; }
-    .btn-teal:hover { background: var(--teal-dark); transform: translateY(-1px); }
+    .btn-primary { background: var(--ocean); color: white; box-shadow: 0 4px 14px rgba(14,165,233,0.3); }
+    .btn-primary:hover { background: var(--ocean-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(14,165,233,0.4); }
+    .btn-teal { background: var(--ocean); color: white; box-shadow: 0 4px 14px rgba(14,165,233,0.25); }
+    .btn-teal:hover { background: var(--ocean-dark); transform: translateY(-1px); }
     .btn-ghost { background: none; color: var(--text-light); border: 1px solid var(--sand-dark); }
-    .btn-ghost:hover { background: var(--sand); border-color: var(--sand-mid); }
+    .btn-ghost:hover { background: var(--ocean-pale); border-color: var(--ocean-light); color: var(--ocean); }
     .btn-sm { padding: 8px 16px; font-size: 10px; }
     .btn-block { display: block; width: 100%; text-align: center; }
 
@@ -207,10 +215,11 @@
 
     /* Guest preview card */
     .preview-card {
-      background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 100%);
+      background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean) 100%);
       border-radius: 18px;
       padding: 24px;
       color: white;
+      box-shadow: 0 8px 32px rgba(14,165,233,0.25);
     }
     .preview-greeting {
       font-size: 10px;
@@ -261,10 +270,10 @@
     .url-text {
       font-family: monospace;
       font-size: 11px;
-      color: var(--teal-dark);
+      color: var(--ocean-deep);
       word-break: break-all;
       line-height: 1.6;
-      background: var(--sand);
+      background: var(--ocean-pale);
       padding: 10px 12px;
       border-radius: 8px;
       margin-bottom: 12px;
@@ -325,7 +334,7 @@
     .toast {
       position: fixed;
       bottom: 24px; right: 24px;
-      background: var(--teal-deep);
+      background: var(--ocean-deep);
       color: white;
       padding: 13px 18px;
       border-radius: 12px;
@@ -335,15 +344,28 @@
       opacity: 0;
       transition: all 0.3s;
       max-width: 300px;
-      box-shadow: 0 4px 20px rgba(21,94,86,0.3);
+      box-shadow: 0 4px 20px rgba(7,89,133,0.35);
     }
     .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ---- FOCUS-VISIBLE RINGS (item 11) ---- */
+    button:focus-visible,
+    .btn:focus-visible {
+      outline: 3px solid var(--ocean-light);
+      outline-offset: 2px;
+    }
 
     /* Responsive */
     @media (max-width: 860px) {
       .layout-grid { grid-template-columns: 1fr; }
       .output-panel { position: static; }
       .form-row { grid-template-columns: 1fr; }
+    }
+    /* Item 4: Admin mobile padding reduction */
+    @media (max-width: 600px) {
+      .main { padding: 24px 16px 48px; }
+      .header { padding: 0 16px; }
+      .card { padding: 18px; }
     }
 
     /* ---- EVENTS ADMIN ---- */
@@ -417,7 +439,7 @@
         <div class="section-subtitle">Who&rsquo;s staying</div>
 
         <div class="form-group">
-          <label class="form-label">Guest Last Name</label>
+          <label class="form-label" for="inName">Guest Last Name</label>
           <input type="text" class="form-input" id="inName" placeholder="e.g. Smith" oninput="onFormChange()">
           <div class="form-hint">Appears as the welcome greeting — e.g. "Welcome, Smith!"</div>
         </div>
@@ -427,17 +449,17 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Check-In Date</label>
+            <label class="form-label" for="inCheckin">Check-In Date</label>
             <input type="date" class="form-input" id="inCheckin" oninput="onCheckinChange()">
           </div>
           <div class="form-group">
-            <label class="form-label">Check-Out Date</label>
+            <label class="form-label" for="inCheckout">Check-Out Date</label>
             <input type="date" class="form-input" id="inCheckout" oninput="onFormChange()">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">App Base URL</label>
+          <label class="form-label" for="inBaseUrl">App Base URL</label>
           <input type="text" class="form-input" id="inBaseUrl" placeholder="https://t3dproperties.com" oninput="onFormChange()">
           <div class="form-hint">The public URL where the app is hosted (no trailing slash)</div>
         </div>
@@ -536,29 +558,29 @@
         <div class="card-title">&#127881; Add New Event</div>
 
         <div class="form-group">
-          <label class="form-label">Event Name</label>
+          <label class="form-label" for="evTitle">Event Name</label>
           <input type="text" class="form-input" id="evTitle" placeholder="e.g. Avalon Summer Concert Series">
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Date</label>
+            <label class="form-label" for="evDate">Date</label>
             <input type="date" class="form-input" id="evDate">
           </div>
           <div class="form-group">
-            <label class="form-label">Time</label>
+            <label class="form-label" for="evTime">Time</label>
             <input type="text" class="form-input" id="evTime" placeholder="e.g. 7:00 PM – 9:00 PM">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Location</label>
+          <label class="form-label" for="evLocation">Location</label>
           <input type="text" class="form-input" id="evLocation" placeholder="e.g. Veterans Memorial Park, 30th St">
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Category</label>
+            <label class="form-label" for="evCategory">Category</label>
             <select class="form-select" id="evCategory">
               <option value="music">&#127928; Music</option>
               <option value="food">&#127869; Food &amp; Drink</option>
@@ -569,7 +591,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Admission</label>
+            <label class="form-label" for="evFree">Admission</label>
             <select class="form-select" id="evFree" onchange="togglePriceField()">
               <option value="free">Free</option>
               <option value="paid">Paid</option>
@@ -578,17 +600,17 @@
         </div>
 
         <div class="form-group" id="evPriceGroup" style="display:none">
-          <label class="form-label">Price</label>
+          <label class="form-label" for="evPrice">Price</label>
           <input type="text" class="form-input" id="evPrice" placeholder="e.g. $25/person">
         </div>
 
         <div class="form-group">
-          <label class="form-label">Description <span style="font-size:10px;text-transform:none;letter-spacing:0">(optional)</span></label>
+          <label class="form-label" for="evDesc">Description <span style="font-size:10px;text-transform:none;letter-spacing:0">(optional)</span></label>
           <textarea class="form-input" id="evDesc" placeholder="Brief description for guests..." style="min-height:68px;resize:vertical"></textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Link / URL <span style="font-size:10px;text-transform:none;letter-spacing:0">(optional)</span></label>
+          <label class="form-label" for="evUrl">Link / URL <span style="font-size:10px;text-transform:none;letter-spacing:0">(optional)</span></label>
           <input type="url" class="form-input" id="evUrl" placeholder="https://...">
           <div class="form-hint">Guests can tap the card to get more info</div>
         </div>
@@ -698,8 +720,8 @@
       text:         url,
       width:        200,
       height:       200,
-      colorDark:    '#155e56',
-      colorLight:   '#fdfaf6',
+      colorDark:    '#075985',
+      colorLight:   '#ffffff',
       correctLevel: QRCode.CorrectLevel.M
     });
   }
@@ -784,6 +806,7 @@
   }
 
   function clearHistory() {
+    if (!confirm('Clear all guest history? This cannot be undone.')) return;
     localStorage.removeItem(HISTORY_KEY);
     renderHistory();
     showToast('History cleared.');

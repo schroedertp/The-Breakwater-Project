@@ -192,7 +192,7 @@
       font-size: 22px;
       font-weight: 400;
     }
-    .hero-card-sub { font-size: 11px; opacity: 0.6; margin-top: 3px; }
+    .hero-card-sub { font-size: 11px; opacity: 0.65; margin-top: 3px; }
     .hero-cta { display: inline-flex; gap: 12px; }
     .hero-scroll {
       position: absolute;
@@ -480,6 +480,7 @@
     .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-light); }
     .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
     .booking-sidebar { position: sticky; top: 80px; }
+    body.banner-visible .booking-sidebar { top: 116px; }
     .form-group { margin-bottom: 18px; }
     .form-label {
       display: block;
@@ -755,6 +756,27 @@
     }
     .toast.show { transform: translateY(0); opacity: 1; }
 
+    /* ---- FOCUS-VISIBLE RINGS (item 11) ---- */
+    button:focus-visible,
+    .btn:focus-visible,
+    .filter-pill:focus-visible,
+    .event-pill:focus-visible,
+    .category-btn:focus-visible,
+    .star-btn:focus-visible,
+    .nav-hamburger:focus-visible,
+    .nav-tabs button:focus-visible,
+    .lock-btn:focus-visible,
+    .lock-pwd-toggle:focus-visible,
+    .gallery-trigger-btn:focus-visible,
+    .gallery-close-btn:focus-visible,
+    .gallery-nav-btn:focus-visible,
+    .checklist-reset:focus-visible,
+    .calendar-nav button:focus-visible,
+    .modal-close:focus-visible {
+      outline: 3px solid var(--ocean-light);
+      outline-offset: 2px;
+    }
+
     /* ---- RESPONSIVE ---- */
     /* Fix 2: Pool instructions single-column on mobile */
     /* Fix 3: House rules single-column on mobile */
@@ -887,17 +909,17 @@
       line-height: 1;
     }
     .conditions-label {
-      font-size: 9px;
+      font-size: 11px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      opacity: 0.55;
+      opacity: 0.65;
       margin-top: 5px;
     }
     .conditions-badge {
       display: inline-block;
       background: rgba(245,200,66,0.25);
       color: var(--sun);
-      font-size: 9px;
+      font-size: 11px;
       letter-spacing: 1px;
       text-transform: uppercase;
       padding: 2px 8px;
@@ -1323,10 +1345,10 @@
     margin: 0 auto;
   }
   .forecast-eyebrow {
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.65);
     margin-bottom: 14px;
     text-align: center;
   }
@@ -1344,10 +1366,10 @@
   }
   .forecast-day:last-child { border-right: none; }
   .forecast-day-name {
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    opacity: 0.55;
+    opacity: 0.65;
     margin-bottom: 10px;
   }
   .forecast-icon { font-size: 28px; margin-bottom: 8px; }
@@ -1356,7 +1378,7 @@
     font-size: 22px;
     font-weight: 300;
   }
-  .forecast-lo { font-size: 12px; opacity: 0.45; margin-top: 3px; }
+  .forecast-lo { font-size: 12px; opacity: 0.65; margin-top: 3px; }
 
   /* ---- TIDES SECTION ---- */
   .tides-section {
@@ -1376,7 +1398,7 @@
     gap: 10px;
   }
   .tides-eyebrow {
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--teal);
@@ -1408,7 +1430,7 @@
   }
   .tide-arrow { font-size: 22px; margin-bottom: 6px; }
   .tide-type {
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--text-light);
@@ -1428,7 +1450,7 @@
   }
   .tide-label {
     display: inline-block;
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 1px;
     padding: 2px 8px;
     border-radius: 10px;
@@ -2077,15 +2099,15 @@
           <h4 class="card-title">Reserve Your Stay</h4>
 
           <div class="form-group">
-            <label class="form-label">Check-In Date</label>
+            <label class="form-label" for="checkinInput">Check-In Date</label>
             <input type="text" id="checkinInput" class="form-input" placeholder="Select on calendar" readonly>
           </div>
           <div class="form-group">
-            <label class="form-label">Check-Out Date</label>
+            <label class="form-label" for="checkoutInput">Check-Out Date</label>
             <input type="text" id="checkoutInput" class="form-input" placeholder="Select on calendar" readonly>
           </div>
           <div class="form-group">
-            <label class="form-label">Adults</label>
+            <label class="form-label" for="adultsSelect">Adults</label>
             <select class="form-select" id="adultsSelect">
               <option>2 Adults</option>
               <option>3 Adults</option>
@@ -2095,8 +2117,8 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Children</label>
-            <select class="form-select">
+            <label class="form-label" for="childrenSelect">Children</label>
+            <select class="form-select" id="childrenSelect">
               <option selected>0 Children</option>
               <option>1 Child</option>
               <option>2 Children</option>
@@ -2104,15 +2126,15 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Full Name</label>
+            <label class="form-label" for="bookingName">Full Name</label>
             <input type="text" class="form-input" id="bookingName" placeholder="Jane Smith">
           </div>
           <div class="form-group">
-            <label class="form-label">Email</label>
+            <label class="form-label" for="bookingEmail">Email</label>
             <input type="email" class="form-input" id="bookingEmail" placeholder="jane@example.com">
           </div>
           <div class="form-group">
-            <label class="form-label">Phone</label>
+            <label class="form-label" for="bookingPhone">Phone</label>
             <input type="tel" class="form-input" id="bookingPhone" placeholder="(555) 000-0000">
           </div>
 
@@ -2702,15 +2724,15 @@
           <h4 class="card-title">&#9998; Sign the Guest Book</h4>
 
           <div class="form-group">
-            <label class="form-label">Your Name or Group</label>
+            <label class="form-label" for="gbName">Your Name or Group</label>
             <input type="text" class="form-input" id="gbName" placeholder="The Smith Family">
           </div>
           <div class="form-group">
-            <label class="form-label">Stay Dates <span style="font-size:10px;text-transform:none;letter-spacing:0">(optional)</span></label>
+            <label class="form-label" for="gbDates">Stay Dates <span style="font-size:10px;text-transform:none;letter-spacing:0">(optional)</span></label>
             <input type="text" class="form-input" id="gbDates" placeholder="Jul 12 &ndash; Jul 19, 2025">
           </div>
           <div class="form-group">
-            <label class="form-label">Your Rating</label>
+            <label class="form-label" for="starSelector">Your Rating</label>
             <div class="star-selector" id="starSelector">
               <button class="star-btn lit" onclick="setRating(1)">&#9733;</button>
               <button class="star-btn lit" onclick="setRating(2)">&#9733;</button>
@@ -2720,7 +2742,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Your Message</label>
+            <label class="form-label" for="gbMessage">Your Message</label>
             <textarea class="textarea" id="gbMessage" placeholder="Share a highlight, a tip for future guests, or just say hello..." style="min-height:110px"></textarea>
           </div>
           <button class="btn btn-primary" style="width:100%;display:block;text-align:center" onclick="submitGuestBookEntry()">
@@ -2787,7 +2809,7 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">Urgency</label>
+          <label class="form-label" for="urgencySelect">Urgency</label>
           <select class="form-select" id="urgencySelect">
             <option value="low">Low &mdash; Not urgent, when convenient</option>
             <option value="medium" selected>Medium &mdash; Needs attention today</option>
@@ -2797,17 +2819,17 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">Description</label>
+          <label class="form-label" for="maintenanceDesc">Description</label>
           <textarea class="textarea" id="maintenanceDesc" placeholder="Please describe the issue in detail..."></textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Your Name</label>
+          <label class="form-label" for="maintenanceName">Your Name</label>
           <input type="text" class="form-input" id="maintenanceName" placeholder="Jane Smith">
         </div>
 
         <div class="form-group">
-          <label class="form-label">Best Contact Number</label>
+          <label class="form-label" for="maintenancePhone">Best Contact Number</label>
           <input type="tel" class="form-input" id="maintenancePhone" placeholder="(555) 000-0000">
         </div>
 
@@ -2886,11 +2908,11 @@
     <div class="modal-subtitle">Fill in your details and we&rsquo;ll send the request to the restaurant</div>
 
     <div class="form-group">
-      <label class="form-label">Date</label>
+      <label class="form-label" for="resDate">Date</label>
       <input type="date" class="form-input" id="resDate">
     </div>
     <div class="form-group">
-      <label class="form-label">Time</label>
+      <label class="form-label" for="resTime">Time</label>
       <select class="form-select" id="resTime">
         <option>12:00 PM</option>
         <option>12:30 PM</option>
@@ -2907,7 +2929,7 @@
       </select>
     </div>
     <div class="form-group">
-      <label class="form-label">Party Size</label>
+      <label class="form-label" for="resParty">Party Size</label>
       <select class="form-select" id="resParty">
         <option>1 Guest</option>
         <option>2 Guests</option>
@@ -2920,15 +2942,15 @@
       </select>
     </div>
     <div class="form-group">
-      <label class="form-label">Name for Reservation</label>
+      <label class="form-label" for="resName">Name for Reservation</label>
       <input type="text" class="form-input" id="resName" placeholder="Jane Smith">
     </div>
     <div class="form-group">
-      <label class="form-label">Phone</label>
+      <label class="form-label" for="resPhone">Phone</label>
       <input type="tel" class="form-input" id="resPhone" placeholder="(555) 000-0000">
     </div>
     <div class="form-group">
-      <label class="form-label">Special Requests <span style="font-size:10px;text-transform:none;letter-spacing:0">(optional)</span></label>
+      <label class="form-label" for="resNotes">Special Requests <span style="font-size:10px;text-transform:none;letter-spacing:0">(optional)</span></label>
       <textarea class="textarea" id="resNotes" placeholder="Dietary restrictions, special occasions, seating preference..." style="min-height:72px"></textarea>
     </div>
 
@@ -3259,7 +3281,9 @@
     document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
     document.getElementById('page-' + pageId).classList.add('active');
     if (btn) btn.classList.add('active');
-    document.getElementById('navTabs').classList.remove('open');
+    var _navTabs = document.getElementById('navTabs');
+    _navTabs.classList.remove('open');
+    document.getElementById('hamburger').setAttribute('aria-expanded', 'false');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     // Show guest banner on all tabs except home
     const banner = document.getElementById('guestBanner');
@@ -3271,7 +3295,11 @@
   }
 
   function toggleMenu() {
-    document.getElementById('navTabs').classList.toggle('open');
+    var tabs = document.getElementById('navTabs');
+    var hamburger = document.getElementById('hamburger');
+    tabs.classList.toggle('open');
+    var isOpen = tabs.classList.contains('open');
+    hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   }
 
   // ===================== CALENDAR =====================
