@@ -7,6 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
   <!-- EmailJS SDK — https://www.emailjs.com -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <!-- Leaflet map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     :root {
       /* Ocean blues */
@@ -1659,6 +1662,130 @@
     .forecast-hi { font-size: 18px; }
     .guestbook-layout { grid-template-columns: 1fr; }
   }
+
+    /* ---- PARALLAX HERO ---- */
+    .hero {
+      will-change: background-position;
+    }
+    /* Hero entrance animations */
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow  { animation: heroFadeUp 0.7s cubic-bezier(0.22,0.61,0.36,1) 0.1s both; }
+    .hero-title    { animation: heroFadeUp 0.7s cubic-bezier(0.22,0.61,0.36,1) 0.25s both; }
+    .hero-subtitle { animation: heroFadeUp 0.7s cubic-bezier(0.22,0.61,0.36,1) 0.38s both; }
+    .hero-cards    { animation: heroFadeUp 0.7s cubic-bezier(0.22,0.61,0.36,1) 0.5s both; }
+    .hero-cta      { animation: heroFadeUp 0.7s cubic-bezier(0.22,0.61,0.36,1) 0.62s both; }
+    .hero-scroll   { animation: bounce 2s 1.2s ease-in-out infinite, heroFadeUp 0.6s 0.75s both; }
+
+    /* ---- PAGE TRANSITIONS ---- */
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .page.active {
+      animation: pageIn 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    }
+    /* Home page has its own hero so use a simpler fade */
+    #page-home.active {
+      animation: none;
+    }
+
+    /* ---- SCROLL-REVEAL ---- */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal-on-scroll.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---- MAP PAGE ---- */
+    #page-map { background: #f8fafc; padding-top: 64px; }
+    body.banner-visible #page-map { padding-top: 100px; }
+    .map-wrap {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 32px rgba(15,23,42,0.12);
+      border: 1px solid var(--sand-dark);
+    }
+    #breakwater-map {
+      height: 560px;
+      width: 100%;
+    }
+    .map-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+      margin-top: 18px;
+    }
+    .map-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: var(--text-mid);
+      letter-spacing: 0.3px;
+    }
+    .map-legend-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    /* Custom Leaflet popup styling */
+    .leaflet-popup-content-wrapper {
+      border-radius: 10px !important;
+      box-shadow: 0 4px 20px rgba(15,23,42,0.14) !important;
+      font-family: 'Jost', sans-serif !important;
+    }
+    .leaflet-popup-content { font-size: 13px !important; line-height: 1.5; }
+    .map-popup-name { font-weight: 500; color: var(--text); margin-bottom: 2px; }
+    .map-popup-type { font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
+    @media (max-width: 600px) {
+      #breakwater-map { height: 380px; }
+    }
+
+    /* ---- SOUND TOGGLE ---- */
+    .sound-toggle {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 200;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 18px rgba(15,23,42,0.15);
+      font-size: 22px;
+      cursor: pointer;
+      transition: background 0.25s, box-shadow 0.25s, transform 0.18s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .sound-toggle:hover { transform: scale(1.08); }
+    .sound-toggle.playing {
+      background: var(--ocean);
+      box-shadow: 0 0 0 0 rgba(14,165,233,0.5);
+      animation: soundPulse 2.4s ease-in-out infinite;
+    }
+    @keyframes soundPulse {
+      0%   { box-shadow: 0 0 0 0   rgba(14,165,233,0.45); }
+      70%  { box-shadow: 0 0 0 14px rgba(14,165,233,0); }
+      100% { box-shadow: 0 0 0 0   rgba(14,165,233,0); }
+    }
+    .sound-toggle:focus-visible {
+      outline: 3px solid var(--ocean);
+      outline-offset: 2px;
+    }
+
   </style>
 </head>
 <body>
@@ -1699,6 +1826,7 @@
     <li><button onclick="showPage('events', this)">Events</button></li>
     <li><button onclick="showPage('guestbook', this)">Guest Book</button></li>
     <li><button onclick="showPage('maintenance', this)">Maintenance</button></li>
+    <li><button onclick="showPage('map', this)">Map</button></li>
   </ul>
   <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open navigation menu" aria-expanded="false" type="button">
     <span></span><span></span><span></span>
@@ -2886,6 +3014,44 @@
   </div>
 </div>
 
+<!-- ===================== MAP PAGE ===================== -->
+<div id="page-map" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Avalon &amp; Stone Harbor</div>
+      <h2 class="section-title">Explore the Area</h2>
+      <p class="section-desc">Restaurants, attractions, beaches, and The Breakwater — all on one map.</p>
+    </div>
+
+    <div class="map-wrap">
+      <div id="breakwater-map"></div>
+    </div>
+
+    <div class="map-legend">
+      <div class="map-legend-item">
+        <div class="map-legend-dot" style="background:#075985;border:2px solid #fff;box-shadow:0 0 0 2px #075985"></div>
+        The Breakwater
+      </div>
+      <div class="map-legend-item">
+        <div class="map-legend-dot" style="background:#f97316"></div>
+        Restaurants
+      </div>
+      <div class="map-legend-item">
+        <div class="map-legend-dot" style="background:#0ea5e9"></div>
+        Beaches
+      </div>
+      <div class="map-legend-item">
+        <div class="map-legend-dot" style="background:#10b981"></div>
+        Activities &amp; Attractions
+      </div>
+      <div class="map-legend-item">
+        <div class="map-legend-dot" style="background:#a855f7"></div>
+        Golf
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ===================== PHOTO GALLERY MODAL ===================== -->
 <div class="gallery-modal-overlay" id="galleryModal">
   <button class="gallery-close-btn" onclick="closeGallery()" aria-label="Close gallery">&#x2715;</button>
@@ -2965,6 +3131,11 @@
 <div class="toast" id="toast">
   <span id="toastMsg">Success</span>
 </div>
+
+<!-- ===================== AMBIENT SOUND TOGGLE ===================== -->
+<button id="soundToggle" class="sound-toggle" onclick="toggleOceanSound()" aria-label="Play ambient ocean sounds" title="Ambient ocean sounds">
+  🌊
+</button>
 
 <script>
   // ===================== PASSWORD LOCK =====================
@@ -3279,7 +3450,10 @@
   function showPage(pageId, btn) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
-    document.getElementById('page-' + pageId).classList.add('active');
+    const nextPage = document.getElementById('page-' + pageId);
+    nextPage.classList.add('active');
+    // Re-trigger page-in animation each time by forcing reflow
+    void nextPage.offsetWidth;
     if (btn) btn.classList.add('active');
     var _navTabs = document.getElementById('navTabs');
     _navTabs.classList.remove('open');
@@ -3292,6 +3466,8 @@
       banner.style.display = show ? 'block' : 'none';
       document.body.classList.toggle('banner-visible', show);
     }
+    // Init map on first visit
+    if (pageId === 'map' && !window._mapInitialized) initMap();
   }
 
   function toggleMenu() {
@@ -3947,6 +4123,229 @@
   }
 
   buildChecklist();
+
+  // ===================== PARALLAX HERO =====================
+  (function() {
+    var hero = document.querySelector('.hero');
+    if (!hero) return;
+    function onScroll() {
+      if (!document.getElementById('page-home').classList.contains('active')) return;
+      var y = window.scrollY;
+      hero.style.backgroundPositionY = 'calc(50% + ' + (y * 0.38) + 'px)';
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+
+  // ===================== SCROLL-REVEAL =====================
+  (function() {
+    var selectors = [
+      '.restaurant-card',
+      '.explore-card',
+      '.event-card',
+      '.amenity-badge',
+      '.house-rule-item',
+      '.pool-instruction',
+      '.guestbook-entry',
+      '.conditions-grid .condition-item',
+    ].join(', ');
+
+    var elements = document.querySelectorAll(selectors);
+    elements.forEach(function(el, i) {
+      el.classList.add('reveal-on-scroll');
+      // Stagger within same parent
+      el.style.transitionDelay = (i % 6) * 0.07 + 's';
+    });
+
+    if (!('IntersectionObserver' in window)) {
+      elements.forEach(function(el) { el.classList.add('revealed'); });
+      return;
+    }
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
+
+    elements.forEach(function(el) { observer.observe(el); });
+  })();
+
+  // ===================== INTERACTIVE MAP =====================
+  window._mapInitialized = false;
+
+  function initMap() {
+    window._mapInitialized = true;
+
+    var map = L.map('breakwater-map', {
+      center: [39.090, -74.718],
+      zoom: 13,
+      zoomControl: true,
+      scrollWheelZoom: false
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19
+    }).addTo(map);
+
+    function makeIcon(color, size) {
+      size = size || 14;
+      return L.divIcon({
+        className: '',
+        html: '<div style="width:' + size + 'px;height:' + size + 'px;border-radius:50%;background:' + color + ';border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.28)"></div>',
+        iconAnchor: [size / 2, size / 2],
+        popupAnchor: [0, -(size / 2 + 4)]
+      });
+    }
+
+    function popup(name, type) {
+      return '<div class="map-popup-name">' + name + '</div><div class="map-popup-type">' + type + '</div>';
+    }
+
+    // The Breakwater (home base)
+    L.marker([39.0992, -74.7140], {
+      icon: makeIcon('#075985', 18),
+      zIndexOffset: 1000
+    }).addTo(map).bindPopup('<div class="map-popup-name">The Breakwater</div><div class="map-popup-type">Your Stay · 34 W. 13th St.</div>');
+
+    // Restaurants
+    var restaurants = [
+      { name: 'The Diving Horse',          type: 'Seafood · BYOB',       lat: 39.0853, lng: -74.7170 },
+      { name: 'Whitebrier Restaurant',     type: 'American · Bar',       lat: 39.1050, lng: -74.7188 },
+      { name: "Fred's Tavern",             type: 'Bar & Grill',          lat: 39.0540, lng: -74.7550 },
+      { name: 'Princeton Bar & Grill',     type: 'Waterfront Seafood',   lat: 39.0520, lng: -74.7543 },
+      { name: 'Avalon Coffee',             type: 'Café · Breakfast',     lat: 39.0920, lng: -74.7175 },
+      { name: "Casel's Market & Café",     type: 'Italian · Deli',       lat: 39.0909, lng: -74.7100 },
+    ];
+    restaurants.forEach(function(r) {
+      L.marker([r.lat, r.lng], { icon: makeIcon('#f97316') })
+        .addTo(map).bindPopup(popup(r.name, r.type));
+    });
+
+    // Beaches
+    var beaches = [
+      { name: '19th Street Beach',  type: 'Beach · 0.1 mi', lat: 39.0872, lng: -74.7160 },
+      { name: '8th Street Beach',   type: 'Beach',          lat: 39.0835, lng: -74.7155 },
+      { name: "Townsend's Inlet",   type: 'Beach · Inlet',  lat: 39.0708, lng: -74.7244 },
+    ];
+    beaches.forEach(function(b) {
+      L.marker([b.lat, b.lng], { icon: makeIcon('#0ea5e9') })
+        .addTo(map).bindPopup(popup(b.name, b.type));
+    });
+
+    // Activities & Attractions
+    var attractions = [
+      { name: 'Barrier Island Surf School', type: 'Water Sports',    lat: 39.0870, lng: -74.7172 },
+      { name: 'Avalon Kayak & Paddle',      type: 'Water Sports',    lat: 39.0880, lng: -74.7182 },
+      { name: 'Cape May Whale Watch',       type: 'Water Tour',      lat: 38.9325, lng: -74.9220 },
+      { name: 'Cape May County Zoo',        type: 'Family',          lat: 39.0756, lng: -74.8472 },
+      { name: 'The Wetlands Institute',     type: 'Family · Nature', lat: 39.0528, lng: -74.7559 },
+      { name: 'Avalon Mini Golf',           type: 'Family',          lat: 39.0880, lng: -74.7157 },
+      { name: 'Dune Drive Boutiques',       type: 'Shopping',        lat: 39.0900, lng: -74.7168 },
+      { name: 'Avalon Farmers Market',      type: 'Shopping',        lat: 39.0935, lng: -74.7155 },
+      { name: 'Cape May Lighthouse',        type: 'Sightseeing',     lat: 38.9280, lng: -74.9609 },
+      { name: 'Hereford Inlet Lighthouse',  type: 'Sightseeing',     lat: 39.0040, lng: -74.7881 },
+      { name: 'Stone Harbor Bird Sanctuary',type: 'Nature',          lat: 39.0516, lng: -74.7563 },
+    ];
+    attractions.forEach(function(a) {
+      L.marker([a.lat, a.lng], { icon: makeIcon('#10b981') })
+        .addTo(map).bindPopup(popup(a.name, a.type));
+    });
+
+    // Golf
+    var golf = [
+      { name: 'Avalon Golf Club',          type: 'Golf',  lat: 39.1031, lng: -74.7258 },
+      { name: 'Stone Harbor Golf Club',    type: 'Golf',  lat: 39.0350, lng: -74.8012 },
+      { name: 'Cape May National Golf',    type: 'Golf',  lat: 39.0700, lng: -74.8600 },
+    ];
+    golf.forEach(function(g) {
+      L.marker([g.lat, g.lng], { icon: makeIcon('#a855f7') })
+        .addTo(map).bindPopup(popup(g.name, g.type));
+    });
+  }
+
+  // ===================== AMBIENT OCEAN SOUND =====================
+  var _audioCtx = null;
+  var _waveGain = null;
+  var _waveSource = null;
+  var _lfo = null;
+  var _soundPlaying = false;
+
+  function _buildOceanSound() {
+    _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Brown noise
+    var sampleRate = _audioCtx.sampleRate;
+    var buf = _audioCtx.createBuffer(1, sampleRate * 6, sampleRate);
+    var data = buf.getChannelData(0);
+    var lastOut = 0;
+    for (var i = 0; i < data.length; i++) {
+      var white = Math.random() * 2 - 1;
+      data[i] = (lastOut + 0.02 * white) / 1.02;
+      lastOut = data[i];
+      data[i] *= 3.2;
+    }
+
+    _waveSource = _audioCtx.createBufferSource();
+    _waveSource.buffer = buf;
+    _waveSource.loop = true;
+
+    // Lowpass filter shaped like surf
+    var filter = _audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 380;
+    filter.Q.value = 0.8;
+
+    // LFO modulates filter cutoff for wave rhythm
+    _lfo = _audioCtx.createOscillator();
+    _lfo.frequency.value = 0.12;
+    var lfoGain = _audioCtx.createGain();
+    lfoGain.gain.value = 240;
+    _lfo.connect(lfoGain);
+    lfoGain.connect(filter.frequency);
+    _lfo.start();
+
+    // High-shelf cut to avoid harshness
+    var shelf = _audioCtx.createBiquadFilter();
+    shelf.type = 'highshelf';
+    shelf.frequency.value = 1200;
+    shelf.gain.value = -14;
+
+    _waveGain = _audioCtx.createGain();
+    _waveGain.gain.value = 0;
+
+    _waveSource.connect(filter);
+    filter.connect(shelf);
+    shelf.connect(_waveGain);
+    _waveGain.connect(_audioCtx.destination);
+    _waveSource.start();
+  }
+
+  function toggleOceanSound() {
+    if (!_audioCtx) _buildOceanSound();
+    // Resume context if suspended (browser autoplay policy)
+    if (_audioCtx.state === 'suspended') _audioCtx.resume();
+
+    _soundPlaying = !_soundPlaying;
+    var now = _audioCtx.currentTime;
+    _waveGain.gain.cancelScheduledValues(now);
+    _waveGain.gain.setValueAtTime(_waveGain.gain.value, now);
+    if (_soundPlaying) {
+      _waveGain.gain.linearRampToValueAtTime(0.45, now + 2.0);
+    } else {
+      _waveGain.gain.linearRampToValueAtTime(0, now + 1.8);
+    }
+
+    var btn = document.getElementById('soundToggle');
+    if (btn) {
+      btn.classList.toggle('playing', _soundPlaying);
+      btn.setAttribute('aria-label', _soundPlaying ? 'Mute ocean sounds' : 'Play ambient ocean sounds');
+    }
+  }
+
 </script>
 </body>
 </html>
