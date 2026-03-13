@@ -1,4 +1,4 @@
-const { defineConfig, devices } = require('playwright/test');
+const { defineConfig, devices } = require('/opt/node22/lib/node_modules/playwright/test');
 
 module.exports = defineConfig({
   testDir: './tests',
