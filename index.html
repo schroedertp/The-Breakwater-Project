@@ -3294,14 +3294,10 @@
       + '&daily=temperature_2m_max,temperature_2m_min,weathercode'
       + '&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=7';
 
-    fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+    function renderWeather(days, highs, lows, codes) {
       var strip = document.getElementById('forecastStrip');
       if (!strip) return;
-      var days  = data.daily.time;
-      var highs = data.daily.temperature_2m_max;
-      var lows  = data.daily.temperature_2m_min;
-      var codes = data.daily.weathercode;
-      var html  = '';
+      var html = '';
       for (var i = 0; i < Math.min(7, days.length); i++) {
         var d    = new Date(days[i] + 'T12:00:00');
         var name = i === 0 ? 'Today' : DAY_NAMES[d.getDay()];
@@ -3316,7 +3312,35 @@
       strip.innerHTML = html;
       var eyebrow = document.getElementById('forecastEyebrow');
       if (eyebrow) eyebrow.textContent = '7-Day Weather Forecast \u00b7 Avalon, NJ';
-    }).catch(function() { /* silently keep static fallback */ });
+    }
+
+    fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+      renderWeather(data.daily.time, data.daily.temperature_2m_max, data.daily.temperature_2m_min, data.daily.weathercode);
+    }).catch(function(err) {
+      console.error('Weather fetch failed:', err);
+      // Static fallback — regenerate day names from today
+      var today = new Date();
+      var fallbackDays = [], fallbackCodes = [], fallbackHi = [], fallbackLo = [];
+      for (var i = 0; i < 5; i++) {
+        var d = new Date(today); d.setDate(d.getDate() + i);
+        fallbackDays.push(d.toISOString().slice(0, 10));
+        fallbackCodes.push(1); fallbackHi.push(null); fallbackLo.push(null);
+      }
+      var strip = document.getElementById('forecastStrip');
+      if (!strip) return;
+      var html = '';
+      for (var i = 0; i < 5; i++) {
+        var d    = new Date(fallbackDays[i] + 'T12:00:00');
+        var name = i === 0 ? 'Today' : DAY_NAMES[d.getDay()];
+        html += '<div class="forecast-day">'
+          + '<div class="forecast-day-name">' + name + '</div>'
+          + '<div class="forecast-icon">🌤️</div>'
+          + '<div class="forecast-hi" style="opacity:.4">—°</div>'
+          + '<div class="forecast-lo" style="opacity:.3">—°</div>'
+          + '</div>';
+      }
+      strip.innerHTML = html;
+    });
   })();
 
   // ===================== LIVE TIDES (NOAA CO-OPS) =====================
@@ -3388,7 +3412,19 @@
           + '</div>';
       });
       if (html) grid.innerHTML = html;
-    }).catch(function() { /* silently keep static fallback */ });
+    }).catch(function(err) {
+      console.error('Tides fetch failed:', err);
+      var grid = document.getElementById('tidesGrid');
+      var dateEl = document.getElementById('tidesDate');
+      if (dateEl) {
+        var DAY_FULL2    = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        var MONTH_NAMES2 = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        dateEl.textContent = DAY_FULL2[today.getDay()] + ', ' + MONTH_NAMES2[today.getMonth()] + ' ' + today.getDate() + ' \u00b7 Lifeguards on duty 9am\u20135pm';
+      }
+      if (grid) grid.innerHTML = '<div class="tide-card" style="grid-column:1/-1;text-align:center;opacity:.6;padding:24px 0">'
+        + '<div style="font-size:13px">Tide times unavailable \u2014 check <a href="https://tidesandcurrents.noaa.gov/stationhome.html?id=8536110" target="_blank" style="color:inherit;text-decoration:underline">NOAA</a></div>'
+        + '</div>';
+    });
   })();
 
   function checkPassword() {

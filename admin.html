@@ -688,9 +688,10 @@
     if (!checkout) return showToast('Please enter a check-out date.');
     if (!baseUrl)  return showToast('Please enter the app base URL.');
 
-    // Build clean path-based URL: t3dproperties.com/smith
+    // Build URL: t3dproperties.com/smith?checkin=YYYY-MM-DD&checkout=YYYY-MM-DD
     var base = baseUrl.replace(/\/$/, '').replace(/\/index\.html$/, '');
-    generatedUrl = base + '/' + encodeURIComponent(name.toLowerCase().replace(/\s+/g, '-'));
+    generatedUrl = base + '/' + encodeURIComponent(name.toLowerCase().replace(/\s+/g, '-'))
+      + '?checkin=' + checkin + '&checkout=' + checkout;
 
     // Show output panel
     document.getElementById('outputEmpty').style.display   = 'none';
