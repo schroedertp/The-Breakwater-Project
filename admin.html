@@ -121,7 +121,7 @@
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .form-label {
       display: block;
-      font-size: 10px;
+      font-size: 12px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--text-light);
@@ -139,6 +139,10 @@
       transition: border-color 0.2s;
     }
     .form-input:focus { outline: none; border-color: var(--teal); }
+    /* #12 Form input focus ring */
+    .form-input:focus-visible, .form-input:focus { outline: 3px solid var(--ocean-light, #7dd3fc); outline-offset: 2px; }
+    /* #14 Select focus state */
+    select.form-input:focus, .form-select:focus { background-color: #f8fafc; }
     .form-select {
       width: 100%;
       padding: 11px 14px;
@@ -156,8 +160,8 @@
     }
     .form-select:focus { outline: none; border-color: var(--teal); }
     .form-hint {
-      font-size: 11px;
-      color: var(--text-light);
+      font-size: 12px;
+      color: #4b5e6d;
       margin-top: 5px;
       font-weight: 300;
     }
@@ -182,7 +186,7 @@
       font-family: 'Jost', sans-serif;
       font-size: 11px;
       font-weight: 400;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
       border: none;
@@ -348,6 +352,9 @@
     }
     .toast.show { transform: translateY(0); opacity: 1; }
 
+    /* #11 Dynamic button hover — catch-all cursor */
+    button { cursor: pointer; }
+
     /* ---- FOCUS-VISIBLE RINGS (item 11) ---- */
     button:focus-visible,
     .btn:focus-visible {
@@ -356,7 +363,7 @@
     }
 
     /* Responsive */
-    @media (max-width: 860px) {
+    @media (max-width: 700px) {
       .layout-grid { grid-template-columns: 1fr; }
       .output-panel { position: static; }
       .form-row { grid-template-columns: 1fr; }
@@ -367,6 +374,13 @@
       .header { padding: 0 16px; }
       .card { padding: 18px; }
     }
+
+    /* #24 Skip link */
+    .skip-link { position: absolute; left: -9999px; top: 8px; z-index: 9999; background: var(--teal-deep, #0c4a6e); color: #fff; padding: 8px 16px; border-radius: 4px; font-size: 14px; text-decoration: none; }
+    .skip-link:focus { left: 8px; }
+
+    /* #26 Screen reader only utility */
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
     /* ---- EVENTS ADMIN ---- */
     .events-admin-section {
@@ -411,12 +425,17 @@
       font-size: 11px; color: var(--text-light);
       margin-bottom: 16px; letter-spacing: 0.5px;
     }
-    @media (max-width: 860px) {
+    @media (max-width: 700px) {
       .events-admin-grid { grid-template-columns: 1fr; }
     }
+    /* #1 Calendar grid mobile — admin has no calendar but adding responsive rules */
+    /* #2 Countdown widget — admin has no countdown */
+    /* #5 Booking sidebar — admin has no sidebar */
   </style>
 </head>
 <body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
 <!-- HEADER -->
 <header class="header">
@@ -424,7 +443,7 @@
   <div class="header-badge">&#128272; Admin &mdash; T3D Properties</div>
 </header>
 
-<main class="main">
+<main class="main" id="main-content">
   <div class="page-eyebrow">T3D Properties &middot; 103 E 19th St, Avalon NJ</div>
   <h1 class="page-title">Guest Link Generator</h1>
   <p class="page-desc">Fill in the guest details below to generate a personalized app link and QR code for each weekly rental.</p>

@@ -1,4 +1,4 @@
-const { test, expect } = require('playwright/test');
+const { test, expect } = require('@playwright/test');
 
 test.describe('Admin Page', () => {
   test.beforeEach(async ({ page }) => {
